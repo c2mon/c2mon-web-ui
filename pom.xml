@@ -1,61 +1,72 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>cern.c2mon.c2mon-client</groupId>
-    <artifactId>c2mon-client-pom</artifactId>
-    <version>RELEASE</version>
+    <groupId>cern.c2mon.client</groupId>
+    <artifactId>c2mon-client</artifactId>
+    <version>1.8.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>cern.c2mon.c2mon-client</groupId>
-  <artifactId>c2mon-web-configviewer</artifactId>
-  <version>1.7.3-SNAPSHOT</version>
-
+  <artifactId>c2mon-web-ui</artifactId>
   <packaging>war</packaging>
 
   <properties>
-    <org.springframework.version>4.2.3.RELEASE</org.springframework.version>
-    <org.springframework.boot.version>1.3.0.RELEASE</org.springframework.boot.version>
     <org.springframework.security.version>4.0.3.RELEASE</org.springframework.security.version>
   </properties>
 
+  <distributionManagement>
+    <repository>
+      <id>artifactory</id>
+      <name>cs-ccr-ap1.cern.ch-releases</name>
+      <url>http://artifactory/beco-release-local</url>
+    </repository>
+    <snapshotRepository>
+      <id>artifactory</id>
+      <name>cs-ccr-ap1.cern.ch-snapshots</name>
+      <url>http://artifactory/beco-development-local</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+  <repositories>
+    <repository>
+      <id>artifactory-releases</id>
+      <url>http://artifactory/release</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>artifactory-snapshots</id>
+      <url>http://artifactory/development</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <scm>
+    <url>https://gitlab.cern.ch/c2mon/c2mon-web-ui</url>
+    <connection>scm:git:git://gitlab.cern.ch/c2mon/c2mon-web-ui.git</connection>
+    <developerConnection>scm:git:git@gitlab.cern.ch:7999/c2mon/c2mon-web-ui.git</developerConnection>
+  </scm>
+
   <dependencies>
-
-    <!-- C2MON dependency -->
+    <!-- C2MON dependencies -->
     <dependency>
-      <groupId>cern.c2mon.c2mon-client</groupId>
+      <groupId>cern.c2mon.client</groupId>
       <artifactId>c2mon-client-core</artifactId>
-      <version>1.7.2</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-log4j12</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
-      <groupId>cern.c2mon.c2mon-client</groupId>
+      <groupId>cern.c2mon.client</groupId>
       <artifactId>c2mon-client-ext-rbac</artifactId>
-       <version>1.7.2</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-log4j12</artifactId>
-        </exclusion>
-      </exclusions>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>cern.c2mon.c2mon-client</groupId>
+      <groupId>cern.c2mon.client</groupId>
       <artifactId>c2mon-client-ext-history</artifactId>
-      <version>1.7.2</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-log4j12</artifactId>
-        </exclusion>
-      </exclusions>
+      <version>${project.version}</version>
     </dependency>
 
-    <!-- SPRING library dependencies -->
+    <!-- 3rd-party dependencies -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
@@ -68,11 +79,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-websocket</artifactId>
       <version>${org.springframework.boot.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-messaging</artifactId>
-      <version>4.2.3.RELEASE</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -109,7 +115,6 @@
       <version>${org.springframework.version}</version>
       <scope>runtime</scope>
     </dependency>
-
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
@@ -119,10 +124,7 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-tomcat</artifactId>
       <version>${org.springframework.boot.version}</version>
-      <!--<scope>provided</scope>-->
     </dependency>
-
-    <!-- 3rd party library dependencies -->
     <dependency>
       <groupId>org.apache.tomcat.embed</groupId>
       <artifactId>tomcat-embed-jasper</artifactId>
@@ -142,17 +144,14 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <version>2.6.5</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>2.6.5</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.6.5</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -167,12 +166,10 @@
     <dependency>
       <groupId>org.mybatis</groupId>
       <artifactId>mybatis</artifactId>
-      <version>3.2.7</version>
     </dependency>
     <dependency>
       <groupId>org.hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
-      <version>2.3.2</version>
     </dependency>
     <dependency>
       <groupId>jfree</groupId>
@@ -187,7 +184,6 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.16.8</version>
     </dependency>
 
     <!-- Test dependencies -->
@@ -197,20 +193,8 @@
     </dependency>
   </dependencies>
 
-  <scm>
-    <developerConnection>scm:svn:svn+ssh://svn.cern.ch/reps/tim2/trunk/c2mon/c2mon-client/c2mon-web-configviewer</developerConnection>
-  </scm>
-
   <build>
     <finalName>${project.name}-${project.version}</finalName>
-
-    <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
-    <testSourceDirectory>${project.basedir}/src/test/java</testSourceDirectory>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-      </resource>
-    </resources>
 
     <plugins>
       <plugin>
@@ -231,14 +215,6 @@
         <version>2.3</version>
         <configuration>
           <failOnMissingWebXml>false</failOnMissingWebXml>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
         </configuration>
       </plugin>
       <plugin>
