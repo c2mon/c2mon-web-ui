@@ -1,0 +1,21 @@
+# Build files
+*.class
+build/
+target/
+
+# IDE files
+*.iml
+.idea/
+.settings/
+.classpath
+.project
+
+# Package Files
+*.jar
+*.war
+*.ear
+
+# Virtual machine crash logs
+hs_err_pid*
+
+activemq-data/
