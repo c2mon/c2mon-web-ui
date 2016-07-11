@@ -1,7 +1,7 @@
 image: docker:latest
 
 services:
- - docker.cern.ch/c2mon-project/dind:dind
+ - docker.cern.ch/c2mon-project/dind
  - maven:3.3-jdk-8
 
 build:
