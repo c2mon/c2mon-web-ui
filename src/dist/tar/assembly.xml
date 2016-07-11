@@ -12,17 +12,17 @@
 
   <files>
     <file>
-      <source>${basedir}/src/dist/conf/c2mon-client.properties</source>
+      <source>src/dist/tar/conf/c2mon-client.properties</source>
       <outputDirectory>conf</outputDirectory>
       <fileMode>0644</fileMode>
     </file>
     <file>
-      <source>${basedir}/src/dist/bin/webapp.sh</source>
+      <source>src/dist/tar/bin/webapp.sh</source>
       <outputDirectory>bin</outputDirectory>
       <fileMode>0755</fileMode>
     </file>
     <file>
-      <source>${basedir}/src/dist/deployment.xml</source>
+      <source>src/dist/tar/deployment.xml</source>
       <outputDirectory>/</outputDirectory>
     </file>
   </files>

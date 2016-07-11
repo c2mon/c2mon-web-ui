@@ -6,10 +6,12 @@
     <version>1.8.0-SNAPSHOT</version>
   </parent>
 
+  <groupId>cern.c2mon.web</groupId>
   <artifactId>c2mon-web-ui</artifactId>
   <packaging>war</packaging>
 
   <properties>
+    <docker.image.base>java:8-jdk</docker.image.base>
     <org.springframework.security.version>4.0.3.RELEASE</org.springframework.security.version>
   </properties>
 
@@ -179,7 +181,6 @@
     <dependency>
       <groupId>xml-apis</groupId>
       <artifactId>xml-apis</artifactId>
-      <version>1.4.01</version>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -197,6 +198,7 @@
     <finalName>${project.name}-${project.version}</finalName>
 
     <plugins>
+
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
@@ -209,6 +211,7 @@
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
@@ -217,6 +220,7 @@
           <failOnMissingWebXml>false</failOnMissingWebXml>
         </configuration>
       </plugin>
+
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <executions>
@@ -228,9 +232,69 @@
           </execution>
         </executions>
         <configuration>
+          <appendAssemblyId>false</appendAssemblyId>
           <descriptors>
-            <descriptor>src/dist/assembly.xml</descriptor>
+            <descriptor>src/dist/tar/assembly.xml</descriptor>
           </descriptors>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>com.spotify</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>0.4.10</version>
+        <executions>
+          <execution>
+            <id>build-image</id>
+            <phase>package</phase>
+            <goals>
+              <goal>build</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>push-image</id>
+            <phase>deploy</phase>
+            <goals>
+              <goal>push</goal>
+            </goals>
+            <configuration>
+              <imageName>docker.cern.ch/c2mon-project/web-ui</imageName>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <imageName>docker.cern.ch/c2mon-project/web-ui</imageName>
+          <baseImage>${docker.image.base}</baseImage>
+          <serverId>docker.cern.ch</serverId>
+          <registryUrl>https://docker.cern.ch</registryUrl>
+          <forceTags>true</forceTags>
+          <imageTags>
+            <imageTag>${project.version}</imageTag>
+          </imageTags>
+          <workdir>/c2mon-web-ui</workdir>
+          <cmd>["bin/webapp.sh","run"]</cmd>
+          <exposes>
+            <expose>8080</expose>
+          </exposes>
+          <runs>
+            <run>ls -al /c2mon-web-ui</run>
+            <run>chmod 755 /c2mon-web-ui/bin/*</run>
+          </runs>
+          <volumes>
+            <volume>/c2mon-web-ui/log</volume>
+            <volume>/c2mon-web-ui/conf</volume>
+          </volumes>
+          <resources>
+            <resource>
+              <directory>${project.build.directory}</directory>
+              <include>c2mon-web-ui-${project.version}.tar.gz</include>
+              <targetPath>/c2mon-web-ui</targetPath>
+            </resource>
+            <resource>
+              <directory>src/dist/docker/conf</directory>
+              <targetPath>/c2mon-web-ui/conf</targetPath>
+            </resource>
+          </resources>
         </configuration>
       </plugin>
     </plugins>
