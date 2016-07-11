@@ -277,7 +277,6 @@
             <expose>8080</expose>
           </exposes>
           <runs>
-            <run>ls -al /c2mon-web-ui</run>
             <run>chmod 755 /c2mon-web-ui/bin/*</run>
           </runs>
           <volumes>
