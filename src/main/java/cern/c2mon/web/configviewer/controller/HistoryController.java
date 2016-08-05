@@ -1,31 +1,39 @@
 /******************************************************************************
  * Copyright (C) 2010-2016 CERN. All rights not expressly granted are reserved.
- * 
+ *
  * This file is part of the CERN Control and Monitoring Platform 'C2MON'.
  * C2MON is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation, either version 3 of the license.
- * 
+ *
  * C2MON is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
  * more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with C2MON. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 package cern.c2mon.web.configviewer.controller;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import javax.servlet.http.HttpServletResponse;
 
+import cern.c2mon.client.common.tag.ClientDataTagValue;
+import cern.c2mon.client.ext.history.alarm.Alarm;
+import cern.c2mon.client.ext.history.alarm.AlarmHistoryService;
+import cern.c2mon.client.ext.history.alarm.HistoricAlarmQuery;
+import cern.c2mon.client.ext.history.updates.HistoryTagValueUpdateImpl;
+import cern.c2mon.shared.client.alarm.AlarmValue;
+import cern.c2mon.shared.client.alarm.AlarmValueImpl;
+import cern.c2mon.shared.client.tag.TagConfig;
+import cern.c2mon.web.configviewer.service.TagService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,6 +117,12 @@ public class HistoryController {
   @Autowired
   private HistoryService service;
 
+  @Autowired
+  private TagService tagService;
+
+  @Autowired
+  private AlarmHistoryService alarmService;
+
   /**
    * HistoryController logger
    */
@@ -159,6 +173,8 @@ public class HistoryController {
     } catch (Exception e) {
       return ("redirect:" + HISTORY_FORM_URL + "?error=" + id);
     }
+
+    setAlarmsForHistory(Long.parseLong(id), history);
 
     model.addAttribute("description", description);
     model.addAttribute("history", history);
@@ -250,5 +266,48 @@ public class HistoryController {
       return ("redirect:" + HISTORY_URL + id + "?" + MAX_RECORDS_PARAMETER + "=" + records);
     }
     return "trend/trendViewForm";
+  }
+
+
+  /**
+   * Helper method to populate the alarms to a given tag history from the {@link AlarmHistoryService}.
+   *
+   * @param tagId The id of the tag which might hold the history of alarms
+   * @param tagValueUpdates The history of the tag
+   */
+  private void setAlarmsForHistory(Long tagId, List<HistoryTagValueUpdate> tagValueUpdates){
+    Map<Timestamp, Alarm> timeToAlarmValue = new HashMap<>();
+    ClientDataTagValue clientTag = tagService.getDataTagValue(tagId);
+
+    if(clientTag.getAlarms() !=  null) {
+      List<AlarmValue> alarms = new ArrayList<>(clientTag.getAlarms());
+
+      if (!alarms.isEmpty() && !tagValueUpdates.isEmpty()) {
+        // get the range of the history of the sorted list
+        Timestamp start = tagValueUpdates.get(0).getServerTimestamp();
+        Timestamp end = tagValueUpdates.get(tagValueUpdates.size() - 1).getServerTimestamp();
+        for(Alarm alarm : alarmService.findBy(new HistoricAlarmQuery().id(alarms.get(0).getId()).between(start, end))){
+          timeToAlarmValue.put(alarm.getTimestamp(), alarm);
+        }
+      }
+      for(HistoryTagValueUpdate tagValueUpdate : tagValueUpdates){
+        HistoryTagValueUpdateImpl tagValue = (HistoryTagValueUpdateImpl) tagValueUpdate;
+        Timestamp currentTime = tagValueUpdate.getServerTimestamp();
+
+        if(timeToAlarmValue.containsKey(currentTime)){
+          Alarm alarm = timeToAlarmValue.get(currentTime);
+          AlarmValueImpl alarmValue = new AlarmValueImpl(
+              alarm.getId(),
+              alarm.getFaultCode(),
+              alarm.getFaultMember(),
+              alarm.getFaultFamily(),
+              alarm.getInfo(),
+              alarm.getTagId(),
+              alarm.getTimestamp(),
+              alarm.isActive());
+          tagValue.getAlarms().add(alarmValue);
+        }
+      }
+    }
   }
 }
