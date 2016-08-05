@@ -5,23 +5,29 @@
 
 <!-- JSP variables -->
 <c:set var="tag" value="${history[0]}" />
+<c:set var="alarmflag" value="false" />
 <c:url var="home" value=".." />
 <c:url var="historyviewer" value="../historyviewer/form" />
 <c:url var="tagviewer" value="../tagviewer/${tag.id}" />
 <c:url var="trend" value="/trendviewer/${tag.id}" />
+<c:forEach var="tagitem" items="${history}">
+  <c:if test="${not empty tagitem.alarms}">
+    <c:set var="alarmflag" value="true" />
+  </c:if>
+</c:forEach>
 
 <c2mon:template title="${title}">
 
-<style type="text/css">
-.page-header {
-  margin-top: -20px !important;
-}
+  <style type="text/css">
+    .page-header {
+      margin-top: -20px !important;
+    }
 
-tr.invalid {
-  color: #000000;
-  background: #D9EDF7 !important;
-}
-</style>
+    tr.invalid {
+      color: #000000;
+      background: #D9EDF7 !important;
+    }
+  </style>
 
   <div class="row">
     <div class="col-lg-12">
@@ -80,51 +86,83 @@ tr.invalid {
     <div class="col-lg-12">
       <table class="table table-striped table-bordered">
         <thead>
-          <tr>
-            <th>Server Timestamp</th>
-            <th>Value</th>
-            <th>Quality description</th>
-            <th>Value Description</th>
-            <th>Source Timestamp</th>
-            <th>Mode</th>
-          </tr>
+        <tr>
+          <th>Server Timestamp</th>
+          <th>Value</th>
+          <th>Quality description</th>
+          <th>Value Description</th>
+          <th>Source Timestamp</th>
+          <th>Mode</th>
+          <c:if test="${alarmflag}">
+            <th>Alarm status</th>
+          </c:if>
+        </tr>
         </thead>
 
         <tbody>
-          <c:forEach var="item" items="${history}">
+        <c:forEach var="item" items="${history}">
 
-            <!-- Used to display a light-blue line in case of a datatag with invalid quality -->
+          <!-- Used to display a light-blue line in case of a datatag with invalid quality -->
+          <c:choose>
+            <c:when test="${item.dataTagQuality.valid == true}">
+              <c:set var="quality_status" value="ok" />
+            </c:when>
+            <c:otherwise>
+              <c:set var="quality_status" value="invalid" />
+            </c:otherwise>
+          </c:choose>
+
+          <tr class="${quality_status}">
+            <td>${item.serverTimestamp}</td>
+            <td>${item.value}</td>
+
+            <td>
+              <c:choose>
+                <c:when test="${item.dataTagQuality.valid == false}">
+                  <c:forEach var="entry" items="${item.dataTagQuality.invalidQualityStates}">
+                    <p>${entry.key}-${entry.value}</p>
+                  </c:forEach>
+                </c:when>
+                <c:otherwise>
+                  <p>OK</p>
+                </c:otherwise>
+              </c:choose>
+            </td>
+
+            <td>${item.description}</td>
+            <td>${item.sourceTimestamp}</td>
+            <td>${item.mode}</td>
+
             <c:choose>
-              <c:when test="${item.dataTagQuality.valid == true}">
-                <c:set var="quality_status" value="ok" />
-              </c:when>
-              <c:otherwise>
-                <c:set var="quality_status" value="invalid" />
-              </c:otherwise>
-            </c:choose>
-
-            <tr class="${quality_status}">
-              <td>${item.serverTimestamp}</td>
-              <td>${item.value}</td>
-
-              <td>
+              <c:when test="${alarmflag}">
                 <c:choose>
-                  <c:when test="${item.dataTagQuality.valid == false}">
-                    <c:forEach var="entry" items="${item.dataTagQuality.invalidQualityStates}">
-                      <p>${entry.key}-${entry.value}</p>
-                    </c:forEach>
+                  <c:when test="${not empty item.alarms}">
+                    <c:if test="${item.alarms[0].active}">
+                      <td>
+                        <span class="label label-danger">
+                        <i class="fa fa-bell"></i> ACTIVE
+                        </span>
+                      </td>
+                    </c:if>
+                    <c:if test="${not item.alarms[0].active}">
+                      <td>
+                        <span class="label label-success">
+                        <i class="fa fa-bell"></i> TERMINATED
+                        </span>
+                      </td>
+                    </c:if>
+
                   </c:when>
                   <c:otherwise>
-                    <p>OK</p>
+                    <td></td>
                   </c:otherwise>
                 </c:choose>
-              </td>
-
-              <td>${item.description}</td>
-              <td>${item.sourceTimestamp}</td>
-              <td>${item.mode}</td>
-            </tr>
-          </c:forEach>
+              </c:when>
+              <c:otherwise>
+              </c:otherwise>
+            </c:choose>
+          </tr>
+        </c:forEach>
 
         </tbody>
       </table>
