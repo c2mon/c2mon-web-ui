@@ -368,6 +368,14 @@ th {
               </c:if>
             </td>
           </tr>
+          <tr>
+            <th>Address parameters</th>
+            <td>
+              <c:if test="${not empty tagConfig.addressParameters}">
+                ${tagConfig.addressParameters}
+              </c:if>
+            </td>
+          </tr>
 
         </tbody>
       </table>
