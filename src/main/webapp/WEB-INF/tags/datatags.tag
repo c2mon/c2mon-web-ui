@@ -167,6 +167,14 @@
                                     <xmp>${fn:trim(fn:replace(tag.address.hardwareAddress, '        ', ''))}</xmp>
                                   </td>
                                 </tr>
+                                <tr>
+                                  <th>Address parameters</th>
+                                  <td>
+                                    <c:if test="${not empty tag.address.addressParameters}">
+                                      ${tag.address.addressParameters}
+                                    </c:if>
+                                  </td>
+                                </tr>
                               </tbody>
                             </table>
                           </div>
