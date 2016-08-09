@@ -185,13 +185,9 @@ th {
     <div class="row">
       <div class="col-lg-12">
         <p class="pull-left btn-toolbar">
-          <a href="<c:url value="/historyviewer/${alarm.id}"/>" class="btn btn-default btn-large">
+          <a href="<c:url value="/alarmhistoryviewer/${alarm.id}"/>" class="btn btn-default btn-large">
             <span class="glyphicon glyphicon-list"></span>
             View History
-          </a>
-          <a href="<c:url value="/trendviewer/${alarm.id}"/>" class="btn btn-default btn-large">
-            <span class="glyphicon glyphicon-stats"></span>
-            View Trend
           </a>
         </p>
 
