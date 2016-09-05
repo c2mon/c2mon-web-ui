@@ -19,7 +19,9 @@ package cern.c2mon.web.configviewer.security;
 
 import cern.c2mon.client.common.service.SessionService;
 import cern.c2mon.client.ext.rbac.C2monSessionGateway;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,18 +32,19 @@ import org.springframework.stereotype.Component;
 /**
  * Custom RBAC-based {@link AuthenticationProvider} implementation.
  *
- * @auther Justin Lewis Salmon
+ * @author Justin Lewis Salmon
  */
+@Slf4j
 @Component
 public class RbacAuthenticationProvider implements AuthenticationProvider {
 
-  private static final Logger log = org.slf4j.LoggerFactory.getLogger(RbacAuthenticationProvider.class);
   private final static String APP_NAME = "c2mon-web";
+
+  @Autowired
+  private SessionService sessionService;
 
   @Override
   public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
-    SessionService sessionService = C2monSessionGateway.getSessionService();
-
     String username = (String) authentication.getPrincipal();
     String password = (String) authentication.getCredentials();
 
@@ -54,13 +57,7 @@ public class RbacAuthenticationProvider implements AuthenticationProvider {
       log.debug("Repeated login for user " + username);
     }
 
-    String role = "ROLE_ADMIN";
-//    Authentication customAuthentication = new CustomUserAuthentication(role, authentication);
-
-//    customAuthentication.setAuthenticated(true);
-
     return new UsernamePasswordAuthenticationToken(authentication.getPrincipal(), authentication.getCredentials());
-//    return customAuthentication;
   }
 
   @Override
