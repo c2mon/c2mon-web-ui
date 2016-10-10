@@ -76,9 +76,9 @@
       <table class="table table-striped table-bordered">
         <thead>
         <tr>
-          <th width="30%">Timestamp</th>
-          <th width="10%">Status</th>
-          <th width="60%">Info</th>
+          <th width="250">Timestamp</th>
+          <th width="150">Status</th>
+          <th >Info</th>
         </tr>
         </thead>
 

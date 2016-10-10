@@ -6,8 +6,7 @@
 <!-- JSP variables -->
 <c:url var="home" value=".." />
 <c:url var="alarmviewer" value="../alarmviewer/form" />
-<c:url var="history" value="../historyviewer/${alarm.id}" />
-<c:url var="trend" value="../trendviewer/${alarm.id}" />
+<c:url var="history" value="../alarmhistoryviewer/${alarm.id}" />
 
 <c2mon:template title="${title}">
 
@@ -49,10 +48,6 @@
         <a href="<c:url value="${history}"/>" class="btn btn-default btn-large">
           <span class="glyphicon glyphicon-list"></span>
           View History
-        </a>
-        <a href="<c:url value="${trend}"/>" class="btn btn-default btn-large">
-          <span class="glyphicon glyphicon-stats"></span>
-          View Trend
         </a>
       </p>
 
