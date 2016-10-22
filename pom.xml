@@ -47,8 +47,8 @@
 
   <scm>
     <url>https://gitlab.cern.ch/c2mon/c2mon-web-ui</url>
-    <connection>scm:git:git://gitlab.cern.ch/c2mon/c2mon-web-ui.git</connection>
-    <developerConnection>scm:git:git@gitlab.cern.ch:7999/c2mon/c2mon-web-ui.git</developerConnection>
+    <connection>scm:git:ssh://git@gitlab.cern.ch/c2mon/c2mon-web-ui.git</connection>
+    <developerConnection>scm:git:ssh://git@gitlab.cern.ch:7999/c2mon/c2mon-web-ui.git</developerConnection>
   </scm>
 
   <dependencies>
