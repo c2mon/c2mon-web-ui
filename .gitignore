@@ -2,6 +2,9 @@
 *.class
 build/
 target/
+node/
+node_modules/
+typings/
 
 # IDE files
 *.iml
@@ -17,5 +20,3 @@ target/
 
 # Virtual machine crash logs
 hs_err_pid*
-
-activemq-data/
