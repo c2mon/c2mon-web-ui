@@ -1,3 +1,83 @@
 <div class="container">
-  hi!
+  <div class="row">
+    <div class="col-md-12">
+      <form>
+        <div class="form-group">
+
+          <input type="text"
+                 ng-model="$ctrl.tag"
+                 placeholder="Enter tag id or search by name"
+                 uib-typeahead="tag as tag.name for tag in $ctrl.findTags($viewValue)"
+                 typeahead-loading="loadingTags"
+                 typeahead-select-on-exact="true"
+                 typeahead-on-select="$ctrl.onTagSelected($item, $model, $label, $event)"
+                 typeahead-no-results="noResults" class="form-control">
+          <i ng-show="loadingTags" class="fa fa-cog fa-spin"></i>
+
+          <div ng-show="noResults">
+            <i class="fa fa-remove"></i> No tags found
+          </div>
+
+        </div>
+      </form>
+
+      <div ng-if="$ctrl.tag">
+
+        <h1>
+          {{$ctrl.tag.name}}
+
+          <span class="pull-right text-success" style="font-size: 30px;">
+            <code>{{$ctrl.tag.value}}</code>
+            <small ng-if="$ctrl.tag.valueDescription">
+              <br/>
+              {{$ctrl.tag.valueDescription}}
+            </small>
+          </span>
+
+          <br/>
+          <small>{{$ctrl.tag.description}}</small>
+        </h1>
+
+        <dl class="dl-horizontal">
+          <dt>id</dt>
+          <dd>{{$ctrl.tag.id}}</dd>
+          <dt>server timestamp</dt>
+          <dd>{{$ctrl.tag.serverTimestamp}}</dd>
+          <dt>source timestamp</dt>
+          <dd>{{$ctrl.tag.sourceTimestamp}}</dd>
+          <dt>mode</dt>
+          <dd>{{$ctrl.tag.mode}}</dd>
+          <dt>quality</dt>
+          <dd>
+            {{$ctrl.tag.quality}}
+          </dd>
+        </dl>
+
+        <table class="table table-striped table-hover table-condensed">
+          <thead>
+          <tr>
+            <th>Server Timestamp</th>
+            <th>Value</th>
+            <th>Quality description</th>
+            <th>Value Description</th>
+            <th>Source Timestamp</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr ng-repeat="item in $ctrl.tagHistory">
+            <td class="id">{{item.serverTimestamp}}</td>
+            <td>
+              {{item.value}} {{item.valueNumeric}} {{item.valueBoolean}} {{item.valueString}}
+            </td>
+            <td>{{item.dataTagQuality}}</td>
+            <td>{{item.description}}</td>
+            <td>{{item.sourceTimestamp}}</td>
+          </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
 </div>
