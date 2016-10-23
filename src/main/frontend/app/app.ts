@@ -5,10 +5,14 @@ import 'jquery'
 import 'bootstrap-sass';
 
 import {MainComponent} from './main.component';
-import {HomeComponent} from './home/home.component';
+import {TagListComponent} from './tag/tag-list.component';
+import {ProcessListComponent} from './process/process-list.component';
+import {ConfigComponent} from './config/config.component';
 import {TagService} from './tag/tag.service';
-import {RouterConfig} from './config/router.config';
-import {HttpConfig} from './config/http.config';
+import {ProcessService} from './process/process.service';
+import {ConfigService} from './config/config.service';
+import {RouteConfig} from './routes/routes.config';
+import {HttpConfig} from './http/http.config';
 
 let app: any = angular.module('c2mon-web-ui', [
   'ng',
@@ -17,8 +21,12 @@ let app: any = angular.module('c2mon-web-ui', [
 ]);
 
 app.component('main', new MainComponent());
-app.component('home', new HomeComponent());
+app.component('tagList', new TagListComponent());
+app.component('processList', new ProcessListComponent());
+app.component('config', new ConfigComponent());
 app.service('TagService', TagService);
+app.service('ProcessService', ProcessService);
+app.service('ConfigService', ConfigService);
 
 // Configure HTTP
 app.config(['$httpProvider', ($httpProvider: any) => HttpConfig.configure($httpProvider)]);
@@ -26,7 +34,7 @@ app.config(['$httpProvider', ($httpProvider: any) => HttpConfig.configure($httpP
 // Configure routes
 app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
   ($stateProvider: any, $urlRouterProvider: any, $locationProvider: any) => {
-    RouterConfig.configure($stateProvider, $urlRouterProvider, $locationProvider);
+    RouteConfig.configure($stateProvider, $urlRouterProvider, $locationProvider);
   }]);
 
 // Bootstrap the angular app

@@ -20,6 +20,7 @@ import java.util.*;
 
 import javax.naming.CannotProceedException;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,25 +30,14 @@ import cern.c2mon.client.core.service.ConfigurationService;
 import cern.c2mon.shared.client.configuration.ConfigurationReport;
 import cern.c2mon.shared.client.configuration.ConfigurationReportHeader;
 import cern.c2mon.shared.client.request.ClientRequestProgressReport;
+import cern.c2mon.web.configviewer.ProgressUpdate;
+import cern.c2mon.web.configviewer.ProgressUpdateListener;
 import cern.c2mon.web.ui.util.ReportHandler;
 
-//import org.springframework.security.acls.model.NotFoundException;
-
-/**
- * ConfigLoaderService service providing the XML representation for a given
- * config
- */
 @Service
+@Slf4j
 public class ConfigLoaderService {
 
-  /**
-   * ConfigLoaderService logger
-   */
-  private static Logger logger = LoggerFactory.getLogger(ConfigLoaderService.class);
-
-  /**
-   * Gateway to ConfigLoaderService
-   */
   @Autowired
   private ConfigurationService configurationService;
 
@@ -70,6 +60,11 @@ public class ConfigLoaderService {
   private Map<String, List<ConfigurationReport>> configurationReports = new HashMap<>();
 
   /**
+   * Map of request ids to their corresponding configuration listeners
+   */
+  private Map<Long, ProgressUpdateListener> listeners = new HashMap<>();
+
+  /**
    * Applies the specified configuration and stores the Configuration Report for
    * later viewing.
    *
@@ -79,18 +74,21 @@ public class ConfigLoaderService {
    */
   public void applyConfiguration(final long configurationId) throws CannotProceedException {
 
-    ReportHandler reportHandler = new ReportHandler(configurationId);
-    progressReports.put(String.valueOf(configurationId), reportHandler);
+//    ReportHandler reportHandler = new ReportHandler(configurationId);
+    //progressReports.put(String.valueOf(configurationId), reportHandler);
 
-    ConfigurationReport report = configurationService.applyConfiguration(configurationId, reportHandler);
+    ProgressUpdateListener listener = new ProgressUpdateListener();
+    listeners.put(configurationId, listener);
 
-    logger.debug("getConfigurationReport: Received configuration report? -> " + configurationId + ": " + (report == null ? "NULL" : "SUCCESS"));
+    ConfigurationReport report = configurationService.applyConfiguration(configurationId, listener);
+
+    log.debug("Received configuration report? -> " + configurationId + ": " + (report == null ? "NULL" : "SUCCESS"));
 
     if (report == null) {
-      logger.error("Received NULL Configuration report for configuration id:" + configurationId);
-      throw new CannotProceedException("Did not receive Configuration Report.");
+      log.error("Received null report for configuration id: " + configurationId);
+      throw new CannotProceedException("Did not receive configuration report");
     }
-    logger.debug("getConfigurationReport: Report=" + report.toXML());
+    log.debug("Report: " + report.toXML());
 
     if (report.getName().equals("UNKNOWN")) {
       if (configurationReports.containsKey(String.valueOf(configurationId))) {
@@ -129,10 +127,10 @@ public class ConfigLoaderService {
     }
 
     if (reports == null) {
-      logger.error("Could not retrieve Stored Configuration Report for configuration id:" + configurationId);
-      throw new RuntimeException("Cannot find Configuration Report for configuration id:" + configurationId);
+      log.error("Could not retrieve Stored Configuration Report for configuration id:" + configurationId);
+      throw new IllegalArgumentException("Cannot find Configuration Report for configuration id:" + configurationId);
     }
-    logger.debug("Successfully retrieved Stored Configuration Report for configuration id:" + configurationId);
+    log.debug("Successfully retrieved Stored Configuration Report for configuration id:" + configurationId);
 
     return reports;
   }
@@ -155,6 +153,8 @@ public class ConfigLoaderService {
    * @param configurationId id of the configuration request
    * @return a Progress Report for the specified configuration (must be
    *         currently running!)
+   *
+   * @deprecated
    */
   public ClientRequestProgressReport getProgressReportForConfiguration(final String configurationId) {
 
@@ -164,7 +164,26 @@ public class ConfigLoaderService {
     if (reportHandler != null)
       report = reportHandler.getProgressReport();
 
-    logger.debug("ClientRequestProgressReport: fetch for report: " + configurationId + ": " + (report == null ? "NULL" : "SUCCESS"));
+    log.debug("ClientRequestProgressReport: fetch for report: " + configurationId + ": " + (report == null ? "NULL" : "SUCCESS"));
     return report;
+  }
+
+  /**
+   *
+   * @param configId
+   * @return
+   */
+  public ProgressUpdate getProgressUpdate(Long configId) {
+    ProgressUpdateListener listener = listeners.get(configId);
+
+    if (listener != null) {
+      if (listener.getProgress().getProgress() == 100) {
+        listeners.remove(configId);
+        return null;
+      }
+      return listener.getProgress();
+    }
+
+    return null;
   }
 }
