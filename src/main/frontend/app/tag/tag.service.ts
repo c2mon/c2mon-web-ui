@@ -6,7 +6,7 @@ export class TagService {
 
   public constructor(private $http: IHttpService, private $q: IQService) {}
 
-  public findTags(query: string|number): IPromise<Tag[]> {
+  public findTags(query: string): IPromise<Tag[]> {
     let q: IDeferred<Tag[]> = this.$q.defer();
 
     if (isNaN(query)) {
