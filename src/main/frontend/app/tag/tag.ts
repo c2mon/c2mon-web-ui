@@ -1,6 +1,8 @@
 export class Tag {
-  private id: number;
-  private name: string;
-  private description: string;
-  private value: any;
+  public id: number;
+  public name: string;
+  public description: string;
+  public value: any;
+  public valueDescription: string;
+  public serverTimestamp: number;
 }

@@ -7,9 +7,9 @@ export class ProcessService {
   public constructor(private $http: IHttpService, private $q: IQService) {}
 
   public getProcessNames(): IPromise<string[]> {
-    let q: IDeferred<Process[]> = this.$q.defer();
+    let q: IDeferred<string[]> = this.$q.defer();
 
-    this.$http.get('/api/processes').then(function (response) {
+    this.$http.get('/api/processes').then((response: any) => {
       q.resolve(response.data);
     });
 
@@ -19,7 +19,7 @@ export class ProcessService {
   public getProcess(name: string): IPromise<Process> {
     let q: IDeferred<Process> = this.$q.defer();
 
-    this.$http.get('/api/processes/' + name).then(function (response) {
+    this.$http.get('/api/processes/' + name).then((response: any) => {
       q.resolve(response.data);
     });
 

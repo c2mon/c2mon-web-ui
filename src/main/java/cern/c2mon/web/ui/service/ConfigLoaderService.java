@@ -176,7 +176,7 @@ public class ConfigLoaderService {
   public ProgressUpdate getProgressUpdate(Long configId) {
     ProgressUpdateListener listener = listeners.get(configId);
 
-    if (listener != null) {
+    if (listener != null && listener.getProgress().getProgress() != null) {
       if (listener.getProgress().getProgress() == 100) {
         listeners.remove(configId);
         return null;

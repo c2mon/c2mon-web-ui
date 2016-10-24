@@ -1,4 +1,5 @@
 import {ConfigReport} from './config-report';
+import {ProgressUpdate} from './progress-update';
 import {ConfigService} from './config.service';
 import {IComponentOptions} from 'angular';
 
@@ -14,7 +15,7 @@ class ConfigController {
   public configReports: any = {};
   public configId: number = null;
   public configStatus: string = null;
-  public configProgress: string = undefined;
+  public configProgress: ProgressUpdate = undefined;
 
   public constructor(private configService: ConfigService) {
     this.configService.getConfigHistory().then((history: any[]) => {
@@ -45,8 +46,8 @@ class ConfigController {
   public getProgress() {
     console.log('checking progress');
 
-    this.configService.getConfigProgress(this.configId).then((config: ConfigReport) => {
-      this.configProgress = config;
+    this.configService.getConfigProgress(this.configId).then((progressUpdate: ProgressUpdate) => {
+      this.configProgress = progressUpdate;
 
       if (!this.configProgress) {
         this.configStatus = 'success';

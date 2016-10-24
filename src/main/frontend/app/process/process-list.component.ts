@@ -4,7 +4,7 @@ import {ProcessService} from '../process/process.service';
 import {IComponentOptions} from 'angular';
 
 export class ProcessListComponent implements IComponentOptions {
-  public templateUrl: string = '/config/config.component.html';
+  public templateUrl: string = '/process/process-list.component.html';
   public controller: Function = ProcessListController;
 }
 
