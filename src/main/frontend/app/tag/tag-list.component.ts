@@ -16,16 +16,12 @@ class TagListController {
   public tag: Tag;
   public tagHistory: Tag[];
   public tagChart: Highcharts;
+  public topTagNames: String[];
 
   public constructor(private tagService: TagService) {
-    this.tag = {
-      id: 1234,
-      name: 'cpu.loadavg',
-      description: 'CPU Load Average',
-      value: 25.23,
-      valueDescription: 'Some value description',
-      serverTimestamp: 1477176087440
-    };
+    this.tagService.getTopTags(10).then((tagNames: String[]) => {
+      this.topTagNames = tagNames;
+    });
   }
 
   public onTagSelected(tag: Tag) {
@@ -90,13 +86,13 @@ class TagListController {
       this.tagChart.series[0].setData(data);
       this.tagChart.hideLoading();
     });
-  }
+  };
 
   public formatTimestamp(timestamp: number): string {
     return moment(timestamp).format();
   }
 
   public findTags(query: string) {
-    return this.tagService.findTags(query);
+    return this.tagService.findTags(query + '*');
   }
 }

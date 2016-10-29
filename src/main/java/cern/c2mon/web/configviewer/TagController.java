@@ -41,7 +41,7 @@ public class TagController {
   private TagService tagService;
 
   @Autowired
-  private HistoryService2 historyService;
+  private ElasticsearchService elasticsearchService;
 
   @RequestMapping(value = "/{id}", method = GET)
   public Tag getTag(@PathVariable final Long id) {
@@ -50,11 +50,16 @@ public class TagController {
 
   @RequestMapping(value = "/{id}/history", method = GET)
   public List<Map<String, Object>> getTagHistory(@PathVariable final Long id) {
-    return historyService.get(id);
+    return elasticsearchService.getHistory(id);
   }
 
   @RequestMapping(value = "/search", method = GET)
   public Collection<Tag> search(@RequestParam final String query) {
-    return tagService.findByName(query + "*");
+    return tagService.findByName(query);
+  }
+
+  @RequestMapping(value = "/top", method = GET)
+  public Collection<String> getTopTags(@RequestParam final Integer size) {
+    return elasticsearchService.getTopTagNames(size);
   }
 }

@@ -21,6 +21,14 @@
         </div>
       </form>
 
+      <div ng-if="!$ctrl.tag">
+        <ul class="list-group">
+          <li class="list-group-item" ng-repeat="tag in $ctrl.topTagNames">
+            {{tag}}
+          </li>
+        </ul>
+      </div>
+
       <div ng-if="$ctrl.tag">
 
         <div class="header">

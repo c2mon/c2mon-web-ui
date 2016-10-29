@@ -27,6 +27,16 @@ export class TagService {
     return q.promise;
   }
 
+  public getTopTags(size: number): IPromise<String[]> {
+    let q: IDeferred<String[]> = this.$q.defer();
+
+    this.$http.get('/api/tags/top?size=' + size).then((response: any) => {
+      q.resolve(response.data);
+    });
+
+    return q.promise;
+  }
+
   public getHistory(tag: Tag): IPromise<Tag[]> {
     let q: IDeferred<Tag[]> = this.$q.defer();
 
