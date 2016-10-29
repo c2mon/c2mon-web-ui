@@ -18,6 +18,7 @@ package cern.c2mon.web.configviewer;
 
 import cern.c2mon.client.common.tag.Tag;
 import cern.c2mon.client.core.TagService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,9 +44,13 @@ public class TagController {
   @Autowired
   private ElasticsearchService elasticsearchService;
 
-  @RequestMapping(value = "/{id}", method = GET)
-  public Tag getTag(@PathVariable final Long id) {
-    return tagService.get(id);
+  @RequestMapping(value = "/{id:.+}/", method = GET)
+  public Tag getTag(@PathVariable final String id) {
+    if (StringUtils.isNumeric(id)) {
+      return tagService.get(Long.valueOf(id));
+    } else {
+      return ((List<Tag>) tagService.findByName(id)).get(0);
+    }
   }
 
   @RequestMapping(value = "/{id}/history", method = GET)
@@ -59,7 +64,7 @@ public class TagController {
   }
 
   @RequestMapping(value = "/top", method = GET)
-  public Collection<String> getTopTags(@RequestParam final Integer size) {
-    return elasticsearchService.getTopTagNames(size);
+  public Collection<Tag> getTopTags(@RequestParam final Integer size) {
+    return elasticsearchService.getTopTags(size);
   }
 }

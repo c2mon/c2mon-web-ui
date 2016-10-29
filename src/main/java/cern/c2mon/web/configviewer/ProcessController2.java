@@ -20,12 +20,11 @@ package cern.c2mon.web.configviewer;
 import cern.c2mon.shared.common.process.ProcessConfiguration;
 import cern.c2mon.web.configviewer.service.ProcessService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,8 +37,14 @@ public class ProcessController2 {
   ProcessService processService;
 
   @RequestMapping("/api/processes")
-  public List<String> getProcesses() {
-    return (List<String>) processService.getProcessNames();
+  public List<ProcessConfiguration> getProcesses() throws Exception {
+    List<ProcessConfiguration> processes = new ArrayList<>();
+
+    for (String processName : processService.getProcessNames()) {
+      processes.add(processService.getProcessConfiguration(processName));
+    }
+
+    return processes;
   }
 
   @RequestMapping("/api/processes/{name}")

@@ -6,8 +6,8 @@ export class ProcessService {
 
   public constructor(private $http: IHttpService, private $q: IQService) {}
 
-  public getProcessNames(): IPromise<string[]> {
-    let q: IDeferred<string[]> = this.$q.defer();
+  public getProcesses(): IPromise<Process[]> {
+    let q: IDeferred<Process[]> = this.$q.defer();
 
     this.$http.get('/api/processes').then((response: any) => {
       q.resolve(response.data);

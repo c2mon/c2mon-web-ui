@@ -1,5 +1,7 @@
 package cern.c2mon.web.configviewer;
 
+import cern.c2mon.client.common.tag.Tag;
+import cern.c2mon.client.core.TagService;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
@@ -8,14 +10,13 @@ import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
@@ -26,6 +27,9 @@ import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 public class ElasticsearchService {
 
   private TransportClient client;
+
+  @Autowired
+  private TagService tagService;
 
   @PostConstruct
   public void init() {
@@ -53,8 +57,8 @@ public class ElasticsearchService {
     return results;
   }
 
-  public List<String> getTopTagNames(Integer size) {
-    List<String> topTagNames = new ArrayList<>(size);
+  public List<Tag> getTopTags(Integer size) {
+    Set<String> topTagNames = new HashSet<>(size);
 
     AggregationBuilder aggregation = AggregationBuilders.terms("top-tags").field("name")
         .size(size)
@@ -72,6 +76,6 @@ public class ElasticsearchService {
       topTagNames.add(tagName);
     }
 
-    return topTagNames;
+    return (List<Tag>) tagService.findByName(topTagNames);
   }
 }

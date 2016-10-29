@@ -18,6 +18,16 @@
         </div>
       </form>
 
+      <div ng-if="!$ctrl.selectedProcess">
+        <ul class="list-group">
+          <li class="list-group-item" ng-repeat="process in $ctrl.processes" style="cursor: pointer">
+            <div ng-click="$ctrl.onProcessSelected(process)">
+              {{process.processName}}
+            </div>
+          </li>
+        </ul>
+      </div>
+
       <div ng-if="$ctrl.selectedProcess">
 
         <h4>

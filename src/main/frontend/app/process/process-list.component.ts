@@ -11,24 +11,19 @@ export class ProcessListComponent implements IComponentOptions {
 class ProcessListController {
   public static $inject: string[] = ['ProcessService'];
 
-  public processNames: string[];
+  public processes: string[];
   public selectedProcess: Process;
   public selectedEquipment: Equipment[] = [];
 
   public constructor(private processService: ProcessService) {
-    this.processService.getProcessNames().then((processNames: string[]) => {
-      this.processNames = processNames;
-
-      // Load the first process by default
-      this.onProcessSelected(processNames[0]);
+    this.processService.getProcesses().then((processes: string[]) => {
+      this.processes = processes;
     });
   }
 
-  public onProcessSelected(processName: string): void {
-    this.processService.getProcess(processName).then((process: Process) => {
-      this.selectedProcess = process;
-      this.selectedEquipment = [];
-    });
+  public onProcessSelected(process: Process): void {
+    this.selectedProcess = process;
+    this.selectedEquipment = [];
   }
 
   public onEquipmentSelected(equipment: Equipment) {
