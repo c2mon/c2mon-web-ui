@@ -15,10 +15,10 @@
  * along with C2MON. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package cern.c2mon.web.configviewer;
+package cern.c2mon.web.ui;
 
 import cern.c2mon.shared.common.process.ProcessConfiguration;
-import cern.c2mon.web.configviewer.service.ProcessService;
+import cern.c2mon.web.ui.service.ProcessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

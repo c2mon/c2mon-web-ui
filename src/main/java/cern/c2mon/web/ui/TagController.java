@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with C2MON. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
-package cern.c2mon.web.configviewer;
+package cern.c2mon.web.ui;
 
 import cern.c2mon.client.common.tag.Tag;
 import cern.c2mon.client.core.TagService;
@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 

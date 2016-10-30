@@ -15,36 +15,17 @@
  * along with C2MON. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package cern.c2mon.web.configviewer;
+package cern.c2mon.web.ui.statistics.stlog;
 
-import cern.c2mon.client.common.listener.ClientRequestReportListener;
-import cern.c2mon.shared.client.request.ClientRequestErrorReport;
-import cern.c2mon.shared.client.request.ClientRequestProgressReport;
-import lombok.Data;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Date;
+import java.util.List;
 
 /**
- * TODO
- *
  * @author Justin Lewis Salmon
  */
-@Data
-public class ProgressUpdateListener implements ClientRequestReportListener {
+public interface ServerLifecycleEventRepository extends JpaRepository<ServerLifecycleEvent, Date> {
 
-  private ProgressUpdate progress = new ProgressUpdate();
-
-  @Override
-  public void onProgressReportReceived(ClientRequestProgressReport progressReport) {
-    progress.setAction(progressReport.getProgressDescription());
-
-    if (progressReport.getTotalProgressParts() > 0) {
-      progress.setProgress((100 * progressReport.getCurrentProgressPart()) / progressReport.getTotalProgressParts());
-    } else {
-      progress.setProgress(100);
-    }
-  }
-
-  @Override
-  public void onErrorReportReceived(ClientRequestErrorReport errorReport) {
-    //errorReport.
-  }
+  List<ServerLifecycleEvent> findByEventTimeBetween(Date from, Date to);
 }

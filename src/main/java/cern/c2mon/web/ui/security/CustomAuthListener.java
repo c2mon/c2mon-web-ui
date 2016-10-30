@@ -14,7 +14,7 @@
 // * You should have received a copy of the GNU Lesser General Public License
 // * along with C2MON. If not, see <http://www.gnu.org/licenses/>.
 // *****************************************************************************/
-//package cern.c2mon.web.configviewer.security;
+//package cern.c2mon.web.ui.security;
 //
 //import org.apache.commons.logging.Log;
 //import org.apache.commons.logging.LogFactory;

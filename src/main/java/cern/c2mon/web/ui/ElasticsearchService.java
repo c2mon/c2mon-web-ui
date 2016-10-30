@@ -1,4 +1,4 @@
-package cern.c2mon.web.configviewer;
+package cern.c2mon.web.ui;
 
 import cern.c2mon.client.common.tag.Tag;
 import cern.c2mon.client.core.TagService;
@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;

@@ -2,7 +2,6 @@ package cern.c2mon.web.ui.config;
 
 import cern.c2mon.web.ui.security.RbacAuthenticationProvider;
 import cern.c2mon.web.ui.security.RbacDecisionManager;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

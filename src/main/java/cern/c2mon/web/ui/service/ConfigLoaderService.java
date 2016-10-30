@@ -21,8 +21,6 @@ import java.util.*;
 import javax.naming.CannotProceedException;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +28,8 @@ import cern.c2mon.client.core.service.ConfigurationService;
 import cern.c2mon.shared.client.configuration.ConfigurationReport;
 import cern.c2mon.shared.client.configuration.ConfigurationReportHeader;
 import cern.c2mon.shared.client.request.ClientRequestProgressReport;
-import cern.c2mon.web.configviewer.ProgressUpdate;
-import cern.c2mon.web.configviewer.ProgressUpdateListener;
+import cern.c2mon.web.ui.ProgressUpdate;
+import cern.c2mon.web.ui.ProgressUpdateListener;
 import cern.c2mon.web.ui.util.ReportHandler;
 
 @Service

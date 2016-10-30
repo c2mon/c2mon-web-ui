@@ -14,7 +14,7 @@
 // * You should have received a copy of the GNU Lesser General Public License
 // * along with C2MON. If not, see <http://www.gnu.org/licenses/>.
 // *****************************************************************************/
-//package cern.c2mon.web.configviewer.controller;
+//package cern.c2mon.web.ui.controller;
 //
 //import java.io.InputStream;
 //import java.util.Collection;
@@ -37,8 +37,8 @@
 //import org.springframework.web.bind.annotation.RequestParam;
 //
 //import cern.c2mon.shared.common.process.ProcessConfiguration;
-//import cern.c2mon.web.configviewer.service.ProcessService;
-//import cern.c2mon.web.configviewer.service.TagIdException;
+//import cern.c2mon.web.ui.service.ProcessService;
+//import cern.c2mon.web.ui.service.TagIdException;
 //
 ///**
 // * A controller for the daq process viewer.
