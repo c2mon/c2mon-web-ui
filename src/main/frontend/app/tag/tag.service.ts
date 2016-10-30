@@ -9,7 +9,7 @@ export class TagService {
   public getTag(id: string): IPromise<Tag[]> {
     let q: IDeferred<Tag[]> = this.$q.defer();
 
-    this.$http.get('/api/tags/' + id + '/').then((response: any) => {
+    this.$http.get('/api/tags/' + id).then((response: any) => {
       q.resolve(response.data);
     });
 

@@ -1,0 +1,19 @@
+<form>
+  <div class="form-group">
+
+    <input type="text"
+           ng-model="$ctrl.tag"
+           placeholder="Enter tag id or search by name"
+           uib-typeahead="tag as tag.name for tag in $ctrl.findTags($viewValue)"
+           typeahead-loading="loadingTags"
+           typeahead-select-on-exact="true"
+           typeahead-on-select="$ctrl.onTagSelected($item, $model, $label, $event)"
+           typeahead-no-results="noResults" class="form-control">
+    <i ng-show="loadingTags" class="fa fa-cog fa-spin"></i>
+
+    <div ng-show="noResults">
+      <i class="fa fa-remove"></i> No tags found
+    </div>
+
+  </div>
+</form>

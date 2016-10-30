@@ -22,8 +22,4 @@ class TagListController {
   public onTagSelected(tag: Tag) {
     this.$state.go('tag', { name: tag.name });
   }
-
-  public findTags(query: string) {
-    return this.tagService.findTags(query + '*');
-  }
 }

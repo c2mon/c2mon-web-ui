@@ -13,7 +13,7 @@ export class RouteConfig {
     $urlRouterProvider.otherwise('/');
     $stateProvider
         .state('tags',      { url: '/',            component: 'tagList'})
-        .state('tag',       { url: '/tags/:name/', component: 'tag',
+        .state('tag',       { url: '/tags/:name',  component: 'tagDetail',
           resolve: {
             tag: ['$stateParams', 'TagService', ($stateParams: IStateParamsService, tagService: TagService) => {
               return tagService.getTag($stateParams.name);

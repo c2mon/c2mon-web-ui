@@ -6,7 +6,8 @@ import 'bootstrap-sass';
 
 import {MainComponent} from './main.component';
 import {TagListComponent} from './tag/tag-list.component';
-import {TagComponent} from './tag/tag.component';
+import {TagDetailComponent} from './tag/tag-detail.component';
+import {TagSearchBarComponent} from './tag/tag-search-bar.component';
 import {ProcessListComponent} from './process/process-list.component';
 import {ConfigComponent} from './config/config.component';
 import {TagService} from './tag/tag.service';
@@ -23,7 +24,8 @@ let app: any = angular.module('c2mon-web-ui', [
 
 app.component('main', new MainComponent());
 app.component('tagList', new TagListComponent());
-app.component('tag', new TagComponent());
+app.component('tagDetail', new TagDetailComponent());
+app.component('tagSearchBar', new TagSearchBarComponent());
 app.component('processList', new ProcessListComponent());
 app.component('config', new ConfigComponent());
 app.service('TagService', TagService);

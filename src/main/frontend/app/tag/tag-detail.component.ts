@@ -5,15 +5,15 @@ import 'moment';
 
 var Highcharts = require('highcharts/highstock');
 
-export class TagComponent implements IComponentOptions {
-  public templateUrl: string = '/tag/tag.component.html';
-  public controller: Function = TagController;
+export class TagDetailComponent implements IComponentOptions {
+  public templateUrl: string = '/tag/tag-detail.component.html';
+  public controller: Function = TagDetailController;
   public bindings: any = {
     tag: '=',
   };
 }
 
-class TagController {
+class TagDetailController {
   public static $inject: string[] = ['TagService'];
 
   public tag: Tag;
