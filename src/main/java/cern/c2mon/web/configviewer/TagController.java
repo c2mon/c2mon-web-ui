@@ -44,7 +44,7 @@ public class TagController {
   @Autowired
   private ElasticsearchService elasticsearchService;
 
-  @RequestMapping(value = "/{id:.+}/", method = GET)
+  @RequestMapping(value = "/{id}", method = GET)
   public Tag getTag(@PathVariable final String id) {
     if (StringUtils.isNumeric(id)) {
       return tagService.get(Long.valueOf(id));

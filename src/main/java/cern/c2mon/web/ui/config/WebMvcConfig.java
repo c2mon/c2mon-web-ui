@@ -17,18 +17,8 @@
 
 package cern.c2mon.web.ui.config;
 
-import cern.c2mon.web.ui.controller.HandlerInterceptor;
-import cern.c2mon.web.ui.serialization.BarChartSerializer;
-import cern.c2mon.web.ui.serialization.PieChartSerializer;
-import cern.c2mon.web.ui.serialization.StackedBarChartSerializer;
-import cern.c2mon.web.ui.statistics.charts.JFreeBarChart;
-import cern.c2mon.web.ui.statistics.charts.JFreePieChart;
-import cern.c2mon.web.ui.statistics.charts.JFreeStackedBarChart;
-
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
@@ -38,22 +28,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
   @Override
-  public void addInterceptors(InterceptorRegistry registry) {
-    registry.addInterceptor(new HandlerInterceptor());
-  }
-
-  @Bean
-  public Jackson2ObjectMapperBuilder jacksonBuilder() {
-    Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
-
-    // Add custom serializers here
-    builder.serializerByType(JFreeBarChart.class, new BarChartSerializer());
-    builder.serializerByType(JFreeStackedBarChart.class, new StackedBarChartSerializer());
-    builder.serializerByType(JFreePieChart.class, new PieChartSerializer());
-
-    // Enable pretty printing
-    builder.indentOutput(true);
-
-    return builder;
+  public void configurePathMatch(PathMatchConfigurer matcher) {
+    matcher.setUseRegisteredSuffixPatternMatch(true);
   }
 }

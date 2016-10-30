@@ -1,5 +1,6 @@
 package cern.c2mon.web.configviewer.config;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -9,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URI;
 import java.util.regex.Pattern;
 
 /**
@@ -20,15 +22,21 @@ import java.util.regex.Pattern;
 @Component
 public class HttpFilter extends OncePerRequestFilter {
 
-  private Pattern pattern = Pattern.compile("/[^\\.]*");
+  private String[] staticResourceExtensions = new String[] {
+      "html", "js", "map", "css", "ttf", "woff", "woff2"
+  };
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-    if (this.pattern.matcher(request.getRequestURI()).matches() && !request.getRequestURI().startsWith("/api")) {
+    if (request.getRequestURI().startsWith("/api") || isStaticResource(request.getRequestURI())) {
+      filterChain.doFilter(request, response);
+    } else {
       // Forward to home page so that route is preserved.
       request.getRequestDispatcher("/").forward(request, response);
-    } else {
-      filterChain.doFilter(request, response);
     }
+  }
+
+  private boolean isStaticResource(String uri) {
+    return FilenameUtils.isExtension(uri, staticResourceExtensions);
   }
 }
