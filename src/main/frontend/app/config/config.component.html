@@ -1,3 +1,14 @@
+<style>
+  .dl-horizontal dt {
+    text-align: left;
+    padding-top: 5px;
+  }
+
+  .dl-horizontal dd {
+    padding-top: 5px;
+  }
+</style>
+
 <div class="container">
   <div class="row">
     <div class="col-md-12">
@@ -80,24 +91,22 @@
         </span>
           </uib-tab-heading>
 
-
+          <p>
           <dl class="dl-horizontal">
             <dt>name</dt>
             <dd>{{reports[0].name}}</dd>
             <dt>applied at</dt>
             <dd>{{reports[0].timestamp}}</dd>
-            <dt>applied by</dt>
-            <dd>{{reports[0].user}}</dd>
             <dt>status</dt>
             <dd>{{reports[0].status}}</dd>
             <dt>message</dt>
-            <dd style="white-space: pre-wrap">
+            <dd>
               {{reports[0].statusDescription}}
             </dd>
             <dt>DAQs to reboot</dt>
             <dd>{{reports[0].processesToReboot}}</dd>
           </dl>
-
+          </p>
 
           <uib-tabset>
             <uib-tab>
