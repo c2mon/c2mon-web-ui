@@ -19,9 +19,9 @@ export class TagService {
   public findTags(query: string): IPromise<Tag[]> {
     let q: IDeferred<Tag[]> = this.$q.defer();
 
-    if (isNaN(query)) {
+    if (isNaN(Number(query))) {
       // If we have a non-numeric string, search by name
-      this.$http.get('/api/tags/search?query=' + query).then((response: any) => {
+      this.$http.get('/api/tags/search?query=' + query + '*').then((response: any) => {
         console.log(response.data);
         q.resolve(response.data);
       })
@@ -30,15 +30,15 @@ export class TagService {
       // Otherwise, look for an exact tag by id
       this.$http.get('/api/tags/' + query).then((response: any) => {
         console.log(response.data);
-        q.resolve(response.data);
+        q.resolve([response.data]);
       })
     }
 
     return q.promise;
   }
 
-  public getTopTags(size: number): IPromise<String[]> {
-    let q: IDeferred<String[]> = this.$q.defer();
+  public getTopTags(size: number): IPromise<Tag[]> {
+    let q: IDeferred<Tag[]> = this.$q.defer();
 
     this.$http.get('/api/tags/top?size=' + size).then((response: any) => {
       q.resolve(response.data);

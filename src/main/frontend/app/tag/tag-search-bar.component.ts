@@ -18,6 +18,6 @@ class TagSearchBarController {
   }
 
   public findTags(query: string) {
-    return this.tagService.findTags(query + '*');
+    return this.tagService.findTags(query);
   }
 }
