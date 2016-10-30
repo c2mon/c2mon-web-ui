@@ -1,3 +1,9 @@
+<style>
+  .dl-horizontal dt {
+    text-align: left;
+  }
+</style>
+
 <div class="container">
   <div class="row">
     <div class="col-md-12">
@@ -7,14 +13,15 @@
       <div class="header">
         <h3>
           {{$ctrl.tag.name}}
+          <small>#{{$ctrl.tag.id}}</small>
 
           <span class="pull-right text-success" style="font-size: 24px;">
-            <code>{{$ctrl.tag.value}}</code>
+            <code>{{$ctrl.tag.value}} {{$ctrl.tag.unit}}</code>
           </span>
         </h3>
 
         <p>
-          #{{$ctrl.tag.id}} <span ng-if="$ctrl.tag.description">: {{$ctrl.tag.description}}</span>
+          <span ng-if="$ctrl.tag.description">{{$ctrl.tag.description}}</span>
 
           <span class="pull-right">
             {{$ctrl.tag.dataTagQuality.description}}
@@ -24,31 +31,71 @@
 
       </div>
 
+      <uib-tabset>
+        <uib-tab>
+          <uib-tab-heading>
+            <i class="fa fa-line-chart"></i> Chart
+          </uib-tab-heading>
 
-      <div class="chart-container">
-        <div id="chart"></div>
-      </div>
+          <div class="chart-container">
+            <div id="chart"></div>
+          </div>
 
+        </uib-tab>
 
-      <div class="history-table-container">
-        <table class="table table-striped table-hover table-condensed">
-          <thead>
-          <tr>
-            <th>Timestamp</th>
-            <th>Value</th>
-          </tr>
-          </thead>
+        <uib-tab>
+          <uib-tab-heading>
+            <i class="fa fa-table"></i> Detailed history
+          </uib-tab-heading>
 
-          <tbody>
-          <tr ng-repeat="item in $ctrl.history">
-            <td>{{$ctrl.formatTimestamp(item[0])}}</td>
-            <td>
-              {{item[1]}}
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
+          <div class="history-table-container">
+            <table class="table table-striped table-hover table-condensed">
+              <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Value</th>
+              </tr>
+              </thead>
+
+              <tbody>
+              <tr ng-repeat="item in $ctrl.history">
+                <td>{{$ctrl.formatTimestamp(item[0])}}</td>
+                <td>
+                  {{item[1]}}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </uib-tab>
+
+        <uib-tab>
+          <uib-tab-heading>
+            <i class="fa fa-cog"></i> Config
+          </uib-tab-heading>
+
+          <p>
+          <dl class="dl-horizontal">
+            <dt>Mode</dt>
+            <dd><code>{{$ctrl.tag.mode}}</code></dd>
+            <dt>Data type</dt>
+            <dd><code>{{$ctrl.tag.type}}</code></dd>
+            <dt>Simulated</dt>
+            <dd><code>{{$ctrl.tag.simulated}}</code></dd>
+            <dt>Topic name</dt>
+            <dd><code>{{$ctrl.tag.topicName}}</code></dd>
+            <dt>Metadata</dt>
+            <dd>
+              <code>
+                {{$ctrl.tag.metadata}}
+              </code>
+            </dd>
+          </dl>
+          </p>
+
+        </uib-tab>
+      </uib-tabset>
 
     </div>
   </div>
