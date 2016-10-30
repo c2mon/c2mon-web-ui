@@ -2,6 +2,7 @@ import {Tag} from './tag';
 import {TagService} from './tag.service';
 import {IComponentOptions} from 'angular';
 import 'moment';
+import Moment = moment.Moment;
 
 var Highcharts = require('highcharts/highstock');
 
@@ -21,47 +22,45 @@ class TagDetailController {
   public chart: Highcharts;
 
   public constructor(private tagService: TagService) {
-    this.tagService.getHistory(this.tag).then((history: Tag[]) => {
+    // Ask for one month by default
+    let max: Moment = moment();
+    let min: Moment = moment(max).subtract(1, 'month');
+
+    this.tagService.getHistory(this.tag, min.unix(), max.unix()).then((history: Tag[]) => {
       this.history = history;
-
-      let data: any[] = [];
-
-      history.forEach((record: any) => {
-        data.push([record.timestamp, record.value]);
-      });
-
-      this.createTagHistoryChart(data);
+      this.createTagHistoryChart(this.history);
     });
   }
 
   public createTagHistoryChart(data) {
     this.chart = Highcharts.stockChart('chart', {
-      chart : { zoomType: 'x' },
-      navigator : {
+      chart: {zoomType: 'x'},
+      navigator: {
         adaptToUpdatedData: false,
-        series : {
-          data : data
+        series: {
+          data: data
         }
       },
-      scrollbar: { liveRedraw: false },
-      rangeSelector : {
-        buttons: [{type: 'minute',count: 1, text: '1m'}, {type: 'hour', count: 1, text: '1h'},
+      scrollbar: {liveRedraw: false},
+      rangeSelector: {
+        buttons: [
+          {type: 'minute', count: 1, text: '1m'}, {type: 'hour', count: 1, text: '1h'},
           {type: 'day', count: 1, text: '1d'}, {type: 'month', count: 1, text: '1m'},
           {type: 'year', count: 1, text: '1y'}, {type: 'all', text: 'All'}],
-        inputEnabled: false, // it supports only days
-        selected : 5 // all
+        inputEnabled: false,
+        selected: 5
       },
-      xAxis : {
-        events : {
-          afterSetExtremes : this.afterSetExtremes
+      xAxis: {
+        events: {
+          afterSetExtremes: this.afterSetExtremes
         },
         minRange: 1000 // one second
       },
-      yAxis: { floor: 0 },
-      series : [{
-        data : data,
-        dataGrouping: { enabled: false },
-        marker : { enabled : true, radius : 2 },
+      yAxis: {floor: 0},
+      series: [{
+        data: data,
+        dataGrouping: {enabled: false},
+        marker: {enabled: true, radius: 2},
         connectNulls: true
       }]
     });
@@ -69,17 +68,10 @@ class TagDetailController {
 
   public afterSetExtremes = (event: any) => {
     this.chart.showLoading('Loading data from server...');
-    // TODO: re-query based on event.min and event.max
-    this.tagService.getHistory(this.tag).then((history: Tag[]) => {
+
+    this.tagService.getHistory(this.tag, Math.round(event.min), Math.round(event.max)).then((history: Tag[]) => {
       this.history = history;
-
-      let data: any[] = [];
-
-      history.forEach((record: any) => {
-        data.push([record.timestamp, record.value]);
-      });
-
-      this.chart.series[0].setData(data);
+      this.chart.series[0].setData(history);
       this.chart.hideLoading();
     });
   };

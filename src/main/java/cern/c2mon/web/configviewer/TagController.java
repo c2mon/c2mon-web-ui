@@ -54,8 +54,10 @@ public class TagController {
   }
 
   @RequestMapping(value = "/{id}/history", method = GET)
-  public List<Map<String, Object>> getTagHistory(@PathVariable final Long id) {
-    return elasticsearchService.getHistory(id);
+  public List<Object[]> getTagHistory(@PathVariable final Long id,
+                                      @RequestParam("min") Long min,
+                                      @RequestParam("max") Long max) {
+    return elasticsearchService.getHistory(id, min, max);
   }
 
   @RequestMapping(value = "/search", method = GET)

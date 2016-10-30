@@ -4,7 +4,8 @@ import {IHttpService, IQService, IPromise, IDeferred} from 'angular';
 export class TagService {
   public static $inject: string[] = ['$http', '$q'];
 
-  public constructor(private $http: IHttpService, private $q: IQService) {}
+  public constructor(private $http: IHttpService, private $q: IQService) {
+  }
 
   public getTag(id: string): IPromise<Tag[]> {
     let q: IDeferred<Tag[]> = this.$q.defer();
@@ -47,10 +48,12 @@ export class TagService {
     return q.promise;
   }
 
-  public getHistory(tag: Tag): IPromise<Tag[]> {
+  public getHistory(tag: Tag, min: number, max: number): IPromise<Tag[]> {
     let q: IDeferred<Tag[]> = this.$q.defer();
+    console.log('min:' + min);
+    console.log('max:' + max);
 
-    this.$http.get('/api/tags/' + tag.id + '/history?records=10').then((response: any) => {
+    this.$http.get('/api/tags/' + tag.id + '/history', {params: {min: min, max: max}}).then((response: any) => {
       console.log(response.data);
       q.resolve(response.data);
     });
