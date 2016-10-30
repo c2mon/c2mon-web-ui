@@ -1,6 +1,11 @@
 <style>
   .dl-horizontal dt {
     text-align: left;
+    padding-top: 5px;
+  }
+
+  .dl-horizontal dd {
+    padding-top: 5px;
   }
 </style>
 
@@ -77,6 +82,18 @@
 
           <p>
           <dl class="dl-horizontal">
+            <dt>Process</dt>
+            <dd><code>{{$ctrl.tag.processNames}}</code></dd>
+            <dt>Equipment</dt>
+            <dd><code>{{$ctrl.tag.equipmentIds}}</code></dd>
+            <dt>Subequipment</dt>
+            <dd><code>{{$ctrl.tag.subEquipmentIds}}</code></dd>
+            <dt>Alarms</dt>
+            <dd><code>{{$ctrl.tag.alarmIds}}</code></dd>
+            <dt>Rules</dt>
+            <dd><code>{{$ctrl.tag.ruleIds}}</code></dd>
+            <dt>Rule expression</dt>
+            <dd><code>{{$ctrl.tag.ruleExpression}}</code></dd>
             <dt>Mode</dt>
             <dd><code>{{$ctrl.tag.mode}}</code></dd>
             <dt>Data type</dt>
@@ -86,11 +103,33 @@
             <dt>Topic name</dt>
             <dd><code>{{$ctrl.tag.topicName}}</code></dd>
             <dt>Metadata</dt>
-            <dd>
-              <code>
-                {{$ctrl.tag.metadata}}
-              </code>
-            </dd>
+            <dd><code>{{$ctrl.tag.metadata}}</code></dd>
+            <dt>Value deadband</dt>
+            <dd><code>{{$ctrl.tag.valueDeadband}}</code></dd>
+            <dt>Deadband type</dt>
+            <dd><code>{{$ctrl.tag.valueDeadbandType}}</code></dd>
+            <dt>Time deadband</dt>
+            <dd><code>{{$ctrl.tag.timeDeadband}}</code></dd>
+            <dt>Priority</dt>
+            <dd><code>{{$ctrl.tag.priority}}</code></dd>
+            <dt>Guaranteed delivery</dt>
+            <dd><code>{{$ctrl.tag.topicName}}</code></dd>
+            <dt>Min value</dt>
+            <dd><code>{{$ctrl.tag.minValue}}</code></dd>
+            <dt>Max value</dt>
+            <dd><code>{{$ctrl.tag.maxValue}}</code></dd>
+            <dt>Control</dt>
+            <dd><code>{{$ctrl.tag.controlTag}}</code></dd>
+            <dt>Alive</dt>
+            <dd><code>{{$ctrl.tag.aliveTag}}</code></dd>
+            <dt>Logged</dt>
+            <dd><code>{{$ctrl.tag.logged}}</code></dd>
+            <dt>Process names</dt>
+            <dd><code>{{$ctrl.tag.processNames}}</code></dd>
+            <dt>Hardware address</dt>
+            <dd><code>{{$ctrl.tag.hardwareAddress}}</code></dd>
+            <dt>Address parameters</dt>
+            <dd><code>{{$ctrl.tag.addressParameters}}</code></dd>
           </dl>
           </p>
 

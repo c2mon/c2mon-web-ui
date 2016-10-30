@@ -62,7 +62,8 @@ class TagDetailController {
         dataGrouping: {enabled: false},
         marker: {enabled: true, radius: 2},
         connectNulls: true
-      }]
+      }],
+      credits: {enabled: false}
     });
   }
 
