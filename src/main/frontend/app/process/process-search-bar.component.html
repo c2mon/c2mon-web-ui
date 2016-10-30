@@ -1,0 +1,15 @@
+<form>
+  <div class="form-group">
+    <input type="text"
+           ng-model="$ctrl.process"
+           placeholder="Enter process id or search by name"
+           uib-typeahead="process as process.processName for process in $ctrl.getProcesses()"
+           typeahead-select-on-exact="true"
+           typeahead-on-select="$ctrl.onProcessSelected($item, $model, $label, $event)"
+           typeahead-no-results="noResults" class="form-control">
+
+    <div ng-show="noResults">
+      <i class="fa fa-remove"></i> No processes found
+    </div>
+  </div>
+</form>

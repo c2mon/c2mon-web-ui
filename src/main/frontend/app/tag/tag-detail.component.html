@@ -9,17 +9,17 @@
           {{$ctrl.tag.name}}
 
           <span class="pull-right text-success" style="font-size: 24px;">
-                    <code>{{$ctrl.tag.value}}</code>
-                  </span>
+            <code>{{$ctrl.tag.value}}</code>
+          </span>
         </h3>
 
         <p>
           #{{$ctrl.tag.id}} <span ng-if="$ctrl.tag.description">: {{$ctrl.tag.description}}</span>
 
           <span class="pull-right">
-                    {{$ctrl.tag.dataTagQuality.description}}
-                    {{$ctrl.formatTimestamp($ctrl.tag.serverTimestamp)}}
-                  </span>
+            {{$ctrl.tag.dataTagQuality.description}}
+            {{$ctrl.formatTimestamp($ctrl.tag.serverTimestamp)}}
+          </span>
         </p>
 
       </div>
@@ -42,7 +42,7 @@
           </thead>
 
           <tbody>
-          <tr ng-repeat="item in $ctrl.tagHistory">
+          <tr ng-repeat="item in $ctrl.history">
             <td>{{$ctrl.formatTimestamp(item.c2mon.serverTimestamp)}}</td>
             <td>
               {{item.value}} {{item.valueNumeric}} {{item.valueBoolean}} {{item.valueString}}
