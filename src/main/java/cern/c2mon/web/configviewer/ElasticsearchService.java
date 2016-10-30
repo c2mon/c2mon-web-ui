@@ -45,17 +45,19 @@ public class ElasticsearchService {
   }
 
   public List<Map<String, Object>> getHistory(Long id) {
+    List<Map<String, Object>> results = new ArrayList<>();
+    
     SearchHit[] hits = client.prepareSearch("_all")
         .setQuery(termQuery("id", id))
         .setSize(100)
-        .addSort("timestamp", SortOrder.ASC)
+        .addSort("timestamp", SortOrder.DESC)
         .execute().actionGet().getHits().getHits();
-    List<Map<String, Object>> results = new ArrayList<>();
 
     for (SearchHit hit : hits) {
       results.add(hit.getSource());
     }
 
+    Collections.reverse(results);
     return results;
   }
 
@@ -67,6 +69,7 @@ public class ElasticsearchService {
         .subAggregation(
             AggregationBuilders.topHits("top")
                 .setSize(1)
+                .addSort("timestamp", SortOrder.DESC)
                 .setFetchSource(new String[]{"id"}, new String[]{})
         );
 
