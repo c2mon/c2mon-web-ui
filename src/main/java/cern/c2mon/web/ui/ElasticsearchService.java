@@ -10,9 +10,11 @@ import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
 import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
+import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.avg.Avg;
+import org.elasticsearch.search.aggregations.metrics.tophits.InternalTopHits;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +24,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.*;
 
-import static org.elasticsearch.index.query.QueryBuilders.termQuery;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * @author Justin Lewis Salmon
@@ -48,10 +50,42 @@ public class ElasticsearchService {
     }
   }
 
+  /**
+   *
+   * @param id
+   * @param min
+   * @param max
+   * @return
+   */
   public List<Object[]> getHistory(Long id, Long min, Long max) {
     List<Object[]> results = new ArrayList<>();
 
     // Figure out the right interval
+    String interval = getInterval(min, max);
+    log.info("using interval: " + interval);
+
+    AggregationBuilder aggregation = AggregationBuilders.dateHistogram("events-per-interval")
+        .field("timestamp")
+        .interval(new DateHistogramInterval(interval))
+        .subAggregation(
+            AggregationBuilders.avg("avg-value").field("value")
+        );
+
+    Histogram histogram = client.prepareSearch("_all")
+        .setQuery(termQuery("id", id))
+        .setSize(1)
+        .addAggregation(aggregation)
+        .execute().actionGet().getAggregations().get("events-per-interval");
+
+    for (Histogram.Bucket bucket : histogram.getBuckets()) {
+      Avg avg = bucket.getAggregations().get("avg-value");
+      results.add(new Object[] {Long.parseLong(bucket.getKeyAsString()), avg.getValue()});
+    }
+
+    return results;
+  }
+
+  private String getInterval(Long min, Long max) {
     String interval;
     Long range = max - min;
 
@@ -80,33 +114,18 @@ public class ElasticsearchService {
       interval = "1w";
     }
 
-    log.info("using interval: " + interval);
-
-    AggregationBuilder aggregation = AggregationBuilders.dateHistogram("events-per-interval")
-        .field("timestamp")
-        .interval(new DateHistogramInterval(interval))
-        .subAggregation(
-            AggregationBuilders.avg("avg-value").field("value")
-        );
-
-    Histogram histogram = client.prepareSearch("_all")
-        .setQuery(termQuery("id", id))
-        .setSize(1)
-        .addAggregation(aggregation)
-        .execute().actionGet().getAggregations().get("events-per-interval");
-
-    for (Histogram.Bucket bucket : histogram.getBuckets()) {
-      Avg avg = bucket.getAggregations().get("avg-value");
-      results.add(new Object[] {Long.parseLong(bucket.getKeyAsString()), avg.getValue()});
-    }
-
-    return results;
+    return interval;
   }
 
+  /**
+   *
+   * @param size
+   * @return
+   */
   public List<Tag> getTopTags(Integer size) {
     Set<String> topTagNames = new HashSet<>(size);
 
-    AggregationBuilder aggregation = AggregationBuilders.terms("top-tags").field("name")
+    AggregationBuilder aggregation = AggregationBuilders.terms("group-by-name").field("name")
         .size(size)
         .subAggregation(
             AggregationBuilders.topHits("top")
@@ -116,7 +135,7 @@ public class ElasticsearchService {
         );
 
     StringTerms agg = client.prepareSearch("c2mon-tag*")
-        .addAggregation(aggregation).execute().actionGet().getAggregations().get("top-tags");
+        .addAggregation(aggregation).execute().actionGet().getAggregations().get("group-by-name");
 
     for (Terms.Bucket bucket : agg.getBuckets()) {
       String tagName = bucket.getKeyAsString();
@@ -124,5 +143,60 @@ public class ElasticsearchService {
     }
 
     return (List<Tag>) tagService.findByName(topTagNames);
+  }
+
+  /**
+   * Find all tags by name with a given prefix.
+   *
+   * @param query the tag name prefix
+   * @return a list of tags whose names match the given prefix
+   */
+  public Collection<Tag> findByName(String query) {
+    List<Long> tagIds = new ArrayList<>();
+
+    AggregationBuilder aggregation = AggregationBuilders.terms("group-by-name").field("name")
+        .subAggregation(
+            AggregationBuilders.topHits("top")
+                .setSize(1)
+                .addSort("timestamp", SortOrder.DESC)
+                .setFetchSource("id", null)
+        );
+
+    StringTerms agg = client.prepareSearch("c2mon-tag*")
+        .setQuery(prefixQuery("name", query))
+        .setSize(0)
+        .addAggregation(aggregation).execute().actionGet().getAggregations().get("group-by-name");
+
+    for (Terms.Bucket bucket : agg.getBuckets()) {
+      Integer id = (Integer) ((InternalTopHits) bucket.getAggregations().get("top")).getHits().getAt(0).getSource().get("id");
+      tagIds.add(Long.valueOf(id));
+    }
+
+    return tagService.get(tagIds);
+  }
+
+  /**
+   * Find all tags containing the exact metadata key/value pair.
+   *
+   * @param key the metadata key
+   * @param value the metadata value
+   * @return a list of tags containing the exact metadata requested
+   */
+  public Collection<Tag> findByMetadata(String key, String value) {
+    List<Long> tagIds = new ArrayList<>();
+
+    AggregationBuilder aggregation = AggregationBuilders.terms("group-by-id").field("id");
+
+    LongTerms agg = client.prepareSearch("c2mon-tag*")
+        .setQuery(nestedQuery("metadata", boolQuery().must(matchQuery("metadata." + key, value))))
+        .setSize(0)
+        .addAggregation(aggregation).execute().actionGet().getAggregations().get("group-by-id");
+
+    for (Terms.Bucket bucket : agg.getBuckets()) {
+      Long id = (Long) bucket.getKey();
+      tagIds.add(id);
+    }
+
+    return tagService.get(tagIds);
   }
 }

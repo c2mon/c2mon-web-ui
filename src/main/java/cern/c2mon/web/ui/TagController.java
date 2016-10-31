@@ -75,7 +75,7 @@ public class TagController {
         Collections.singletonList(tag.getId()))).get(0);
 
     // Merge the tag and its config to avoid the extra call
-    return merge(mapper.convertValue(tag, JsonNode.class), mapper.convertValue(config, JsonNode.class));
+    return JsonUtils.merge(mapper.convertValue(tag, JsonNode.class), mapper.convertValue(config, JsonNode.class));
   }
 
   @RequestMapping(value = "/{id}/history", method = GET)
@@ -87,31 +87,11 @@ public class TagController {
 
   @RequestMapping(value = "/search", method = GET)
   public Collection<Tag> search(@RequestParam final String query) {
-    return tagService.findByName(query);
+    return elasticsearchService.findByName(query);
   }
 
   @RequestMapping(value = "/top", method = GET)
   public Collection<Tag> getTopTags(@RequestParam final Integer size) {
     return elasticsearchService.getTopTags(size);
-  }
-
-  private JsonNode merge(JsonNode a, JsonNode b) {
-    Iterator<String> fieldNames = b.fieldNames();
-
-    while (fieldNames.hasNext()) {
-      String fieldName = fieldNames.next();
-      JsonNode jsonNode = a.get(fieldName);
-
-      if (jsonNode != null && jsonNode.isObject()) {
-        merge(jsonNode, b.get(fieldName));
-      } else {
-        if (a instanceof ObjectNode) {
-          JsonNode value = b.get(fieldName);
-          ((ObjectNode) a).put(fieldName, value);
-        }
-      }
-    }
-
-    return a;
   }
 }

@@ -22,7 +22,7 @@ export class TagService {
 
     if (isNaN(Number(query))) {
       // If we have a non-numeric string, search by name
-      this.$http.get('/api/tags/search?query=' + query + '*').then((response: any) => {
+      this.$http.get('/api/tags/search?query=' + query).then((response: any) => {
         console.log(response.data);
         q.resolve(response.data);
       })
