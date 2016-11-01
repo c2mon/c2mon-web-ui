@@ -2,27 +2,29 @@ package cern.c2mon.web.ui;
 
 import cern.c2mon.client.common.tag.Tag;
 import cern.c2mon.client.core.TagService;
+import io.searchbox.client.JestClient;
+import io.searchbox.client.JestClientFactory;
+import io.searchbox.client.config.HttpClientConfig;
+import io.searchbox.core.Search;
+import io.searchbox.core.SearchResult;
+import io.searchbox.core.search.aggregation.AvgAggregation;
+import io.searchbox.core.search.aggregation.DateHistogramAggregation;
+import io.searchbox.core.search.aggregation.TermsAggregation;
 import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
-import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
-import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
-import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.elasticsearch.search.aggregations.metrics.avg.Avg;
-import org.elasticsearch.search.aggregations.metrics.tophits.InternalTopHits;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -33,29 +35,29 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 @Slf4j
 public class ElasticsearchService {
 
-  private TransportClient client;
+  private JestClient client;
 
   @Autowired
   private TagService tagService;
 
   @PostConstruct
   public void init() {
-    Settings settings = Settings.settingsBuilder().put("cluster.name", "c2mon").build();
-
-    try {
-      client = TransportClient.builder().settings(settings).build()
-          .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
-    } catch (UnknownHostException e) {
-      throw new RuntimeException("Could not connect to Elasticsearch");
-    }
+    JestClientFactory factory = new JestClientFactory();
+    factory.setHttpClientConfig(new HttpClientConfig.Builder("http://localhost:9200")
+        .multiThreaded(true)
+        .build());
+    client = factory.getObject();
   }
 
   /**
+   * Retrieve aggregated history for the given tag for the specified time period.
+   * <p>
+   * A suitable average aggregation interval is automatically calculated.
    *
-   * @param id
-   * @param min
-   * @param max
-   * @return
+   * @param id  the id of the tag
+   * @param min the beginning of the requested date range
+   * @param max the end of the requested date range
+   * @return list of [timestamp, value] pairs
    */
   public List<Object[]> getHistory(Long id, Long min, Long max) {
     List<Object[]> results = new ArrayList<>();
@@ -64,22 +66,28 @@ public class ElasticsearchService {
     String interval = getInterval(min, max);
     log.info("using interval: " + interval);
 
-    AggregationBuilder aggregation = AggregationBuilders.dateHistogram("events-per-interval")
-        .field("timestamp")
-        .interval(new DateHistogramInterval(interval))
-        .subAggregation(
-            AggregationBuilders.avg("avg-value").field("value")
-        );
+    SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+    searchSourceBuilder.query(termQuery("id", id))
+        .size(1)
+        .aggregation(AggregationBuilders.dateHistogram("events-per-interval")
+            .field("timestamp")
+            .interval(new DateHistogramInterval(interval))
+            .subAggregation(
+                AggregationBuilders.avg("avg-value").field("value")
+            ));
 
-    Histogram histogram = client.prepareSearch("_all")
-        .setQuery(termQuery("id", id))
-        .setSize(1)
-        .addAggregation(aggregation)
-        .execute().actionGet().getAggregations().get("events-per-interval");
+    SearchResult result;
+    Search search = new Search.Builder(searchSourceBuilder.toString()).addIndex("c2mon-tag*").build();
 
-    for (Histogram.Bucket bucket : histogram.getBuckets()) {
-      Avg avg = bucket.getAggregations().get("avg-value");
-      results.add(new Object[] {Long.parseLong(bucket.getKeyAsString()), avg.getValue()});
+    try {
+      result = client.execute(search);
+    } catch (IOException e) {
+      throw new RuntimeException("Error querying history for tag #" + id, e);
+    }
+
+    for (DateHistogramAggregation.DateHistogram bucket : result.getAggregations().getDateHistogramAggregation("events-per-interval").getBuckets()) {
+      AvgAggregation avg = bucket.getAvgAggregation("avg-value");
+      results.add(new Object[]{Long.parseLong(bucket.getTimeAsString()), avg.getAvg()});
     }
 
     return results;
@@ -118,31 +126,33 @@ public class ElasticsearchService {
   }
 
   /**
+   * Get the top {@literal size} most active tags.
    *
-   * @param size
-   * @return
+   * @param size the number of top tags to retrieve
+   * @return a list of {@link Tag} instances
    */
   public List<Tag> getTopTags(Integer size) {
-    Set<String> topTagNames = new HashSet<>(size);
+    List<Long> tagIds = new ArrayList<>();
 
-    AggregationBuilder aggregation = AggregationBuilders.terms("group-by-name").field("name")
-        .size(size)
-        .subAggregation(
-            AggregationBuilders.topHits("top")
-                .setSize(1)
-                .addSort("timestamp", SortOrder.DESC)
-                .setFetchSource(new String[]{"id"}, new String[]{})
-        );
+    SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+    searchSourceBuilder.aggregation(AggregationBuilders.terms("group-by-id")
+        .field("id")
+        .size(size));
 
-    StringTerms agg = client.prepareSearch("c2mon-tag*")
-        .addAggregation(aggregation).execute().actionGet().getAggregations().get("group-by-name");
+    SearchResult result;
+    Search search = new Search.Builder(searchSourceBuilder.toString()).addIndex("c2mon-tag*").build();
 
-    for (Terms.Bucket bucket : agg.getBuckets()) {
-      String tagName = bucket.getKeyAsString();
-      topTagNames.add(tagName);
+    try {
+      result = client.execute(search);
+    } catch (IOException e) {
+      throw new RuntimeException("Error querying top most active tags", e);
     }
 
-    return (List<Tag>) tagService.findByName(topTagNames);
+    tagIds.addAll(result.getAggregations().getTermsAggregation("group-by-id").getBuckets()
+        .stream()
+        .map(bucket -> Long.valueOf(bucket.getKey())).collect(Collectors.toList()));
+
+    return (List<Tag>) tagService.get(tagIds);
   }
 
   /**
@@ -154,22 +164,31 @@ public class ElasticsearchService {
   public Collection<Tag> findByName(String query) {
     List<Long> tagIds = new ArrayList<>();
 
-    AggregationBuilder aggregation = AggregationBuilders.terms("group-by-name").field("name")
-        .subAggregation(
-            AggregationBuilders.topHits("top")
-                .setSize(1)
-                .addSort("timestamp", SortOrder.DESC)
-                .setFetchSource("id", null)
-        );
+    SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+    searchSourceBuilder
+        .query(prefixQuery("name", query))
+        .size(0)
+        .aggregation(AggregationBuilders.terms("group-by-name")
+            .field("name")
+            .subAggregation(
+                AggregationBuilders.topHits("top")
+                    .setSize(1)
+                    .addSort("timestamp", SortOrder.DESC)
+                    .setFetchSource("id", null)
+            ));
 
-    StringTerms agg = client.prepareSearch("c2mon-tag*")
-        .setQuery(prefixQuery("name", query))
-        .setSize(0)
-        .addAggregation(aggregation).execute().actionGet().getAggregations().get("group-by-name");
+    SearchResult result;
+    Search search = new Search.Builder(searchSourceBuilder.toString()).addIndex("c2mon-tag*").build();
 
-    for (Terms.Bucket bucket : agg.getBuckets()) {
-      Integer id = (Integer) ((InternalTopHits) bucket.getAggregations().get("top")).getHits().getAt(0).getSource().get("id");
-      tagIds.add(Long.valueOf(id));
+    try {
+      result = client.execute(search);
+    } catch (IOException e) {
+      throw new RuntimeException("Error querying top most active tags", e);
+    }
+
+    for (TermsAggregation.Entry bucket : result.getAggregations().getTermsAggregation("group-by-name").getBuckets()) {
+      double id = (double) bucket.getTopHitsAggregation("top").getFirstHit(Map.class).source.get("id");
+      tagIds.add((long) id);
     }
 
     return tagService.get(tagIds);
@@ -178,24 +197,34 @@ public class ElasticsearchService {
   /**
    * Find all tags containing the exact metadata key/value pair.
    *
-   * @param key the metadata key
+   * @param key   the metadata key
    * @param value the metadata value
    * @return a list of tags containing the exact metadata requested
    */
   public Collection<Tag> findByMetadata(String key, String value) {
     List<Long> tagIds = new ArrayList<>();
 
-    AggregationBuilder aggregation = AggregationBuilders.terms("group-by-id").field("id");
+    SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+    searchSourceBuilder.query(
+        nestedQuery("metadata",
+            boolQuery().must(matchQuery("metadata." + key, value))))
+        .aggregation(AggregationBuilders.terms("group-by-id")
+            .field("id")
+            .size(0)
+        );
 
-    LongTerms agg = client.prepareSearch("c2mon-tag*")
-        .setQuery(nestedQuery("metadata", boolQuery().must(matchQuery("metadata." + key, value))))
-        .setSize(0)
-        .addAggregation(aggregation).execute().actionGet().getAggregations().get("group-by-id");
+    SearchResult result;
+    Search search = new Search.Builder(searchSourceBuilder.toString()).addIndex("c2mon-tag*").build();
 
-    for (Terms.Bucket bucket : agg.getBuckets()) {
-      Long id = (Long) bucket.getKey();
-      tagIds.add(id);
+    try {
+      result = client.execute(search);
+    } catch (IOException e) {
+      throw new RuntimeException("Error querying top most active tags", e);
     }
+
+    tagIds.addAll(result.getAggregations().getTermsAggregation("group-by-id").getBuckets()
+        .stream()
+        .map(bucket -> Long.valueOf(bucket.getKey())).collect(Collectors.toList()));
 
     return tagService.get(tagIds);
   }
