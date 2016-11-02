@@ -22,11 +22,11 @@ class TagDetailController {
   public chart: Highcharts;
 
   public constructor(private tagService: TagService) {
-    // Ask for one month by default
+    // Ask for one day by default
     let max: Moment = moment();
-    let min: Moment = moment(max).subtract(1, 'month');
+    let min: Moment = moment(max).subtract(1, 'day');
 
-    this.tagService.getHistory(this.tag, min.unix(), max.unix()).then((history: Tag[]) => {
+    this.tagService.getHistory(this.tag, min.valueOf(), max.valueOf()).then((history: Tag[]) => {
       this.history = history;
       this.createTagHistoryChart(this.history);
     });
@@ -48,7 +48,7 @@ class TagDetailController {
           {type: 'day', count: 1, text: '1d'}, {type: 'month', count: 1, text: '1m'},
           {type: 'year', count: 1, text: '1y'}, {type: 'all', text: 'All'}],
         inputEnabled: false,
-        selected: 5
+        selected: 2
       },
       xAxis: {
         events: {
@@ -68,10 +68,12 @@ class TagDetailController {
   }
 
   public afterSetExtremes = (event: any) => {
-    this.chart.showLoading('Loading data from server...');
+    this.chart.showLoading('Loading...');
 
     this.tagService.getHistory(this.tag, Math.round(event.min), Math.round(event.max)).then((history: Tag[]) => {
       this.history = history;
+
+      this.chart.showLoading('Rendering...');
       this.chart.series[0].setData(history);
       this.chart.hideLoading();
     });
