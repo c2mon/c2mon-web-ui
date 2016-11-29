@@ -2,33 +2,21 @@ import {ConfigReport} from './config-report';
 import {ProgressUpdate} from './progress-update';
 import {ConfigService} from './config.service';
 import {IComponentOptions} from 'angular';
+import {IStateService} from 'angular-ui-router';
 
-export class ConfigComponent implements IComponentOptions {
-  public templateUrl: string = '/config/config.component.html';
-  public controller: Function = ConfigController;
+export class ConfigRunBarComponent implements IComponentOptions {
+  public templateUrl: string = '/config/config-run-bar.component.html';
+  public controller: Function = ConfigRunBarController;
 }
 
-class ConfigController {
-  public static $inject: string[] = ['ConfigService'];
+class ConfigRunBarController {
+  public static $inject: string[] = ['$state', 'ConfigService'];
 
-  public history: any[] = [];
-  public configReports: any = {};
   public configId: number = null;
   public configStatus: string = null;
   public configProgress: ProgressUpdate = undefined;
 
-  public constructor(private configService: ConfigService) {
-    this.configService.getConfigHistory().then((history: any[]) => {
-      this.history = history;
-    });
-  }
-
-  public viewConfig(config: any): void {
-    this.configService.getConfig(config.id).then((config: ConfigReport) => {
-      this.configReports[config.id] = config;
-      this.configReports[config.id][0].active = true;
-    });
-  }
+  public constructor(private $state: IStateService, private configService: ConfigService) {}
 
   public runConfig() {
     this.configStatus = 'started';
@@ -51,11 +39,7 @@ class ConfigController {
 
       if (!this.configProgress) {
         this.configStatus = 'success';
-
-        this.configService.getConfig(this.configId).then((config: ConfigReport) => {
-          this.configReports[this.configId] = config;
-          this.configReports[this.configId][0].active = true;
-        });
+        this.$state.go('config', {id: this.configId});
       }
 
       if (this.configStatus !== 'success' && this.configStatus !== 'error') {

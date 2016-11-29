@@ -17,7 +17,7 @@ export class ConfigService {
     return q.promise;
   }
 
-  public getConfig(id: number): IPromise<ConfigReport> {
+  public getConfigReports(id: number): IPromise<ConfigReport> {
     let q: IDeferred<ConfigReport> = this.$q.defer();
 
     this.$http.get('/api/config/' + id).then((response: any) => {

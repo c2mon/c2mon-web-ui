@@ -5,13 +5,10 @@
       <process-search-bar></process-search-bar>
 
       <h4>
-        {{$ctrl.process.processName}}
-
-        <br/>
-        <small>#{{$ctrl.process.processID}}</small>
+        {{$ctrl.process.processName}} <small>#{{$ctrl.process.processID}}</small>
       </h4>
 
-      <uib-tabset>
+      <uib-tabset active="$ctrl.active">
         <uib-tab>
           <uib-tab-heading>
             Equipment
@@ -34,7 +31,7 @@
           </table>
         </uib-tab>
 
-        <uib-tab ng-repeat="equipment in $ctrl.selectedEquipment" active="equipment.active">
+        <uib-tab ng-repeat="equipment in $ctrl.selectedEquipment" index="$index">
           <uib-tab-heading>
             {{equipment.name}}
           </uib-tab-heading>

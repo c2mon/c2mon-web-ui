@@ -1,0 +1,22 @@
+
+<form class="form-horizontal">
+  <div class="form-group">
+    <div class="col-sm-10">
+      <input type="number" class="form-control" ng-model="$ctrl.configId" placeholder="Enter Configuration ID">
+    </div>
+    <div class="col-sm-2">
+      <button type="submit" class="btn btn-primary pull-right" ng-click="$ctrl.runConfig()" ng-disabled="!$ctrl.configId">
+        <i class="glyphicon glyphicon-cog"></i> Run Configuration
+      </button>
+    </div>
+  </div>
+
+  <div class="progressbar" ng-if="$ctrl.configStatus === 'started'">
+    <uib-progressbar class="progress-striped active" max="100" value="$ctrl.configProgress.progress">
+      <span class="action">
+        <i ng-if="$ctrl.configProgress.action">{{$ctrl.configProgress.action}}</i>
+        <i ng-if="$ctrl.configProgress.progress">({{$ctrl.configProgress.progress}}%)</i>
+      </span>
+    </uib-progressbar>
+  </div>
+</form>

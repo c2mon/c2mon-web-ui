@@ -1,5 +1,6 @@
 import {TagService} from '../tag/tag.service';
 import {ProcessService} from '../process/process.service';
+import {ConfigService} from '../config/config.service';
 import {ILocationProvider} from 'angular';
 import {IStateProvider, IUrlRouterProvider, IStateParamsService} from 'angular-ui-router';
 
@@ -27,6 +28,12 @@ export class RouteConfig {
             return processService.getProcess($stateParams.name);
           }]
         }})
-      .state('config',    { url: '/config',          component: 'config'})
+      .state('configs',   { url: '/config',          component: 'configList'})
+      .state('config',    { url: '/config/:id',      component: 'configDetail',
+      resolve: {
+        configs: ['$stateParams', 'ConfigService', ($stateParams: IStateParamsService, configService: ConfigService) => {
+          return configService.getConfigReports($stateParams.id);
+        }]
+      }})
   }
 }

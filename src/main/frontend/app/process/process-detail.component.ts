@@ -15,11 +15,12 @@ class ProcessDetailController {
 
   public process: Process;
   public selectedEquipment: Equipment[] = [];
+  public active: number;
 
   public constructor() {}
 
   public onEquipmentSelected(equipment: Equipment) {
-    equipment.active = true;
+    this.active = this.selectedEquipment.indexOf(equipment);
     this.selectedEquipment.push(equipment);
   }
 }
