@@ -26,7 +26,9 @@ public class HttpFilter extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-    if (request.getRequestURI().startsWith("/api") || isStaticResource(request.getRequestURI())) {
+    String uri = request.getRequestURI();
+
+    if (uri.startsWith("/api") || isStaticResource(uri) || isWebsocketRequest(uri)) {
       filterChain.doFilter(request, response);
     } else {
       // Forward to home page so that route is preserved.
@@ -36,5 +38,9 @@ public class HttpFilter extends OncePerRequestFilter {
 
   private boolean isStaticResource(String uri) {
     return FilenameUtils.isExtension(uri, staticResourceExtensions);
+  }
+
+  private boolean isWebsocketRequest(String uri) {
+    return uri.startsWith(WebSocketConfig.WEBSOCKET_ENDPOINT);
   }
 }

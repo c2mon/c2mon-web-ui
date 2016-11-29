@@ -1,13 +1,3 @@
-<style>
-  .dl-horizontal dt {
-    text-align: left;
-    padding-top: 5px;
-  }
-
-  .dl-horizontal dd {
-    padding-top: 5px;
-  }
-</style>
 
 <div class="container">
   <div class="row">
@@ -33,6 +23,39 @@
             {{$ctrl.formatTimestamp($ctrl.tag.serverTimestamp)}}
           </span>
         </p>
+
+
+          <style>
+            .expression {
+              font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+            }
+          </style>
+
+
+        <div class="form-group">
+          <label>Expressions:</label>
+          <div ng-repeat="expression in $ctrl.tag.expressions track by $index">
+            {{expression.name}}:
+
+            <strong ng-class="expression.result === true ? 'text-danger' : ''">
+              {{expression.result}}
+              <i class="fa fa-bell" ng-if="expression.alarm === true"></i>
+            </strong>
+
+            <span ng-if="!expression.editing">
+              (<code>{{expression.expression}}</code>)
+            </span>
+
+            <span ng-if="expression.editing === true">
+              <input type="text" ng-value="expression.expression">
+            </span>
+
+            <button class="btn btn-xs btn-primary" ng-if="!expression.editing" ng-click="expression.editing = true">Edit</button>
+            <button class="btn btn-xs btn-primary" ng-if="expression.editing === true"  ng-click="$ctrl.submit(expression); expression.editing = false">Submit
+            </button>
+
+          </div>
+        </div>
 
       </div>
 

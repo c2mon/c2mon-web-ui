@@ -7,7 +7,7 @@ export class TagService {
   public constructor(private $http: IHttpService, private $q: IQService) {
   }
 
-  public getTag(id: string): IPromise<Tag[]> {
+  public getTag(id: string): IPromise<Tag> {
     let q: IDeferred<Tag[]> = this.$q.defer();
 
     this.$http.get('/api/tags/' + id).then((response: any) => {

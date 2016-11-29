@@ -1,10 +1,12 @@
 import {Tag} from './tag';
 import {TagService} from './tag.service';
-import {IComponentOptions} from 'angular';
+import {IComponentOptions, IHttpService, IScope} from 'angular';
 import 'moment';
 import Moment = moment.Moment;
 
 var Highcharts = require('highcharts/highstock');
+var Stomp = require('stompjs/lib/stomp.js').Stomp;
+var SockJS = require('sockjs-client');
 
 export class TagDetailComponent implements IComponentOptions {
   public templateUrl: string = '/tag/tag-detail.component.html';
@@ -15,22 +17,41 @@ export class TagDetailComponent implements IComponentOptions {
 }
 
 class TagDetailController {
-  public static $inject: string[] = ['TagService'];
+  public static $inject: string[] = ['TagService', '$http', '$scope'];
 
   public tag: Tag;
   public history: Tag[];
   public chart: Highcharts;
+  private stompClient: any;
 
-  public constructor(private tagService: TagService) {
-    // Ask for one day by default
+  public constructor(private tagService: TagService, private $http: IHttpService, private $scope: IScope) {
+    // Ask for one hour by default
     let max: Moment = moment();
-    let min: Moment = moment(max).subtract(1, 'day');
+    let min: Moment = moment(max).subtract(1, 'hour');
 
     this.tagService.getHistory(this.tag, min.valueOf(), max.valueOf()).then((history: Tag[]) => {
       this.history = history;
       this.createTagHistoryChart(this.history);
     });
+
+    var socket = new SockJS('/websocket');
+    this.stompClient = Stomp.over(socket);
+    this.stompClient.connect({}, this.onConnection);
   }
+
+  public onConnection = (frame) => {
+    console.log('Connected: ' + frame);
+
+    var tagId = this.tag.id;
+    this.stompClient.subscribe('/topic/tags/' + tagId, this.onTagUpdate);
+    this.stompClient.send("/app/tags/" + tagId);
+  };
+
+  public onTagUpdate = (message) => {
+    this.tag = JSON.parse(message.body);
+    console.log('Got tag update: ' + this.tag.value);
+    this.$scope.$apply();
+  };
 
   public createTagHistoryChart(data) {
     this.chart = Highcharts.stockChart('chart', {
@@ -48,7 +69,7 @@ class TagDetailController {
           {type: 'day', count: 1, text: '1d'}, {type: 'month', count: 1, text: '1m'},
           {type: 'year', count: 1, text: '1y'}, {type: 'all', text: 'All'}],
         inputEnabled: false,
-        selected: 2
+        selected: 1
       },
       xAxis: {
         events: {
@@ -81,5 +102,18 @@ class TagDetailController {
 
   public formatTimestamp(timestamp: number): string {
     return moment(timestamp).format();
+  }
+
+
+  public submit(expression: any): void {
+    console.log(expression.expression);
+
+    this.$http.patch('/api/tags/' + this.tag.id + '/expressions/' + expression.name, expression.expression).then((response: any) => {
+      console.log(response);
+
+      this.tagService.getTag(this.tag.name).then((tag: Tag) => {
+        this.tag = tag;
+      })
+    });
   }
 }
