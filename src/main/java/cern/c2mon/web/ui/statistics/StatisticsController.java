@@ -44,7 +44,7 @@ import cern.c2mon.web.ui.statistics.charts.BarChart;
  * The statistics come from three different places:
  *
  * <ul>
- * <li>Generated inside this package, by interfacing with the STL database on
+ * <li>Generated inside this package, by interfacing with the history database on
  * request (such as server and DAQ availability).</li>
  *
  * <li>Retrieved directly from the server itself (such as the number of

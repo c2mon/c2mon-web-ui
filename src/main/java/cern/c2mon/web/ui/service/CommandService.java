@@ -16,6 +16,7 @@
  *****************************************************************************/
 package cern.c2mon.web.ui.service;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class CommandService {
   private static Logger logger = LoggerFactory.getLogger(CommandService.class);
 
   @Autowired
-  private cern.c2mon.client.core.service.CommandService commandManager;
+  private cern.c2mon.client.core.service.CommandService commandService;
 
   /**
    * Gets the XML representation of the configuration of a command
@@ -66,7 +67,7 @@ public class CommandService {
    * @return command tag
    */
   public CommandTag<Object> getCommandTag(final long commandId) {
-    CommandTag<Object> ct = commandManager.getCommandTag(commandId);
+    CommandTag<Object> ct = commandService.getCommandTag(commandId);
     logger.debug("Command fetch for command " + commandId + ": " + (ct == null ? "NULL" : "SUCCESS"));
     return ct;
   }

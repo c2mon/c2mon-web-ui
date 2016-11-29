@@ -69,7 +69,7 @@ public class WebAlarmService {
   }
 
   /**
-   * Retrieves a alarmValue object from the service gateway tagManager
+   * Retrieves a alarmValue object from the service gateway alarmService
    *
    * @param alarmId id of the alarm
    *
@@ -80,7 +80,7 @@ public class WebAlarmService {
     List<Long> alarmIds = new ArrayList<Long>();
     alarmIds.add(alarmId);
     Collection<AlarmValue> alarms = alarmService.getAlarms(alarmIds);
-    // tagManager.getAlarms(alarmIds);
+    // alarmService.getAlarms(alarmIds);
     Iterator<AlarmValue> it = alarms.iterator();
     if (it.hasNext()) {
       av = it.next();

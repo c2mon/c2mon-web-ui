@@ -43,11 +43,10 @@ public class TagService {
   private static Logger logger = LoggerFactory.getLogger(TagService.class);
 
   @Autowired
-  private cern.c2mon.client.core.service.TagService tagManager;
-
-  @Autowired
   private ConfigurationService configurationService;
 
+  @Autowired
+  private cern.c2mon.client.core.service.TagService tagService;
 
   /**
    * Retrieves a tagConfig object from the service gateway tagManager
@@ -73,7 +72,7 @@ public class TagService {
    * @return tag value
    */
   public Tag getTag(final long dataTagId) {
-    Tag dataTag = tagManager.get(dataTagId);
+    Tag dataTag = tagService.get(dataTagId);
     logger.debug("Datatag value fetch for tag " + dataTagId + ": " + (dataTag == null ? "NULL" : "SUCCESS"));
     return dataTag;
   }

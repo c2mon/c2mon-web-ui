@@ -90,7 +90,7 @@ public class StatisticsService {
   }
 
   /**
-   * Retrieve a list of {@link SupervisionEvent} objects from the STL for a
+   * Retrieve a list of {@link SupervisionEvent} objects from the history for a
    * given process for a given year.
    *
    * @param name the process name
@@ -114,7 +114,7 @@ public class StatisticsService {
   }
 
   /**
-   * Retrieve a list of {@link ServerLifecycleEvent} objects from the STL for a
+   * Retrieve a list of {@link ServerLifecycleEvent} objects from the history for a
    * given year.
    *
    * @param year the year of events to retrieve

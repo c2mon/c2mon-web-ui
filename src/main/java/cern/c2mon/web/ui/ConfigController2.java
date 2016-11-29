@@ -52,6 +52,11 @@ public class ConfigController2 {
     return configHistoryService.getCachedReports(refresh);
   }
 
+  @RequestMapping(value = "/api/config/{id}", method = GET)
+  public List<ConfigurationReport> getConfigReports(@PathVariable("id") Long configId) {
+    return configLoaderService.getConfigurationReports(String.valueOf(configId));
+  }
+
   @RequestMapping(value = "/api/config/{id}/run", method = POST)
   public void runConfig(@PathVariable("id") Long configId) throws CannotProceedException {
     configLoaderService.applyConfiguration(configId);
@@ -60,10 +65,5 @@ public class ConfigController2 {
   @RequestMapping(value = "/api/config/{id}/progress", method = GET)
   public ProgressUpdate getConfigProgress(@PathVariable("id") Long configId) {
     return configLoaderService.getProgressUpdate(configId);
-  }
-
-  @RequestMapping(value = "/api/config/{id}", method = GET)
-  public List<ConfigurationReport> getConfigReports(@PathVariable("id") Long configId) {
-    return configLoaderService.getConfigurationReports(String.valueOf(configId));
   }
 }
