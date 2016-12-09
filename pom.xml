@@ -3,11 +3,12 @@
   <parent>
     <groupId>cern.c2mon.client</groupId>
     <artifactId>c2mon-client</artifactId>
-    <version>1.8.0-SNAPSHOT</version>
+    <version>1.8.5</version>
   </parent>
 
   <groupId>cern.c2mon.web</groupId>
   <artifactId>c2mon-web-ui</artifactId>
+  <version>1.8.0-SNAPSHOT</version>
   <packaging>war</packaging>
 
   <properties>
@@ -60,12 +61,12 @@
     <dependency>
       <groupId>cern.c2mon.client</groupId>
       <artifactId>c2mon-client-ext-rbac</artifactId>
-      <version>${project.version}</version>
+      <version>1.8.3</version>
     </dependency>
     <dependency>
       <groupId>cern.c2mon.client</groupId>
       <artifactId>c2mon-client-ext-history</artifactId>
-      <version>${project.version}</version>
+      <version>1.8.2</version>
     </dependency>
 
     <!-- 3rd-party dependencies -->

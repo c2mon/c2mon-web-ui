@@ -40,7 +40,7 @@ body {
 
           <div class="error-details">Sorry, an error has occurred. The requested page was not found.</div>
           <div class="error-actions">
-            <a href="/c2mon-web-configviewer/" class="btn btn-primary btn-lg">
+            <a href="/c2mon-web-ui/" class="btn btn-primary btn-lg">
               <span class="glyphicon glyphicon-home"></span>
               Take Me Home
             </a>

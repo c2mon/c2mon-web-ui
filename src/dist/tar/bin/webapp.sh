@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 BOOTUP=color
-# column to start "[  OK  ]" label in 
+# column to start "[  OK  ]" label in
 RES_COL=60
 # terminal sequence to move to that column. You could change this
 # to something like "tput hpa ${RES_COL}" if your terminal supports it
@@ -69,14 +69,14 @@ runs() {
   pid=${1##*/}
   tmp=`ps -p $pid -o pid=`
   if [ -z "$tmp" ] ; then
-    return 1 
+    return 1
   else
-    return 0 
+    return 0
   fi
 }
 
 # The start function checks whether the service is already
-# running and, if it think it is it, calls the really_start 
+# running and, if it think it is it, calls the really_start
 # function to launch it.
 # Otherwise it exits with a warning message
 
@@ -104,7 +104,7 @@ start() {
   else
     really_start
   fi
-}  
+}
 
 # The really_start function tries to start the service
 # and then checks if it running.
@@ -128,7 +128,7 @@ really_start() {
 
   else
     exec -a `basename $0` $JAVA_HOME/bin/java -cp "$CLASSPATH" -Dc2mon.client.conf.url="$INSTALL_DIR/conf/c2mon-client.properties" \
-     -Dlogging.file="log/c2mon-web-configviewer.log" $JVM_MEM "${JVM_OTHER_OPTS[@]}" org.springframework.boot.loader.WarLauncher > $LOG_DIR/out.log 2> $LOG_DIR/err.log &
+     -Dlogging.file="log/c2mon-web-ui.log" $JVM_MEM "${JVM_OTHER_OPTS[@]}" org.springframework.boot.loader.WarLauncher > $LOG_DIR/out.log 2> $LOG_DIR/err.log &
 
     pid=$!
     sleep 1
@@ -166,7 +166,7 @@ stop() {
       PROC_WAIT=0;
       while [ $PROC_RUNS -eq 0 ]; do
         printf .
-        sleep 1 
+        sleep 1
         if [ $PROC_WAIT -lt 20 ]; then
           let PROC_WAIT=$PROC_WAIT+1
           runs $pid
@@ -210,7 +210,7 @@ stop() {
     RETVAL=1
   fi
   return $RETVAL
-}  
+}
 
 status() {
   pid=

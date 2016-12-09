@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <products>
-  <product name="c2mon-web-configviewer">
+  <product name="c2mon-web-ui">
 
     <application name="default">
       <startscript>
         <main-class name="org.springframework.boot.loader.WarLauncher" />
-        <property name="logging.file" value="log/c2mon-web-configviewer.log" />
+        <property name="logging.file" value="log/c2mon-web-ui.log" />
       </startscript>
-      <deployment installLocation="/opt/c2mon-web-configviewer/">
+      <deployment installLocation="/opt/c2mon-web-ui/">
         <backupPolicy keepBackups="2">
           <preserve type="dir" name="log"/>
         </backupPolicy>
@@ -15,25 +15,25 @@
     </application>
 
 
-    <application name="c2mon-web-configviewer-pro" extends="default">
-      <startscript name="C2MON-WEB-CONFIGVIEWER-PRO">
+    <application name="c2mon-web-ui-pro" extends="default">
+      <startscript name="C2MON-WEB-UI-PRO">
         <env name="CLASSPATH" value="$INSTALL_DIR/lib/*.war" />
         <property name="c2mon.client.conf.url" value="file:///user/timoper/rep/c2mon/web/c2mon-web.properties" />
       </startscript>
-      <deployment installLocation="/opt/c2mon-web-configviewer">
+      <deployment installLocation="/opt/c2mon-web-ui">
         <notification>
           <!--<mail address="c2mon-admin@cern.ch"/>-->
         </notification>
       </deployment>
     </application>
 
-    <application name="c2mon-web-configviewer-test" extends="default">
-      <startscript name="C2MON-WEB-CONFIGVIEWER-TEST">
+    <application name="c2mon-web-ui-test" extends="default">
+      <startscript name="C2MON-WEB-UI-TEST">
         <env name="CLASSPATH" value="$INSTALL_DIR/lib/*.war" />
         <property name="c2mon.client.conf.url" value="file:///user/timtest/rep/c2mon/web/c2mon-web.properties" />
         <property name="server.port" value="8081" />
       </startscript>
-      <deployment installLocation="/opt/c2mon-web-configviewer-test">
+      <deployment installLocation="/opt/c2mon-web-ui-test">
         <notification>
           <!--<mail address="c2mon-admin@cern.ch"/>-->
         </notification>
