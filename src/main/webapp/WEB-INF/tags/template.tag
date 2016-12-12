@@ -1,5 +1,6 @@
 <%@tag description="C2MON page template" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@attribute name="header" fragment="true"%>
 <%@attribute name="footer" fragment="true"%>
@@ -34,19 +35,19 @@
 <meta name="author" content="">
 
 <!-- Bootstrap Core CSS -->
-<link href="/css/bootstrap/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="<c:url value="/css/bootstrap/bootstrap.css"/>" rel="stylesheet" type="text/css" />
 
 <!-- MetisMenu CSS -->
-<link href="/css/metis/metisMenu.css" rel="stylesheet" />
+<link href="<c:url value="/css/metis/metisMenu.css"/>" rel="stylesheet" />
 
 <!-- Custom CSS -->
-<link href="/css/sb-admin-2.css" rel="stylesheet" />
+<link href="<c:url value="/css/sb-admin-2.css"/>" rel="stylesheet" />
 
 <!-- Common CSS -->
-<link href="/css/common.css" rel="stylesheet" />
+<link href="<c:url value="/css/common.css"/>" rel="stylesheet" />
 
 <!-- Custom Fonts -->
-<link href="/css/fonts/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css" />
+<link href="<c:url value="/css/fonts/font-awesome/css/font-awesome.css"/>" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -66,7 +67,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.html">
+        <a class="navbar-brand" href="<c:url value="/"/>">
           C<sup>2</sup>MON Web Interface
         </a>
       </div>
@@ -206,16 +207,16 @@
 
 
   <!-- jQuery -->
-  <script src="/js/jquery/jquery.js"></script>
+  <script src="<c:url value="/js/jquery/jquery.js"/>"></script>
 
   <!-- Bootstrap Core JavaScript -->
-  <script src="/js/bootstrap/bootstrap.js"></script>
+  <script src="<c:url value="/js/bootstrap/bootstrap.js"/>"></script>
 
   <!-- Metis Menu Plugin JavaScript -->
-  <script src="/js/metis/metisMenu.js"></script>
+  <script src="<c:url value="/js/metis/metisMenu.js"/>"></script>
 
   <!-- Custom Theme JavaScript -->
-  <script src="/js/sb-admin-2.js"></script>
+  <script src="<c:url value="/js/sb-admin-2.js"/>"></script>
 
   <div id="pagefooter">
     <jsp:invoke fragment="footer" />

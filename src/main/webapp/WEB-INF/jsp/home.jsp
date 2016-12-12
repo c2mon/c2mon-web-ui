@@ -355,9 +355,9 @@
 
 </c2mon:template>
 
-<script src="/js/highcharts.js" type="text/javascript"></script>
-<script src="/js/dashboard.js" type="text/javascript"></script>
-<script src="/js/jquery/jquery-fittext.js" type="text/javascript"></script>
+<script src="<c:url value="/js/highcharts.js"/>" type="text/javascript"></script>
+<script src="<c:url value="/js/dashboard.js"/>" type="text/javascript"></script>
+<script src="<c:url value="/js/jquery/jquery-fittext.js"/>" type="text/javascript"></script>
 <script>
   jQuery(".huge").fitText(0.56, {
     minFontSize : '20px',

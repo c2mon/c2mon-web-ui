@@ -9,7 +9,7 @@
 
 <title>${title}</title>
 
-<link rel="stylesheet" type="text/css" href="/css/bootstrap/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/bootstrap/bootstrap.css"/>" />
 
 <style type="text/css">
 body {
@@ -40,7 +40,7 @@ body {
 
           <div class="error-details">Sorry, an error has occurred. The requested page was not found.</div>
           <div class="error-actions">
-            <a href="/c2mon-web-ui/" class="btn btn-primary btn-lg">
+            <a href="<c:url value="/"/>" class="btn btn-primary btn-lg">
               <span class="glyphicon glyphicon-home"></span>
               Take Me Home
             </a>
@@ -50,8 +50,8 @@ body {
     </div>
   </div>
 
-  <script src="js/jquery/jquery.js"></script>
-  <script src="js/bootstrap/bootstrap.js"></script>
+  <script src="<c:url value="js/jquery/jquery.js"/>"></script>
+  <script src="<c:url value="js/bootstrap/bootstrap.js"/>"></script>
 
 </body>
 </html>
