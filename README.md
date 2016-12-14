@@ -14,9 +14,7 @@ See the current [reference docs][].
 Please report issues on GitLab via the [issue tracker][].
 
 ## Building from Source
-C2MON uses a [Maven][]-based build system. In the instructions
-below, `./mvnw` is invoked from the root of the source tree and serves as
-a cross-platform, self-contained bootstrap mechanism for the build.
+C2MON uses a [Maven][]-based build system.
 
 ### Prerequisites
 
@@ -29,7 +27,7 @@ extracted from the JDK download.
 `git clone git@github.com:c2mon/c2mon-web-ui.git`
 
 ### Compile and test; build all jars, distribution zips, and docs
-`./mvnw build`
+`mvn package`
 
 ## Contributing
 [Pull requests][] are welcome; see the [contributor guidelines][] for details.
