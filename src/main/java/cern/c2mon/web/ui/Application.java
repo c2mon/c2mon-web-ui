@@ -9,7 +9,7 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
  * @author Justin Lewis Salmon
  */
 @SpringBootApplication
-public class Application extends SpringBootServletInitializer {
+public class Application {
 
   public static void main(String[] args) throws Exception {
     new SpringApplicationBuilder().bannerMode(Banner.Mode.OFF).sources(Application.class).run(args);

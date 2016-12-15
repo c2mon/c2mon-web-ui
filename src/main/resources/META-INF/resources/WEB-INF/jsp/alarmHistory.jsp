@@ -5,7 +5,7 @@
 
 <!-- JSP variables -->
 <c:set var="alarm" value="${history[0]}" />
-<c:url var="home" value=".." />
+<c:url var="home" value="../" />
 <c:url var="historyviewer" value="../alarmhistoryviewer/form" />
 <c:url var="tagviewer" value="../tagviewer/${alarm.tagId}" />
 <c:url var="taghistory" value="../historyviewer/${alarm.tagId}" />

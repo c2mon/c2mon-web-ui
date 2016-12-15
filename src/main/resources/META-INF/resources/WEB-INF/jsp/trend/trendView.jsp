@@ -6,7 +6,7 @@
 <%@page import="cern.c2mon.client.ext.history.common.HistoryTagValueUpdate"%>
 <%@page import="java.util.List"%>
 
-<c:url var="home" value=".." />
+<c:url var="home" value="../" />
 <c:url var="trendviewer" value="../trendviewer/form" />
 
 <c2mon:template title="${title}">

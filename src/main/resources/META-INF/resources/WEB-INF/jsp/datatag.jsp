@@ -4,7 +4,7 @@
 
 
 <!-- JSP variables -->
-<c:url var="home" value=".." />
+<c:url var="home" value="../" />
 <c:url var="tagviewer" value="../tagviewer/form" />
 <c:url var="history" value="/historyviewer/${tag.id}" />
 <c:url var="trend" value="/trendviewer/${tag.id}" />
