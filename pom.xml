@@ -9,7 +9,6 @@
   <groupId>cern.c2mon.web</groupId>
   <artifactId>c2mon-web-ui</artifactId>
   <version>0.1.2-SNAPSHOT</version>
-  <packaging>war</packaging>
 
   <properties>
     <docker.image.base>java:8-jdk</docker.image.base>
@@ -133,7 +132,6 @@
       <groupId>org.apache.tomcat.embed</groupId>
       <artifactId>tomcat-embed-jasper</artifactId>
       <version>8.0.32</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
