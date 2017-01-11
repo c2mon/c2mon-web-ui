@@ -22,7 +22,7 @@ import cern.c2mon.client.ext.history.lifecycle.ServerLifecycleEventRepository;
 import cern.c2mon.shared.client.statistics.TagStatisticsResponse;
 import cern.c2mon.shared.client.supervision.SupervisionEvent;
 import cern.c2mon.web.ui.service.ProcessService;
-import cern.c2mon.web.ui.statistics.daqlog.charts.WebChart;
+import cern.c2mon.web.ui.statistics.charts.WebChart;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -111,7 +111,6 @@ public class StatisticsService {
     Date to = format.parse(String.valueOf(year) + "-12-31");
 
 //    return mapper.getSupervisionEvents(id, new Timestamp(from.getTime()), new Timestamp(to.getTime()));
-
     return null;
   }
 

@@ -21,9 +21,9 @@ import cern.c2mon.web.ui.controller.HandlerInterceptor;
 import cern.c2mon.web.ui.serialization.BarChartSerializer;
 import cern.c2mon.web.ui.serialization.PieChartSerializer;
 import cern.c2mon.web.ui.serialization.StackedBarChartSerializer;
-import cern.c2mon.web.ui.statistics.daqlog.charts.JFreeBarChart;
-import cern.c2mon.web.ui.statistics.daqlog.charts.JFreePieChart;
-import cern.c2mon.web.ui.statistics.daqlog.charts.JFreeStackedBarChart;
+import cern.c2mon.web.ui.statistics.charts.JFreeBarChart;
+import cern.c2mon.web.ui.statistics.charts.JFreePieChart;
+import cern.c2mon.web.ui.statistics.charts.JFreeStackedBarChart;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -24,7 +24,7 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import org.jfree.data.category.CategoryDataset;
 
-import cern.c2mon.web.ui.statistics.daqlog.charts.JFreeBarChart;
+import cern.c2mon.web.ui.statistics.charts.JFreeBarChart;
 
 public class BarChartSerializer extends JsonSerializer<JFreeBarChart> {
 

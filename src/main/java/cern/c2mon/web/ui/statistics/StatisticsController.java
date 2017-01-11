@@ -20,7 +20,7 @@ import java.text.ParseException;
 import java.util.*;
 
 import cern.c2mon.client.ext.history.lifecycle.ServerLifecycleEvent;
-import cern.c2mon.web.ui.statistics.daqlog.charts.WebChart;
+import cern.c2mon.web.ui.statistics.charts.WebChart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ import cern.c2mon.shared.client.lifecycle.LifecycleEventType;
 import cern.c2mon.shared.client.statistics.TagStatisticsResponse;
 import cern.c2mon.shared.client.supervision.SupervisionEvent;
 import cern.c2mon.shared.common.supervision.SupervisionConstants.SupervisionStatus;
-import cern.c2mon.web.ui.statistics.daqlog.charts.BarChart;
+import cern.c2mon.web.ui.statistics.charts.BarChart;
 
 /**
  * This class serves as an entry point to retrieve various statistics from the

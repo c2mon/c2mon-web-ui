@@ -16,7 +16,7 @@
  *****************************************************************************/
 package cern.c2mon.web.ui.serialization;
 
-import cern.c2mon.web.ui.statistics.daqlog.charts.JFreePieChart;
+import cern.c2mon.web.ui.statistics.charts.JFreePieChart;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;

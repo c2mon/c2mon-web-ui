@@ -21,9 +21,9 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.springframework.stereotype.Component;
 
-import cern.c2mon.web.ui.statistics.daqlog.charts.JFreeBarChart;
-import cern.c2mon.web.ui.statistics.daqlog.charts.JFreePieChart;
-import cern.c2mon.web.ui.statistics.daqlog.charts.JFreeStackedBarChart;
+import cern.c2mon.web.ui.statistics.charts.JFreeBarChart;
+import cern.c2mon.web.ui.statistics.charts.JFreePieChart;
+import cern.c2mon.web.ui.statistics.charts.JFreeStackedBarChart;
 
 /**
  * This class extends the default Jackson {@link ObjectMapper} in order to allow
