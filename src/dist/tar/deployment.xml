@@ -20,12 +20,12 @@
 
     <application name="c2mon-web-ui-pro" extends="default">
       <startscript name="C2MON-WEB-UI-PRO">
-        <property name="c2mon.web.statistics.chartConfigLocation" value="file:///${INSTALL_DIR}/conf/chart-config.xml" />
+        <property name="c2mon.web.statistics.chartConfigLocation" value="${INSTALL_DIR}/conf/chart-config.xml" />
       </startscript>
       <deployment installLocation="/opt/c2mon-web-ui">
         <directory name="conf">
-          <file name="c2mon-client.properties" source="/user/timoper/rep/c2mon/client/c2mon-client.properties" mask="500" />
-          <file name="chart-config.xml" source="/user/timoper/rep/c2mon/web/chart-config.xml" mask="500" />
+          <file name="c2mon-client.properties" source="/user/timoper/rep/c2mon/client/c2mon-client.properties" mask="600" />
+          <file name="chart-config.xml" source="/user/timoper/rep/c2mon/web/chart-config.xml" mask="600" />
         </directory>
         <notification>
           <mail address="c2mon-admin@cern.ch"/>
@@ -38,7 +38,7 @@
       <startscript name="C2MON-WEB-UI-TEST"/>
       <deployment installLocation="/opt/c2mon-web-ui-test">
         <directory name="conf">
-          <file name="c2mon-client.properties" source="/user/timtest/rep/c2mon/web/c2mon-web.properties" mask="500" />
+          <file name="c2mon-client.properties" source="/user/timtest/rep/c2mon/web/c2mon-web.properties" mask="600" />
         </directory>
       </deployment>
     </application>
