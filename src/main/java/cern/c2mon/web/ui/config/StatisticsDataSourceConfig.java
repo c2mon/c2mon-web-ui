@@ -27,9 +27,9 @@ public class StatisticsDataSourceConfig {
   @Primary
   public DataSource statisticsDataSource() {
     return DataSourceBuilder.create()
-        .url(environment.getRequiredProperty("c2mon.web.statistics.jdbc.url"))
-        .username(environment.getRequiredProperty("c2mon.web.statistics.jdbc.username"))
-        .password(environment.getRequiredProperty("c2mon.web.statistics.jdbc.password")).build();
+        .url(environment.getProperty("c2mon.web.statistics.jdbc.url"))
+        .username(environment.getProperty("c2mon.web.statistics.jdbc.username"))
+        .password(environment.getProperty("c2mon.web.statistics.jdbc.password")).build();
   }
 
   @Bean
