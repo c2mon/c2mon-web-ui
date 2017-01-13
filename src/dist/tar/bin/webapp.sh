@@ -113,7 +113,7 @@ really_start() {
   cd $INSTALL_DIR
 
   [[ -z "$JAVA_HOME" ]] && export JAVA_HOME=/usr/java/jdk
-  CLASSPATH=`ls $INSTALL_DIR/lib/*.war | tr -s '\n' ':'`
+  CLASSPATH=`ls $INSTALL_DIR/lib/*.jar | tr -s '\n' ':'`
 
   JVM_MEM=""
   JVM_OTHER_OPTS=()
