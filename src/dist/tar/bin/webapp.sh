@@ -124,11 +124,11 @@ really_start() {
     echo "Running in foreground mode"
 
     exec -a `basename $0` $JAVA_HOME/bin/java -cp "$CLASSPATH" -Dc2mon.client.conf.url="$INSTALL_DIR/conf/c2mon-client.properties" \
-      $JVM_MEM "${JVM_OTHER_OPTS[@]}" org.springframework.boot.loader.WarLauncher
+      $JVM_MEM "${JVM_OTHER_OPTS[@]}" org.springframework.boot.loader.JarLauncher
 
   else
     exec -a `basename $0` $JAVA_HOME/bin/java -cp "$CLASSPATH" -Dc2mon.client.conf.url="$INSTALL_DIR/conf/c2mon-client.properties" \
-     -Dlogging.file="log/c2mon-web-ui.log" $JVM_MEM "${JVM_OTHER_OPTS[@]}" org.springframework.boot.loader.WarLauncher > $LOG_DIR/out.log 2> $LOG_DIR/err.log &
+     -Dlogging.file="log/c2mon-web-ui.log" $JVM_MEM "${JVM_OTHER_OPTS[@]}" org.springframework.boot.loader.JarLauncher > $LOG_DIR/out.log 2> $LOG_DIR/err.log &
 
     pid=$!
     sleep 1

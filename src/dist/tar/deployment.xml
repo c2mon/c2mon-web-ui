@@ -38,7 +38,7 @@
       <startscript name="C2MON-WEB-UI-TEST"/>
       <deployment installLocation="/opt/c2mon-web-ui-test">
         <directory name="conf">
-          <file name="c2mon-client.properties" source="/user/timtest/rep/c2mon/web/c2mon-web.properties" mask="600" />
+          <file name="c2mon-client.properties" source="/user/timtest/rep/c2mon/client/c2mon-client.properties" mask="600" />
         </directory>
       </deployment>
     </application>
