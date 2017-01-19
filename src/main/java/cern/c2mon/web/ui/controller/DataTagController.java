@@ -32,8 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import cern.c2mon.client.common.tag.ClientDataTagValue;
-import cern.c2mon.web.ui.service.TagIdException;
+import cern.c2mon.client.common.tag.Tag;
 import cern.c2mon.web.ui.service.TagService;
 import cern.c2mon.web.ui.util.FormUtility;
 
@@ -55,18 +54,6 @@ public class DataTagController {
    * A URL to the tagviewer with input form
    */
   public static final String TAG_FORM_URL = "/" + TAGVIEWER_PAGE_NAME + "/form";
-
-  /**
-   * URL to tagviewer, which displays tagconfig information
-   * in RAW XML
-   */
-  public static final String TAG_CONFIG_XML_URL = "/tagconfig/xml";
-
-  /**
-   * URL to tagviewer, which displays tag value information
-   * in RAW XML
-   */
-  public static final String TAG_VALUE_XML_URL = "/tagvalue/xml";
 
   /**
    * Title for the datatag form page
@@ -117,7 +104,7 @@ public class DataTagController {
   public String viewTag(@PathVariable(value = "id") final String id, final HttpServletResponse response, final Model model, final HttpServletRequest request) throws IOException  {
     logger.info("/" + TAGVIEWER_PAGE_NAME + "/{id} " + id);
 
-    ClientDataTagValue tag = service.getDataTagValue(new Long(id));
+    Tag tag = service.getTag(new Long(id));
     if (tag == null) {
       return ("redirect:" + "/" + TAGVIEWER_PAGE_NAME + "/errorform/" + id);
     }
@@ -127,46 +114,6 @@ public class DataTagController {
     model.addAttribute("tagConfig", service.getTagConfig(new Long(id)));
     model.addAttribute("help_url", helpUrl.replaceAll("\\{id\\}", tag.getId().toString()));
     return "datatag";
-  }
-
-  /**
-   * @return
-   * Displays TagConfig information in RAW XML about a tag with the given id.
-   *
-   * In case the TagId does not exist, redirects to an error form.
-   *
-   * @param id tag id
-   * @param model Spring MVC Model instance to be filled in before jsp processes it
-   */
-  @RequestMapping(value = TAG_CONFIG_XML_URL + "/{id}", method = { RequestMethod.GET })
-  public String viewTagConfigXml(@PathVariable final String id,  final Model model) {
-    logger.info(TAG_CONFIG_XML_URL + id);
-    try {
-      model.addAttribute("xml", service.getDataTagConfigXml(id));
-    } catch (TagIdException e) {
-      return ("redirect:" + "/" + TAGVIEWER_PAGE_NAME + "/errorform/" + id);
-    }
-    return "raw/xml";
-  }
-
-  /**
-   * @return
-   * Displays TagValue information in RAW XML about a tag with the given id.
-   *
-   * In case the TagId does not exist, redirects to an error form.
-   *
-   * @param id tag id
-   * @param model Spring MVC Model instance to be filled in before jsp processes it
-   */
-  @RequestMapping(value = TAG_VALUE_XML_URL + "/{id}", method = { RequestMethod.GET })
-  public String viewTagValueXml(@PathVariable final String id,  final Model model) {
-    logger.info(TAG_VALUE_XML_URL + id);
-    try {
-      model.addAttribute("xml", service.getDataTagValueXml(id));
-    } catch (TagIdException e) {
-      return ("redirect:" + "/" + TAGVIEWER_PAGE_NAME + "/errorform/" + id);
-    }
-    return "raw/xml";
   }
 
   /**

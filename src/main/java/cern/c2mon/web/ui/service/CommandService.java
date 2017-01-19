@@ -16,13 +16,13 @@
  *****************************************************************************/
 package cern.c2mon.web.ui.service;
 
-import cern.c2mon.client.core.manager.CommandManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cern.c2mon.client.common.tag.ClientCommandTag;
+import cern.c2mon.client.common.tag.CommandTag;
+import cern.c2mon.client.core.manager.CommandManager;
 import cern.c2mon.client.core.tag.ClientCommandTagImpl;
 
 /**
@@ -66,8 +66,8 @@ public class CommandService {
    * @param commandId id of the alarm
    * @return command tag
    */
-  public ClientCommandTag<Object> getCommandTag(final long commandId) {
-    ClientCommandTag<Object> ct = commandManager.getCommandTag(commandId);
+  public CommandTag<Object> getCommandTag(final long commandId) {
+    CommandTag<Object> ct = commandManager.getCommandTag(commandId);
     logger.debug("Command fetch for command " + commandId + ": " + (ct == null ? "NULL" : "SUCCESS"));
     return ct;
   }

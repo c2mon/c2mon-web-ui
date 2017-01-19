@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import cern.c2mon.client.common.tag.ClientDataTagValue;
+import cern.c2mon.client.common.tag.Tag;
 import cern.c2mon.client.ext.history.common.HistoryTagValueUpdate;
 import cern.c2mon.client.ext.history.common.exception.HistoryProviderException;
 import cern.c2mon.client.ext.history.common.exception.LoadingParameterException;
@@ -111,7 +111,7 @@ public class TrendViewController {
    * @param tag Used to retrieve the values
    * @param model Values are added to this model
    */
-  public final Model getDefaultModel(final Model model, final ClientDataTagValue tag) {
+  public final Model getDefaultModel(final Model model, final Tag tag) {
 
     model.addAttribute("ylabel", tag.getUnit());
     model.addAttribute("tagName", tag.getName());
@@ -143,7 +143,7 @@ public class TrendViewController {
 
       final boolean isBooleanData = historyService.isBooleanData(historyValues);
       final Collection<InvalidPoint> invalidPoints = historyService.getInvalidPoints(historyValues);
-      final ClientDataTagValue tagValue = tagService.getDataTagValue(Long.parseLong(id));
+      final Tag tagValue = tagService.getTag(Long.parseLong(id));
 
       model = getDefaultModel(model, tagValue);
 
@@ -176,7 +176,7 @@ public class TrendViewController {
 
     final boolean isBooleanData = historyService.isBooleanData(historyValues);
     final Collection<InvalidPoint> invalidPoints = historyService.getInvalidPoints(historyValues);
-    final ClientDataTagValue tagValue = tagService.getDataTagValue(Long.parseLong(id));
+    final Tag tagValue = tagService.getTag(Long.parseLong(id));
     final String historyCSV = historyService.getHistoryCSV(historyValues, isBooleanData);
 
     if (tagValue == null) {
@@ -212,7 +212,7 @@ public class TrendViewController {
 
     final boolean isBooleanData = historyService.isBooleanData(historyValues);
     final Collection<InvalidPoint> invalidPoints = historyService.getInvalidPoints(historyValues);
-    final ClientDataTagValue tagValue = tagService.getDataTagValue(Long.parseLong(id));
+    final Tag tagValue = tagService.getTag(Long.parseLong(id));
     final String historyCSV = historyService.getHistoryCSV(historyValues, isBooleanData);
 
     if (tagValue == null) {
@@ -255,7 +255,7 @@ public class TrendViewController {
 
     final boolean isBooleanData = historyService.isBooleanData(historyValues);
     final Collection<InvalidPoint> invalidPoints = historyService.getInvalidPoints(historyValues);
-    final ClientDataTagValue tagValue = tagService.getDataTagValue(Long.parseLong(id));
+    final Tag tagValue = tagService.getTag(Long.parseLong(id));
     final String historyCSV = historyService.getHistoryCSV(historyValues, isBooleanData);
 
     model = getDefaultModel(model, tagValue);

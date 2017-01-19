@@ -25,14 +25,6 @@ import java.util.*;
 
 import javax.servlet.http.HttpServletResponse;
 
-import cern.c2mon.client.common.tag.ClientDataTagValue;
-import cern.c2mon.client.ext.history.alarm.Alarm;
-import cern.c2mon.client.ext.history.alarm.AlarmHistoryService;
-import cern.c2mon.client.ext.history.alarm.HistoricAlarmQuery;
-import cern.c2mon.client.ext.history.updates.HistoryTagValueUpdateImpl;
-import cern.c2mon.shared.client.alarm.AlarmValue;
-import cern.c2mon.shared.client.alarm.AlarmValueImpl;
-import cern.c2mon.web.ui.service.TagService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +36,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import cern.c2mon.client.common.tag.Tag;
+import cern.c2mon.client.ext.history.alarm.Alarm;
+import cern.c2mon.client.ext.history.alarm.AlarmHistoryService;
+import cern.c2mon.client.ext.history.alarm.HistoricAlarmQuery;
 import cern.c2mon.client.ext.history.common.HistoryTagValueUpdate;
 import cern.c2mon.client.ext.history.common.exception.HistoryProviderException;
 import cern.c2mon.client.ext.history.common.exception.LoadingParameterException;
+import cern.c2mon.client.ext.history.updates.HistoryTagValueUpdateImpl;
+import cern.c2mon.shared.client.alarm.AlarmValue;
+import cern.c2mon.shared.client.alarm.AlarmValueImpl;
 import cern.c2mon.web.ui.service.HistoryService;
+import cern.c2mon.web.ui.service.TagService;
 import cern.c2mon.web.ui.util.FormUtility;
 
 /**
@@ -276,7 +276,7 @@ public class HistoryController {
    */
   private void setAlarmsForHistory(Long tagId, List<HistoryTagValueUpdate> tagValueUpdates){
     Map<Timestamp, Alarm> timeToAlarmValue = new HashMap<>();
-    ClientDataTagValue clientTag = tagService.getDataTagValue(tagId);
+    Tag clientTag = tagService.getTag(tagId);
 
     if(clientTag.getAlarms() !=  null) {
       List<AlarmValue> alarms = new ArrayList<>(clientTag.getAlarms());

@@ -22,16 +22,14 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import cern.c2mon.client.core.C2monTagManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cern.c2mon.client.common.tag.ClientDataTagValue;
-import cern.c2mon.client.core.tag.ClientDataTagImpl;
+import cern.c2mon.client.common.tag.Tag;
+import cern.c2mon.client.core.C2monTagManager;
 import cern.c2mon.shared.client.tag.TagConfig;
-import cern.c2mon.shared.client.tag.TagConfigImpl;
 
 /**
  * Datatag service providing the XML representation of a given datatag
@@ -48,48 +46,8 @@ public class TagService {
    * Gateway to C2monService
    */
   @Autowired
-//  private ServiceGateway gateway;
-
   private C2monTagManager tagManager;
 
-  /**
-   * Gets the XML representation of the current value of datatag
-   * @param dataTagId id of the datatag
-   * @return XML datatag value representation
-   * @throws TagIdException if the datatag was not found or a non-numeric id was requested ({@link TagIdException}), or any other exception
-   * thrown by the underlying service gateway.
-   */
-  public String getDataTagValueXml(final String dataTagId) throws TagIdException {
-    try {
-      ClientDataTagImpl value = (ClientDataTagImpl) getDataTagValue(Long.parseLong(dataTagId));
-      if (value != null)
-        return value.getXml();
-      else
-        throw new TagIdException("No datatag found");
-    } catch (NumberFormatException e) {
-      throw new TagIdException("Invalid datatag id");
-    }
-  }
-
-  /**
-   * Gets the XML representation of the datatag configuration
-   * @param tagId id of the datatag
-   * @return XML datatag config representation
-   * @throws TagIdException if the datatag was not found or a non-numeric id was requested ({@link TagIdException}), or any other exception
-   * thrown by the underlying service gateway.
-   */
-
-  public String getDataTagConfigXml(final String tagId) throws TagIdException {
-    try {
-      TagConfigImpl config = (TagConfigImpl) getTagConfig(Long.parseLong(tagId));
-      if (config != null)
-        return config.getXml();
-      else
-        throw new TagIdException("No datatag found");
-    } catch (NumberFormatException e) {
-      throw new TagIdException("Invalid datatag id");
-    }
-  }
 
   /**
    * Retrieves a tagConfig object from the service gateway tagManager
@@ -114,12 +72,12 @@ public class TagService {
    * @param dataTagId id of the datatag
    * @return tag value
    */
-  public ClientDataTagValue getDataTagValue(final long dataTagId) {
-    ClientDataTagValue dt = null;
+  public Tag getTag(final long dataTagId) {
+    Tag dt = null;
     List<Long> tagIds = new ArrayList<Long>();
     tagIds.add(dataTagId);
-    Collection<ClientDataTagValue> dataTags = tagManager.getDataTags(tagIds);
-    Iterator<ClientDataTagValue> it = dataTags.iterator();
+    Collection<Tag> dataTags = tagManager.getDataTags(tagIds);
+    Iterator<Tag> it = dataTags.iterator();
     if (it.hasNext()) {
       dt = it.next();
     }
@@ -127,5 +85,3 @@ public class TagService {
     return dt;
   }
 }
-
-

@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import cern.c2mon.client.common.tag.ClientCommandTag;
+import cern.c2mon.client.common.tag.CommandTag;
 import cern.c2mon.web.ui.service.CommandService;
 import cern.c2mon.web.ui.service.TagIdException;
 import cern.c2mon.web.ui.util.FormUtility;
@@ -116,7 +116,7 @@ public class CommandController {
   public String viewCommand(@PathVariable(value = "id") final String id, final HttpServletResponse response, final Model model) throws IOException  {
     logger.info("/commandviewer/{id} " + id);
 
-    ClientCommandTag<?> tag = service.getCommandTag(new Long(id));
+    CommandTag<?> tag = service.getCommandTag(new Long(id));
     if (tag == null) {
       return ("redirect:" + "/" + COMMAND_URL + "/errorform/" + id);
     }
