@@ -1,0 +1,101 @@
+<style>
+  span.control-value {
+    font-size: 24px;
+  }
+
+  span.control-value code {
+    padding: 2px 30px;
+    color: #555;
+  }
+</style>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+
+      <ol class="breadcrumb">
+        <!--<li></li>-->
+        <li><a href="/processes/{{$ctrl.process.processName}}">{{$ctrl.process.processName}}</a></li>
+        <li><a href="/processes/{{$ctrl.process.processName}}/equipment/{{$ctrl.equipment.name}}">{{$ctrl.equipment.name}}</a></li>
+      </ol>
+
+      <h3>
+        {{$ctrl.equipment.name}} <small>#{{$ctrl.equipment.id}}</small>
+
+        <span class="control-value pull-right">
+          <code ng-class="$ctrl.status.value === 'RUNNING' ? 'bg-success' : 'bg-danger'">
+
+            <i class="fa fa-heartbeat"
+               ng-if="$ctrl.heartbeat"
+               ng-class="$ctrl.heartbeat.dataTagQuality.valid ? 'text-success' : 'text-danger'"></i>
+
+            <i class="fa fa-bolt"
+               ng-if="$ctrl.commFault"
+               ng-class="$ctrl.commFault.value === true ? 'text-success' : 'text-danger'"></i>
+
+            {{$ctrl.status.value}}
+          </code>
+        </span>
+      </h3>
+
+      <uib-tabset>
+        <uib-tab>
+          <uib-tab-heading>Tags</uib-tab-heading>
+
+          <table class="table table-hover table-condensed">
+            <thead>
+            <tr>
+              <th class="col-md-1">ID</th>
+              <th class="col-md-5">Name</th>
+              <th class="col-md-1">Data Type</th>
+              <th class="col-md-1">Control</th>
+              <th class="col-md-1">Mode</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr ng-repeat="tag in $ctrl.equipment.sourceDataTags" ng-click="$ctrl.onTagSelected(tag)">
+              <td>{{tag.id}}</td>
+              <td>{{tag.name}}</td>
+              <td>{{tag.dataType}}</td>
+              <td>{{tag.controlTag}}</td>
+              <td>{{tag.mode}}</td>
+            </tr>
+            </tbody>
+          </table>
+
+        </uib-tab>
+
+        <uib-tab>
+          <uib-tab-heading>Commands</uib-tab-heading>
+        </uib-tab>
+
+        <uib-tab>
+          <uib-tab-heading>Subequipment</uib-tab-heading>
+        </uib-tab>
+
+        <uib-tab>
+          <uib-tab-heading><i class="fa fa-cog"></i> Config</uib-tab-heading>
+
+          <p>
+          <dl class="dl-horizontal">
+            <dt>CommFault tag ID</dt>
+            <dd>{{$ctrl.equipment.commFaultTagId}}</dd>
+            <dt>CommFault tag value</dt>
+            <dd>{{$ctrl.equipment.commFaultTagValue}}</dd>
+            <dt>Alive tag ID</dt>
+            <dd>{{$ctrl.equipment.aliveTagId}}</dd>
+            <dt>Alive tag interval</dt>
+            <dd>{{$ctrl.equipment.aliveTagInterval}}</dd>
+            <dt>Handler class</dt>
+            <dd>{{$ctrl.equipment.handlerClassName}}</dd>
+            <dt>Address</dt>
+            <dd>{{$ctrl.equipment.address}}</dd>
+          </dl>
+          </p>
+        </uib-tab>
+      </uib-tabset>
+
+    </div>
+  </div>
+</div>

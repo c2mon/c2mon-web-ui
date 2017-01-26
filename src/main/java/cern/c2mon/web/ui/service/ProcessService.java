@@ -74,27 +74,41 @@ public class ProcessService {
    * @return a collection of all available process names
    */
   public Collection<String> getProcessNames() {
-
     Collection <ProcessNameResponse> processNames = configurationService.getProcessNames();
-    Collection <String> names = new ArrayList<String>();
+    Collection <String> names = new ArrayList<>();
 
-    Iterator<ProcessNameResponse> i = processNames.iterator();
-
-    while (i.hasNext()) {
-
-      ProcessNameResponse p = i.next();
+    for (ProcessNameResponse p : processNames) {
       names.add(p.getProcessName());
     }
+
     return names;
   }
 
-  public ProcessConfiguration getProcessConfiguration(final String processName) throws Exception {
+  public ProcessConfiguration getProcessConfiguration(final String processName) {
     String xml = getXml(processName);
     Serializer serializer = new Persister();
-    ProcessConfiguration processConfiguration = serializer.read(ProcessConfiguration.class, xml);
-    return processConfiguration;
+    try {
+      return serializer.read(ProcessConfiguration.class, xml);
+    } catch (Exception e) {
+      throw new RuntimeException("Error deserialising process configuration from XML", e);
+    }
   }
 
+  /**
+   * FIXME: this is incredibly inefficient! Either add an API method to fetch
+   * a process by ID or use Elasticsearch
+   */
+  public ProcessConfiguration getProcessConfiguration(final Long processId) {
+    for (String processName : getProcessNames()) {
+      ProcessConfiguration process = getProcessConfiguration(processName);
+
+      if (process.getProcessID().equals(processId)) {
+        return process;
+      }
+    }
+
+    return null;
+  }
 
   /**
    * Private helper method. Gets the XML representation of the process

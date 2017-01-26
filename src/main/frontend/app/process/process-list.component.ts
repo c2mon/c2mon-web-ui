@@ -1,5 +1,5 @@
 import {Process} from '../process/process';
-import {Equipment} from '../process/equipment';
+import {Equipment} from '../equipment/equipment';
 import {ProcessService} from '../process/process.service';
 import {IComponentOptions} from 'angular';
 import {IStateService} from 'angular-ui-router';
@@ -23,6 +23,6 @@ class ProcessListController {
   }
 
   public onProcessSelected(process: Process): void {
-    this.$state.go('process', { name: process.processName });
+    this.$state.go('process', { pname: process.processName });
   }
 }

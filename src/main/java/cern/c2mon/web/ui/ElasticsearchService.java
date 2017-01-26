@@ -9,6 +9,7 @@ import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 import io.searchbox.core.search.aggregation.AvgAggregation;
 import io.searchbox.core.search.aggregation.DateHistogramAggregation;
+import io.searchbox.core.search.aggregation.HistogramAggregation;
 import io.searchbox.core.search.aggregation.TermsAggregation;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -68,7 +69,7 @@ public class ElasticsearchService {
 
     SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
     searchSourceBuilder.query(termQuery("id", id))
-        .size(1)
+        .size(0)
         .aggregation(AggregationBuilders.dateHistogram("events-per-interval")
             .field("timestamp")
             .interval(new DateHistogramInterval(interval))
@@ -85,9 +86,9 @@ public class ElasticsearchService {
       throw new RuntimeException("Error querying history for tag #" + id, e);
     }
 
-    for (DateHistogramAggregation.DateHistogram bucket : result.getAggregations().getDateHistogramAggregation("events-per-interval").getBuckets()) {
+    for (HistogramAggregation.Histogram bucket : result.getAggregations().getHistogramAggregation("events-per-interval").getBuckets()) {
       AvgAggregation avg = bucket.getAvgAggregation("avg-value");
-      results.add(new Object[]{Long.parseLong(bucket.getTimeAsString()), avg.getAvg()});
+      results.add(new Object[]{bucket.getKey(), avg.getAvg()});
     }
 
     return results;

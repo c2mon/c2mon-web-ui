@@ -17,8 +17,15 @@
 
 package cern.c2mon.web.ui;
 
+import cern.c2mon.client.common.tag.Tag;
+import cern.c2mon.client.core.TagService;
+import cern.c2mon.client.core.manager.SupervisionManager;
+import cern.c2mon.shared.common.process.EquipmentConfiguration;
 import cern.c2mon.shared.common.process.ProcessConfiguration;
 import cern.c2mon.web.ui.service.ProcessService;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +43,9 @@ public class ProcessController2 {
   @Autowired
   ProcessService processService;
 
+  @Autowired
+  TagService tagService;
+
   @RequestMapping("/api/processes")
   public List<ProcessConfiguration> getProcesses() throws Exception {
     List<ProcessConfiguration> processes = new ArrayList<>();
@@ -48,7 +58,21 @@ public class ProcessController2 {
   }
 
   @RequestMapping("/api/processes/{name}")
-  public ProcessConfiguration getProcess(@PathVariable("name") String name) throws Exception {
-    return processService.getProcessConfiguration(name);
+  public Object getProcess(@PathVariable("name") String name) throws Exception {
+    ProcessConfiguration process = processService.getProcessConfiguration(name);
+
+    // Hack in the status tags (unfortunately there is no API method for getting
+    // these, and the don't come with the process configuration
+    Tag statusTag = tagService.findByName(name + ":STATUS").iterator().next();
+    ObjectNode node = new ObjectMapper().valueToTree(process);
+    node.put("statusTagId", statusTag.getId());
+
+    for (EquipmentConfiguration equipment : process.getEquipmentConfigurations().values()) {
+      Tag equipmentStatusTag = tagService.findByName(equipment.getName() + ":STATUS").iterator().next();
+      ObjectNode equipmentNode = (ObjectNode) node.get("equipmentConfigurations").get(String.valueOf(equipment.getId()));
+      equipmentNode.put("statusTagId", equipmentStatusTag.getId());
+    }
+
+    return node;
   }
 }

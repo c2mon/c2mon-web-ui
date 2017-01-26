@@ -1,6 +1,9 @@
+import {Process} from '../process/process';
+import {Equipment} from '../equipment/equipment';
 import {Tag} from './tag';
 import {TagService} from './tag.service';
 import {IComponentOptions, IHttpService, IScope} from 'angular';
+import {IStateParamsService} from 'angular-ui-router';
 import 'moment';
 import Moment = moment.Moment;
 
@@ -12,19 +15,32 @@ export class TagDetailComponent implements IComponentOptions {
   public templateUrl: string = '/tag/tag-detail.component.html';
   public controller: Function = TagDetailController;
   public bindings: any = {
-    tag: '=',
+    process: '=',
+    tag: '='
   };
 }
 
 class TagDetailController {
-  public static $inject: string[] = ['TagService', '$http', '$scope'];
+  public static $inject: string[] = ['TagService', '$http', '$scope', '$stateParams'];
 
+  public process: Process;
+  public equipment: Equipment;
   public tag: Tag;
   public history: Tag[];
   public chart: Highcharts;
   private stompClient: any;
 
-  public constructor(private tagService: TagService, private $http: IHttpService, private $scope: IScope) {
+  public constructor(private tagService: TagService, private $http: IHttpService, private $scope: IScope, private $stateParams: IStateParamsService) {
+    let equipments: any = this.process.equipmentConfigurations;
+
+    for (let equipmentId: number in equipments) {
+      let equipment: Equipment = equipments[equipmentId];
+
+      if (equipment.name === $stateParams.ename) {
+        this.equipment = equipment;
+      }
+    }
+
     // Ask for one hour by default
     let max: Moment = moment();
     let min: Moment = moment(max).subtract(1, 'hour');
@@ -49,7 +65,6 @@ class TagDetailController {
 
   public onTagUpdate = (message) => {
     this.tag = JSON.parse(message.body);
-    console.log('Got tag update: ' + this.tag.value);
     this.$scope.$apply();
   };
 
@@ -104,16 +119,15 @@ class TagDetailController {
     return moment(timestamp).format();
   }
 
-
-  public submit(expression: any): void {
-    console.log(expression.expression);
-
-    this.$http.patch('/api/tags/' + this.tag.id + '/expressions/' + expression.name, expression.expression).then((response: any) => {
-      console.log(response);
-
-      this.tagService.getTag(this.tag.name).then((tag: Tag) => {
-        this.tag = tag;
-      })
-    });
-  }
+  // public submit(expression: any): void {
+  //   console.log(expression.expression);
+  //
+  //   this.$http.patch('/api/tags/' + this.tag.id + '/expressions/' + expression.name, expression.expression).then((response: any) => {
+  //     console.log(response);
+  //
+  //     this.tagService.getTag(this.tag.name).then((tag: Tag) => {
+  //       this.tag = tag;
+  //     })
+  //   });
+  // }
 }

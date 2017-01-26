@@ -3,7 +3,14 @@
   <div class="row">
     <div class="col-md-12">
 
-      <tag-search-bar></tag-search-bar>
+      <!--<tag-search-bar></tag-search-bar>-->
+
+      <ol class="breadcrumb">
+        <!--<li></li>-->
+        <li><a href="/processes/{{$ctrl.tag.processName}}">{{$ctrl.tag.processName}}</a></li>
+        <li><a href="/processes/{{$ctrl.tag.processName}}/equipment/{{$ctrl.tag.equipmentName}}">{{$ctrl.tag.equipmentName}}</a></li>
+        <li><a href="/processes/{{$ctrl.tag.processName}}/equipment/{{$ctrl.tag.equipmentName}}/tags/{{$ctrl.tag.name}}">{{$ctrl.tag.name}}</a></li>
+      </ol>
 
       <div class="header">
         <h3>
@@ -23,39 +30,6 @@
             {{$ctrl.formatTimestamp($ctrl.tag.serverTimestamp)}}
           </span>
         </p>
-
-
-          <style>
-            .expression {
-              font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
-            }
-          </style>
-
-
-        <div class="form-group">
-          <label>Expressions:</label>
-          <div ng-repeat="expression in $ctrl.tag.expressions track by $index">
-            {{expression.name}}:
-
-            <strong ng-class="expression.result === true ? 'text-danger' : ''">
-              {{expression.result}}
-              <i class="fa fa-bell" ng-if="expression.alarm === true"></i>
-            </strong>
-
-            <span ng-if="!expression.editing">
-              (<code>{{expression.expression}}</code>)
-            </span>
-
-            <span ng-if="expression.editing === true">
-              <input type="text" ng-value="expression.expression">
-            </span>
-
-            <button class="btn btn-xs btn-primary" ng-if="!expression.editing" ng-click="expression.editing = true">Edit</button>
-            <button class="btn btn-xs btn-primary" ng-if="expression.editing === true"  ng-click="$ctrl.submit(expression); expression.editing = false">Submit
-            </button>
-
-          </div>
-        </div>
 
       </div>
 

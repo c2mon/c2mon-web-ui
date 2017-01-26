@@ -1,20 +1,49 @@
+<style>
+  span.control-value {
+    font-size: 24px;
+  }
+
+  span.control-value code {
+    padding: 2px 30px;
+    color: #555;
+  }
+</style>
+
 <div class="container">
   <div class="row">
     <div class="col-md-12">
 
-      <process-search-bar></process-search-bar>
+      <!--<process-search-bar></process-search-bar>-->
 
-      <h4>
+      <ol class="breadcrumb">
+        <!--<li></li>-->
+        <li><a href="/processes/{{$ctrl.process.processName}}">{{$ctrl.process.processName}}</a></li>
+      </ol>
+
+      <h3>
         {{$ctrl.process.processName}} <small>#{{$ctrl.process.processID}}</small>
-      </h4>
 
-      <uib-tabset active="$ctrl.active">
+        <!--<span class="control-value pull-right" style="font-size: 24px;">-->
+          <!--<code ng-class="$ctrl.heartbeat.dataTagQuality.valid ? 'bg-success' : 'bg-danger'">-->
+            <!--{{$ctrl.heartbeat.dataTagQuality.description}}-->
+          <!--</code>-->
+        <!--</span>-->
+
+        <span class="control-value pull-right" style="font-size: 24px;">
+          <code ng-class="$ctrl.status.value === 'RUNNING' ? 'bg-success' : 'bg-danger'">
+
+            <i class="fa fa-heartbeat" ng-class="$ctrl.heartbeat.dataTagQuality.valid ? 'text-success' : 'text-danger'"></i>
+
+            {{$ctrl.status.value}}
+          </code>
+        </span>
+      </h3>
+
+      <uib-tabset>
         <uib-tab>
-          <uib-tab-heading>
-            Equipment
-          </uib-tab-heading>
+          <uib-tab-heading>Equipment</uib-tab-heading>
 
-          <table class="table table-striped table-hover table-condensed">
+          <table class="table table-hover table-condensed">
             <thead>
             <tr>
               <th>ID</th>
@@ -29,74 +58,15 @@
             </tr>
             </tbody>
           </table>
-        </uib-tab>
-
-        <uib-tab ng-repeat="equipment in $ctrl.selectedEquipment" index="$index">
-          <uib-tab-heading>
-            {{equipment.name}}
-          </uib-tab-heading>
-
-          <h4>
-            <small>#{{equipment.id}}</small>
-          </h4>
-
-          <dl class="dl-horizontal">
-            <dt>CommFault tag ID</dt>
-            <dd>{{equipment.commFaultTagId}}</dd>
-            <dt>CommFault tag value</dt>
-            <dd>{{equipment.commFaultTagValue}}</dd>
-            <dt>Alive tag ID</dt>
-            <dd>{{equipment.aliveTagId}}</dd>
-            <dt>Alive tag interval</dt>
-            <dd>{{equipment.aliveTagInterval}}</dd>
-            <dt>Handler class</dt>
-            <dd>{{equipment.handlerClassName}}</dd>
-            <dt>Address</dt>
-            <dd>{{equipment.address}}</dd>
-          </dl>
-
-          <uib-tabset>
-            <uib-tab>
-              <uib-tab-heading>Tags</uib-tab-heading>
-
-              <table class="table table-hover table-condensed">
-                <thead>
-                <tr>
-                  <th class="col-md-1">ID</th>
-                  <th class="col-md-5">Name</th>
-                  <th class="col-md-1">Data Type</th>
-                  <th class="col-md-1">Control</th>
-                  <th class="col-md-1">Mode</th>
-                </tr>
-                </thead>
-
-                <tbody>
-                <tr ng-repeat="tag in equipment.sourceDataTags" ng-click="$ctrl.onTagSelected(tag)">
-                  <td>{{tag.id}}</td>
-                  <td>{{tag.name}}</td>
-                  <td>{{tag.dataType}}</td>
-                  <td>{{tag.controlTag}}</td>
-                  <td>{{tag.mode}}</td>
-                </tr>
-                </tbody>
-              </table>
-
-            </uib-tab>
-
-            <uib-tab>
-              <uib-tab-heading>Commands</uib-tab-heading>
-
-
-            </uib-tab>
-
-            <uib-tab>
-              <uib-tab-heading>Subequipment</uib-tab-heading>
-            </uib-tab>
-          </uib-tabset>
 
         </uib-tab>
+
+        <!--<uib-tab>-->
+          <!--<uib-tab-heading><i class="fa fa-cog"></i> Config</uib-tab-heading>-->
+        <!--</uib-tab>-->
 
       </uib-tabset>
+
     </div>
   </div>
 </div>

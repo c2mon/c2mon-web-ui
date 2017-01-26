@@ -14,12 +14,12 @@ class TagListController {
   public topTags: Tag[];
 
   public constructor(private $state: IStateService, private tagService: TagService) {
-    this.tagService.getTopTags(10).then((tags: Tag[]) => {
+    this.tagService.getTopTags(50).then((tags: Tag[]) => {
       this.topTags = tags;
     });
   }
 
   public onTagSelected(tag: Tag) {
-    this.$state.go('tag', { name: tag.name });
+    this.$state.go('tag', { pname: tag.processName, ename: tag.equipmentName, tname: tag.name });
   }
 }
