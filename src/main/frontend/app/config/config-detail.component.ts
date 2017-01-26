@@ -14,6 +14,9 @@ class ConfigDetailController {
   public static $inject: string[] = ['ConfigService'];
 
   public configs: ConfigReport[];
+  public activeConfig;
 
-  public constructor(private configService: ConfigService) {}
+  public constructor(private configService: ConfigService) {
+    this.activeConfig = this.configs[0];
+  }
 }

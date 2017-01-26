@@ -180,7 +180,6 @@ public class TagController implements TagListener/*, SupervisionListener*/ {
 
   @Override
   public void onUpdate(Tag tag) {
-    System.out.println(format("Got a tag update: %s = %s", tag.getName(), tag.getValue()));
     this.brokerMessagingTemplate.convertAndSend("/topic/tags/" + tag.getId(), mergeTagConfig(tag));
   }
 

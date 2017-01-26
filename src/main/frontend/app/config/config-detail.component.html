@@ -2,52 +2,42 @@
   <div class="row">
     <div class="col-md-12">
 
-
-      <config-run-bar></config-run-bar>
+      <!--<config-run-bar></config-run-bar>-->
 
       <span class="btn-group">
-          <a class="btn btn-sm btn-default" ng-repeat="config in $ctrl.configs">
-            <span ng-if="config.status === 'FAILURE'" class="text-danger">
-              <i class="glyphicon glyphicon-remove-sign"></i>
-            </span>
-            <span ng-if="config.status === 'RESTART'" class="text-warning">
-              <i class="glyphicon glyphicon-info-sign"></i>
-            </span>
-            <span ng-if="config.status === 'OK'" class="text-success">
-              <i class="glyphicon glyphicon-ok-sign"></i>
-            </span>
-          </a>
+        <a class="btn btn-sm btn-default" ng-repeat="config in $ctrl.configs" ng-click="$ctrl.activeConfig = config">
+          <span ng-if="config.status === 'FAILURE'" class="text-danger">
+            <i class="glyphicon glyphicon-remove-sign"></i>
+          </span>
+          <span ng-if="config.status === 'RESTART'" class="text-warning">
+            <i class="glyphicon glyphicon-info-sign"></i>
+          </span>
+          <span ng-if="config.status === 'OK'" class="text-success">
+            <i class="glyphicon glyphicon-ok-sign"></i>
+          </span>
+
+          Run at {{config.timestamp | date : 'medium'}}
+        </a>
       </span>
-
-
-      <span ng-if="$ctrl.config[0].status === 'FAILURE'" class="text-danger">
-              <i class="glyphicon glyphicon-remove-sign"></i>
-              #{{$ctrl.config[0].id}}
-            </span>
-      <span ng-if="$ctrl.config[0].status === 'RESTART'" class="text-warning">
-              <i class="glyphicon glyphicon-info-sign"></i>
-              #{{$ctrl.config[0].id}}
-            </span>
-      <span ng-if="$ctrl.config[0].status === 'OK'" class="text-success">
-              <i class="glyphicon glyphicon-ok-sign"></i>
-              #{{$ctrl.config[0].id}}
-            </span>
-
 
       <p>
       <dl class="dl-horizontal">
         <dt>name</dt>
-        <dd>{{$ctrl.config[0].name}}</dd>
+        <dd>{{$ctrl.activeConfig.name}}</dd>
         <dt>applied at</dt>
-        <dd>{{$ctrl.config[0].timestamp}}</dd>
+        <dd>{{$ctrl.activeConfig.timestamp | date : 'medium'}}</dd>
         <dt>status</dt>
-        <dd>{{$ctrl.config[0].status}}</dd>
+        <dd>
+          <span ng-if="$ctrl.activeConfig.status === 'FAILURE'" class="label label-danger">FAILURE</span>
+          <span ng-if="$ctrl.activeConfig.status === 'RESTART'" class="label label-warning">RESTART</span>
+          <span ng-if="$ctrl.activeConfig.status === 'OK'" class="label label-success">OK</span>
+        </dd>
         <dt>message</dt>
         <dd>
-          {{$ctrl.config[0].statusDescription}}
+          {{$ctrl.activeConfig.statusDescription}}
         </dd>
         <dt>DAQs to reboot</dt>
-        <dd>{{$ctrl.config[0].processesToReboot}}</dd>
+        <dd>{{$ctrl.activeConfig.processesToReboot}}</dd>
       </dl>
       </p>
 
@@ -58,7 +48,7 @@
           </uib-tab-heading>
 
           <ul class="list-group">
-            <li class="list-group-item" ng-repeat="element in $ctrl.config[0].elementReports">
+            <li class="list-group-item" ng-repeat="element in $ctrl.activeConfig.elementReports">
               {{::element.action}} {{::element.entity}} #{{::element.id}} {{::element.status}}
 
               <div ng-if="element.statusMessage">

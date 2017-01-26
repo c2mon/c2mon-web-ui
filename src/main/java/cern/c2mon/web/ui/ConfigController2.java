@@ -29,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.naming.CannotProceedException;
+
+import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -49,7 +51,10 @@ public class ConfigController2 {
 
   @RequestMapping(value = "/api/config/history", method = GET)
   public List<ConfigurationReportHeader> getConfigHistory(@RequestParam(required = false, defaultValue = "true") final boolean refresh) {
-    return configHistoryService.getCachedReports(refresh);
+    List<ConfigurationReportHeader> headers = configHistoryService.getCachedReports(refresh);
+    Collections.sort(headers);
+    Collections.reverse(headers);
+    return headers;
   }
 
   @RequestMapping(value = "/api/config/{id}", method = GET)
