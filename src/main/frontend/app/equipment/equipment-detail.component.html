@@ -4,7 +4,7 @@
   }
 
   span.control-value code {
-    padding: 2px 30px;
+    padding: 2px 20px;
     color: #555;
   }
 </style>
@@ -14,7 +14,6 @@
     <div class="col-md-12">
 
       <ol class="breadcrumb">
-        <!--<li></li>-->
         <li><a href="/processes/{{$ctrl.process.processName}}">{{$ctrl.process.processName}}</a></li>
         <li><a href="/processes/{{$ctrl.process.processName}}/equipment/{{$ctrl.equipment.name}}">{{$ctrl.equipment.name}}</a></li>
       </ol>
@@ -26,12 +25,18 @@
           <code ng-class="$ctrl.status.value === 'RUNNING' ? 'bg-success' : 'bg-danger'">
 
             <i class="fa fa-heartbeat"
-               ng-if="$ctrl.heartbeat"
-               ng-class="$ctrl.heartbeat.dataTagQuality.valid ? 'text-success' : 'text-danger'"></i>
+               ng-class="{
+                 'text-success': $ctrl.heartbeat.dataTagQuality.valid === true,
+                 'text-danger' : $ctrl.heartbeat.dataTagQuality.valid === false,
+                 'text-muted'  : !$ctrl.heartbeat
+               }"></i>
 
             <i class="fa fa-bolt"
-               ng-if="$ctrl.commFault"
-               ng-class="$ctrl.commFault.value === true ? 'text-success' : 'text-danger'"></i>
+               ng-class="{
+                 'text-success': $ctrl.commFault.value === true,
+                 'text-danger' : $ctrl.commFault.value === false,
+                 'text-muted'  : !$ctrl.commFault
+             }"></i>
 
             {{$ctrl.status.value}}
           </code>
@@ -79,17 +84,17 @@
 
           <p>
           <dl class="dl-horizontal">
-            <dt>CommFault tag ID</dt>
-            <dd>{{$ctrl.equipment.commFaultTagId}}</dd>
-            <dt>CommFault tag value</dt>
+            <dt>commfault tag</dt>
+            <dd>#{{$ctrl.equipment.commFaultTagId}}</dd>
+            <dt>commfault value</dt>
             <dd>{{$ctrl.equipment.commFaultTagValue}}</dd>
-            <dt>Alive tag ID</dt>
-            <dd>{{$ctrl.equipment.aliveTagId}}</dd>
-            <dt>Alive tag interval</dt>
+            <dt>alive tag</dt>
+            <dd>#{{$ctrl.equipment.aliveTagId}}</dd>
+            <dt>alive interval</dt>
             <dd>{{$ctrl.equipment.aliveTagInterval}}</dd>
-            <dt>Handler class</dt>
+            <dt>handler class</dt>
             <dd>{{$ctrl.equipment.handlerClassName}}</dd>
-            <dt>Address</dt>
+            <dt>address</dt>
             <dd>{{$ctrl.equipment.address}}</dd>
           </dl>
           </p>

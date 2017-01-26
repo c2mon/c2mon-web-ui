@@ -4,7 +4,7 @@
   }
 
   span.control-value code {
-    padding: 2px 30px;
+    padding: 2px 20px;
     color: #555;
   }
 </style>
@@ -16,18 +16,11 @@
       <!--<process-search-bar></process-search-bar>-->
 
       <ol class="breadcrumb">
-        <!--<li></li>-->
         <li><a href="/processes/{{$ctrl.process.processName}}">{{$ctrl.process.processName}}</a></li>
       </ol>
 
       <h3>
         {{$ctrl.process.processName}} <small>#{{$ctrl.process.processID}}</small>
-
-        <!--<span class="control-value pull-right" style="font-size: 24px;">-->
-          <!--<code ng-class="$ctrl.heartbeat.dataTagQuality.valid ? 'bg-success' : 'bg-danger'">-->
-            <!--{{$ctrl.heartbeat.dataTagQuality.description}}-->
-          <!--</code>-->
-        <!--</span>-->
 
         <span class="control-value pull-right" style="font-size: 24px;">
           <code ng-class="$ctrl.status.value === 'RUNNING' ? 'bg-success' : 'bg-danger'">
@@ -60,11 +53,6 @@
           </table>
 
         </uib-tab>
-
-        <!--<uib-tab>-->
-          <!--<uib-tab-heading><i class="fa fa-cog"></i> Config</uib-tab-heading>-->
-        <!--</uib-tab>-->
-
       </uib-tabset>
 
     </div>
