@@ -13,11 +13,11 @@ class TagSearchBarController {
 
   public constructor(private $state: IStateService, private tagService: TagService) {}
 
-  public onTagSelected(tag: Tag) {
-    this.$state.go('tag', { name: tag.name });
-  }
-
   public findTags(query: string) {
     return this.tagService.findTags(query);
+  }
+
+  public onTagSelected(tag: Tag) {
+    this.$state.go('tag', { pname: tag.processName, ename: tag.equipmentName, tname: tag.name });
   }
 }
