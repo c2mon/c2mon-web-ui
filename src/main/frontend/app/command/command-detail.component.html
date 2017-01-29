@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+
+      <ol class="breadcrumb">
+        <li><a href="/processes/{{$ctrl.process.processName}}">{{$ctrl.process.processName}}</a></li>
+        <li><a href="/processes/{{$ctrl.process.processName}}/equipment/{{$ctrl.equipment.name}}">{{$ctrl.equipment.name}}</a></li>
+        <li>{{$ctrl.command.name}}</li>
+      </ol>
+
+      <h3>
+        {{$ctrl.command.name}} <small>#{{$ctrl.command.id}}</small>
+      </h3>
+
+      <p>
+        <span ng-if="$ctrl.command.description">{{$ctrl.command.description}}</span>
+
+        <span class="pull-right">
+          {{$ctrl.tag.dataTagQuality.description}}
+          {{$ctrl.formatTimestamp($ctrl.tag.serverTimestamp)}}
+        </span>
+      </p>
+
+      <uib-tabset>
+        <uib-tab>
+          <uib-tab-heading><i class="fa fa-cog"></i> Config</uib-tab-heading>
+
+          <p>
+          <dl class="dl-horizontal">
+            <dt>value</dt>
+            <dd><code>{{$ctrl.command.value}}</code></dd>
+            <dt>value type</dt>
+            <dd><code>{{$ctrl.command.valueType}}</code></dd>
+            <dt>client timeout</dt>
+            <dd><code>{{$ctrl.command.clientTimeout}}</code></dd>
+            <dt>min value</dt>
+            <dd><code>{{$ctrl.command.minValue}}</code></dd>
+            <dt>max value</dt>
+            <dd><code>{{$ctrl.command.maxValue}}</code></dd>
+            <dt>hardware address</dt>
+            <dd><code style="white-space: pre; display: block;">{{$ctrl.command.hardwareAddress | json}}</code></dd>
+            <dt>authorization details</dt>
+            <dd><code>{{$ctrl.command.authorizationDetails}}</code></dd>
+          </dl>
+          </p>
+        </uib-tab>
+      </uib-tabset>
+
+    </div>
+  </div>
+</div>

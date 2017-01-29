@@ -12,11 +12,13 @@ import {ProcessListComponent} from './process/process-list.component';
 import {ProcessDetailComponent} from './process/process-detail.component';
 import {ProcessSearchBarComponent} from './process/process-search-bar.component';
 import {EquipmentDetailComponent} from './equipment/equipment-detail.component';
+import {CommandDetailComponent} from './command/command-detail.component'
 import {ConfigListComponent} from './config/config-list.component';
 import {ConfigDetailComponent} from './config/config-detail.component';
 import {ConfigRunBarComponent} from './config/config-run-bar.component';
 import {TagService} from './tag/tag.service';
 import {ProcessService} from './process/process.service';
+import {CommandService} from './command/command.service';
 import {ConfigService} from './config/config.service';
 import {RouteConfig} from './routes/routes.config';
 import {HttpConfig} from './http/http.config';
@@ -35,11 +37,13 @@ app.component('processList', new ProcessListComponent());
 app.component('processDetail', new ProcessDetailComponent());
 app.component('processSearchBar', new ProcessSearchBarComponent());
 app.component('equipmentDetail', new EquipmentDetailComponent());
+app.component('commandDetail', new CommandDetailComponent());
 app.component('configList', new ConfigListComponent());
 app.component('configDetail', new ConfigDetailComponent());
 app.component('configRunBar', new ConfigRunBarComponent());
 app.service('TagService', TagService);
 app.service('ProcessService', ProcessService);
+app.service('CommandService', CommandService);
 app.service('ConfigService', ConfigService);
 
 // Configure HTTP
