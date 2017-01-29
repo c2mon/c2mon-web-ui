@@ -16,13 +16,15 @@
       <!--<process-search-bar></process-search-bar>-->
 
       <ol class="breadcrumb">
-        <li><a href="/processes/{{$ctrl.process.processName}}">{{$ctrl.process.processName}}</a></li>
+        <li>{{$ctrl.process.processName}}</li>
       </ol>
 
       <h3>
         {{$ctrl.process.processName}} <small>#{{$ctrl.process.processID}}</small>
 
-        <span class="control-value pull-right" style="font-size: 24px;">
+        <span ng-if="$ctrl.status"
+              class="control-value pull-right"
+              style="font-size: 24px;">
           <code ng-class="$ctrl.status.value === 'RUNNING' ? 'bg-success' : 'bg-danger'">
 
             <i class="fa fa-heartbeat" ng-class="$ctrl.heartbeat.dataTagQuality.valid ? 'text-success' : 'text-danger'"></i>

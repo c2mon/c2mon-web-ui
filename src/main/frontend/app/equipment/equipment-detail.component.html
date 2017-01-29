@@ -15,13 +15,14 @@
 
       <ol class="breadcrumb">
         <li><a href="/processes/{{$ctrl.process.processName}}">{{$ctrl.process.processName}}</a></li>
-        <li><a href="/processes/{{$ctrl.process.processName}}/equipment/{{$ctrl.equipment.name}}">{{$ctrl.equipment.name}}</a></li>
+        <li>{{$ctrl.equipment.name}}</li>
       </ol>
 
       <h3>
         {{$ctrl.equipment.name}} <small>#{{$ctrl.equipment.id}}</small>
 
-        <span class="control-value pull-right">
+        <span ng-if="$ctrl.status"
+              class="control-value pull-right">
           <code ng-class="$ctrl.status.value === 'RUNNING' ? 'bg-success' : 'bg-danger'">
 
             <i class="fa fa-heartbeat"
@@ -73,6 +74,22 @@
 
         <uib-tab>
           <uib-tab-heading>Commands</uib-tab-heading>
+
+          <table class="table table-hover table-condensed">
+            <thead>
+            <tr>
+              <th class="col-md-1">ID</th>
+              <th class="col-md-5">Name</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr ng-repeat="command in $ctrl.equipment.commandTags" ng-click="$ctrl.onCommandSelected(command)">
+              <td>{{command.id}}</td>
+              <td>{{command.name}}</td>
+            </tr>
+            </tbody>
+          </table>
         </uib-tab>
 
         <uib-tab>

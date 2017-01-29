@@ -1,7 +1,7 @@
 import {Process} from '../process/process';
 import {Equipment} from './equipment';
 import {Tag} from '../tag/tag';
-import {TagService} from '../tag/tag.service';
+import {Command} from '../command/command';
 import {IScope, IComponentOptions} from 'angular';
 import {IStateService, IStateParamsService} from "angular-ui-router";
 
@@ -45,14 +45,20 @@ class EquipmentDetailController {
   public onConnection = (frame) => {
     console.log('Connected: ' + frame);
 
-    this.stompClient.subscribe('/topic/tags/' + this.equipment.statusTagId, this.onStatusUpdate);
-    this.stompClient.send("/app/tags/" + this.equipment.statusTagId);
+    if (this.equipment.statusTagId) {
+      this.stompClient.subscribe('/topic/tags/' + this.equipment.statusTagId, this.onStatusUpdate);
+      this.stompClient.send("/app/tags/" + this.equipment.statusTagId);
+    }
 
-    this.stompClient.subscribe('/topic/tags/' + this.equipment.aliveTagId, this.onHeartbeat);
-    this.stompClient.send("/app/tags/" + this.equipment.aliveTagID);
+    if (this.equipment.aliveTagId) {
+      this.stompClient.subscribe('/topic/tags/' + this.equipment.aliveTagId, this.onHeartbeat);
+      this.stompClient.send("/app/tags/" + this.equipment.aliveTagId);
+    }
 
-    this.stompClient.subscribe('/topic/tags/' + this.equipment.commFaultTagId, this.onCommFault);
-    this.stompClient.send("/app/tags/" + this.equipment.commFaultTagId);
+    if (this.equipment.commFaultTagId) {
+      this.stompClient.subscribe('/topic/tags/' + this.equipment.commFaultTagId, this.onCommFault);
+      this.stompClient.send("/app/tags/" + this.equipment.commFaultTagId);
+    }
   };
 
   public onStatusUpdate = (message) => {
@@ -71,6 +77,19 @@ class EquipmentDetailController {
   };
 
   public onTagSelected(tag: Tag) {
-    this.$state.go('tag', { pname: this.process.processName, ename: this.equipment.name, tname: tag.name, tag: tag });
+    this.$state.go('tag', {
+      pname: this.process.processName,
+      ename: this.equipment.name,
+      tname: tag.name,
+      tag: tag
+    });
+  }
+
+  public onCommandSelected(command: Command) {
+    this.$state.go('command', {
+      pname: this.process.processName,
+      ename: this.equipment.name,
+      cid: command.id
+    });
   }
 }

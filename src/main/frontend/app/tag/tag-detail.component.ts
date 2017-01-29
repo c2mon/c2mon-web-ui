@@ -1,7 +1,8 @@
-import {Process} from '../process/process';
-import {Equipment} from '../equipment/equipment';
 import {Tag} from './tag';
 import {TagService} from './tag.service';
+import {Process} from '../process/process';
+import {ProcessService} from '../process/process.service';
+import {Equipment} from '../equipment/equipment';
 import {IComponentOptions, IHttpService, IScope} from 'angular';
 import {IStateParamsService} from 'angular-ui-router';
 import 'moment';
@@ -15,13 +16,12 @@ export class TagDetailComponent implements IComponentOptions {
   public templateUrl: string = '/tag/tag-detail.component.html';
   public controller: Function = TagDetailController;
   public bindings: any = {
-    process: '=',
     tag: '='
   };
 }
 
 class TagDetailController {
-  public static $inject: string[] = ['TagService', '$http', '$scope', '$stateParams'];
+  public static $inject: string[] = ['TagService', 'ProcessService', '$http', '$scope'];
 
   public process: Process;
   public equipment: Equipment;
@@ -30,16 +30,21 @@ class TagDetailController {
   public chart: Highcharts;
   private stompClient: any;
 
-  public constructor(private tagService: TagService, private $http: IHttpService, private $scope: IScope, private $stateParams: IStateParamsService) {
-    let equipments: any = this.process.equipmentConfigurations;
+  public constructor(private tagService: TagService, private processService: ProcessService,
+                     private $http: IHttpService, private $scope: IScope) {
+    processService.getProcess(this.tag.processName).then((process: Process) => {
+      this.process = process;
 
-    for (let equipmentId: number in equipments) {
-      let equipment: Equipment = equipments[equipmentId];
+      let equipments: any = this.process.equipmentConfigurations;
 
-      if (equipment.name === $stateParams.ename) {
-        this.equipment = equipment;
+      for (let equipmentId: number in equipments) {
+        let equipment: Equipment = equipments[equipmentId];
+
+        if (equipment.name === this.tag.equipmentName) {
+          this.equipment = equipment;
+        }
       }
-    }
+    });
 
     // Ask for one hour by default
     let max: Moment = moment();
@@ -60,7 +65,7 @@ class TagDetailController {
 
     var tagId = this.tag.id;
     this.stompClient.subscribe('/topic/tags/' + tagId, this.onTagUpdate);
-    this.stompClient.send("/app/tags/" + tagId);
+    this.stompClient.send('/app/tags/' + tagId);
   };
 
   public onTagUpdate = (message) => {

@@ -6,32 +6,29 @@
       <!--<tag-search-bar></tag-search-bar>-->
 
       <ol class="breadcrumb">
-        <!--<li></li>-->
         <li><a href="/processes/{{$ctrl.tag.processName}}">{{$ctrl.tag.processName}}</a></li>
         <li><a href="/processes/{{$ctrl.tag.processName}}/equipment/{{$ctrl.tag.equipmentName}}">{{$ctrl.tag.equipmentName}}</a></li>
-        <li><a href="/processes/{{$ctrl.tag.processName}}/equipment/{{$ctrl.tag.equipmentName}}/tags/{{$ctrl.tag.name}}">{{$ctrl.tag.name}}</a></li>
+        <li>{{$ctrl.tag.name}}</li>
       </ol>
 
-      <div class="header">
-        <h3>
-          {{$ctrl.tag.name}}
-          <small>#{{$ctrl.tag.id}}</small>
+      <h3>
+        {{$ctrl.tag.name}}
+        <small>#{{$ctrl.tag.id}}</small>
 
-          <span class="pull-right text-success" style="font-size: 24px;">
-            <code>{{$ctrl.tag.value}} {{$ctrl.tag.unit}}</code>
-          </span>
-        </h3>
+        <span class="pull-right text-success" style="font-size: 24px;">
+          <code>{{$ctrl.tag.value}} {{$ctrl.tag.unit}}</code>
+        </span>
+      </h3>
 
-        <p>
-          <span ng-if="$ctrl.tag.description">{{$ctrl.tag.description}}</span>
+      <p>
+        <span ng-if="$ctrl.tag.description">{{$ctrl.tag.description}}</span>
 
-          <span class="pull-right">
-            {{$ctrl.tag.dataTagQuality.description}}
-            {{$ctrl.formatTimestamp($ctrl.tag.serverTimestamp)}}
-          </span>
-        </p>
+        <span class="pull-right">
+          {{$ctrl.tag.dataTagQuality.description}}
+          {{$ctrl.formatTimestamp($ctrl.tag.serverTimestamp)}}
+        </span>
+      </p>
 
-      </div>
 
       <uib-tabset>
         <uib-tab>
@@ -124,7 +121,7 @@
             <dt>Process names</dt>
             <dd><code>{{$ctrl.tag.processNames}}</code></dd>
             <dt>Hardware address</dt>
-            <dd><code>{{$ctrl.tag.hardwareAddress}}</code></dd>
+            <dd><code style="white-space: pre; display: block;">{{$ctrl.tag.hardwareAddress}}</code></dd>
             <dt>Address parameters</dt>
             <dd><code>{{$ctrl.tag.addressParameters}}</code></dd>
           </dl>
