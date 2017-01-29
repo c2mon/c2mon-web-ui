@@ -2,6 +2,8 @@ package cern.c2mon.web.ui;
 
 import cern.c2mon.client.common.tag.Tag;
 import cern.c2mon.client.core.TagService;
+import cern.c2mon.client.core.config.C2monClientProperties;
+
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestClientFactory;
 import io.searchbox.client.config.HttpClientConfig;
@@ -36,18 +38,23 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 @Slf4j
 public class ElasticsearchService {
 
-  private JestClient client;
+  private final JestClient client;
 
   @Autowired
-  private TagService tagService;
+  private final TagService tagService;
 
-  @PostConstruct
-  public void init() {
+  private final String tagIndexPrefix;
+
+  @Autowired
+  public ElasticsearchService(TagService tagService, C2monClientProperties properties) {
+    this.tagService = tagService;
+    this.tagIndexPrefix = properties.getElasticsearch().getIndexPrefix() + "-tag*";
+
     JestClientFactory factory = new JestClientFactory();
-    factory.setHttpClientConfig(new HttpClientConfig.Builder("http://localhost:9200")
+    factory.setHttpClientConfig(new HttpClientConfig.Builder(properties.getElasticsearch().getUrl())
         .multiThreaded(true)
         .build());
-    client = factory.getObject();
+    this.client = factory.getObject();
   }
 
   /**
@@ -78,7 +85,7 @@ public class ElasticsearchService {
             ));
 
     SearchResult result;
-    Search search = new Search.Builder(searchSourceBuilder.toString()).addIndex("c2mon-tag*").build();
+    Search search = new Search.Builder(searchSourceBuilder.toString()).addIndex(tagIndexPrefix).build();
 
     try {
       result = client.execute(search);
@@ -141,7 +148,7 @@ public class ElasticsearchService {
         .size(size));
 
     SearchResult result;
-    Search search = new Search.Builder(searchSourceBuilder.toString()).addIndex("c2mon-tag*").build();
+    Search search = new Search.Builder(searchSourceBuilder.toString()).addIndex(tagIndexPrefix).build();
 
     try {
       result = client.execute(search);
@@ -179,7 +186,7 @@ public class ElasticsearchService {
             ));
 
     SearchResult result;
-    Search search = new Search.Builder(searchSourceBuilder.toString()).addIndex("c2mon-tag*").build();
+    Search search = new Search.Builder(searchSourceBuilder.toString()).addIndex(tagIndexPrefix).build();
 
     try {
       result = client.execute(search);
@@ -206,16 +213,15 @@ public class ElasticsearchService {
     List<Long> tagIds = new ArrayList<>();
 
     SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-    searchSourceBuilder.query(
-        nestedQuery("metadata",
-            boolQuery().must(matchQuery("metadata." + key, value))))
+    searchSourceBuilder
+        .query(prefixQuery("metadata." + key, value))
+        .size(0)
         .aggregation(AggregationBuilders.terms("group-by-id")
             .field("id")
-            .size(0)
         );
 
     SearchResult result;
-    Search search = new Search.Builder(searchSourceBuilder.toString()).addIndex("c2mon-tag*").build();
+    Search search = new Search.Builder(searchSourceBuilder.toString()).addIndex(tagIndexPrefix).build();
 
     try {
       result = client.execute(search);
