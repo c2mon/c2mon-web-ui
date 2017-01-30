@@ -24,6 +24,7 @@ import cern.c2mon.client.ext.history.common.exception.LoadingParameterException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -50,7 +51,7 @@ public class HistoryAlarmService {
 
     final long id = Long.parseLong(alarmId);
     Page<Alarm> alarmHistory = alarmService.findBy(new HistoricAlarmQuery().id(id), new PageRequest(0,
-        numberOfRecords));
+        numberOfRecords, Sort.Direction.ASC));
 
     return alarmHistory.getContent();
   }
