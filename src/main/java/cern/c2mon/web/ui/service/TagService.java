@@ -73,15 +73,8 @@ public class TagService {
    * @return tag value
    */
   public Tag getTag(final long dataTagId) {
-    Tag dt = null;
-    List<Long> tagIds = new ArrayList<Long>();
-    tagIds.add(dataTagId);
-    Collection<Tag> dataTags = tagManager.getDataTags(tagIds);
-    Iterator<Tag> it = dataTags.iterator();
-    if (it.hasNext()) {
-      dt = it.next();
-    }
-    logger.debug("Datatag value fetch for tag " + dataTagId + ": " + (dt == null ? "NULL" : "SUCCESS"));
-    return dt;
+    Tag dataTag = tagManager.getDataTag(dataTagId);
+    logger.debug("Datatag value fetch for tag " + dataTagId + ": " + (dataTag == null ? "NULL" : "SUCCESS"));
+    return dataTag;
   }
 }

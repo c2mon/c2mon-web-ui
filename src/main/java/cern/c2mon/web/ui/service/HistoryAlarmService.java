@@ -21,9 +21,12 @@ import cern.c2mon.client.ext.history.alarm.AlarmHistoryService;
 import cern.c2mon.client.ext.history.alarm.HistoricAlarmQuery;
 import cern.c2mon.client.ext.history.common.exception.HistoryProviderException;
 import cern.c2mon.client.ext.history.common.exception.LoadingParameterException;
+
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -47,12 +50,9 @@ public class HistoryAlarmService {
    * @return history as a List of HistoryTagValueUpdates
    */
   public final List<Alarm> requestHistoryData(final String alarmId, final int numberOfRecords) {
-
     final long id = Long.parseLong(alarmId);
-    Page<Alarm> alarmHistory = alarmService.findBy(new HistoricAlarmQuery().id(id), new PageRequest(0,
-        numberOfRecords));
-
-    return alarmHistory.getContent();
+    Page<Alarm> alarmHistory = alarmService.findBy(new HistoricAlarmQuery().id(id), new PageRequest(0, numberOfRecords, new Sort(Sort.Direction.DESC, "timestamp")));
+    return Lists.reverse(alarmHistory.getContent());
   }
 
   /**
