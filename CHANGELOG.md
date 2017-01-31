@@ -11,6 +11,7 @@ For more details on a given release, please check also the [Milestone planning](
 ### Changed
 
 ### Fixed
+- Listing of last N alarms (#10)
 
 ### Removed
 - Support for Datatag XML serialisation. Please use [c2mon-web-restapi](https://github.com/c2mon/c2mon-web-restapi) instead (#6)
