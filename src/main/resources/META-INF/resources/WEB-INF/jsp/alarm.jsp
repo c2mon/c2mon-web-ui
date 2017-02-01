@@ -114,6 +114,10 @@
             <th>Timestamp</th>
             <td>${alarm.timestamp}</td>
           </tr>
+          <tr>
+            <th>Metadata</th>
+            <td>${alarm.metadata}</td>
+          </tr>
         </tbody>
       </table>
     </div>
