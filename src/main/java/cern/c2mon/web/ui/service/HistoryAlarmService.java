@@ -16,11 +16,8 @@
  *****************************************************************************/
 package cern.c2mon.web.ui.service;
 
-import cern.c2mon.client.ext.history.alarm.Alarm;
-import cern.c2mon.client.ext.history.alarm.AlarmHistoryService;
-import cern.c2mon.client.ext.history.alarm.HistoricAlarmQuery;
-import cern.c2mon.client.ext.history.common.exception.HistoryProviderException;
-import cern.c2mon.client.ext.history.common.exception.LoadingParameterException;
+import java.sql.Timestamp;
+import java.util.List;
 
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +26,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-import java.util.List;
+import cern.c2mon.client.ext.history.alarm.Alarm;
+import cern.c2mon.client.ext.history.alarm.AlarmHistoryService;
+import cern.c2mon.client.ext.history.alarm.HistoricAlarmQuery;
+import cern.c2mon.client.ext.history.common.exception.HistoryProviderException;
+import cern.c2mon.client.ext.history.common.exception.LoadingParameterException;
 
 /**
  * HistoryService providing the XML representation for the history of a given

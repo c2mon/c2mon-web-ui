@@ -22,8 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cern.c2mon.client.common.tag.CommandTag;
-import cern.c2mon.client.core.manager.CommandManager;
-import cern.c2mon.client.core.tag.ClientCommandTagImpl;
+import cern.c2mon.client.core.tag.CommandTagImpl;
 
 /**
  * Command service providing the XML representation of a given tag
@@ -37,7 +36,7 @@ public class CommandService {
   private static Logger logger = LoggerFactory.getLogger(CommandService.class);
 
   @Autowired
-  private CommandManager commandManager;
+  private cern.c2mon.client.core.service.CommandService commandManager;
 
   /**
    * Gets the XML representation of the configuration of a command
@@ -50,7 +49,7 @@ public class CommandService {
    */
   public String getCommandTagXml(final String commandId) throws TagIdException {
     try {
-      ClientCommandTagImpl command = (ClientCommandTagImpl) getCommandTag(Long.parseLong(commandId));
+      CommandTagImpl command = (CommandTagImpl) getCommandTag(Long.parseLong(commandId));
       if (command.isExistingCommand())
         return command.getXml();
       else

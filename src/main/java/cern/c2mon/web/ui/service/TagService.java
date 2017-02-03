@@ -28,7 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cern.c2mon.client.common.tag.Tag;
-import cern.c2mon.client.core.C2monTagManager;
+import cern.c2mon.client.core.service.ConfigurationService;
 import cern.c2mon.shared.client.tag.TagConfig;
 
 /**
@@ -42,11 +42,11 @@ public class TagService {
    */
   private static Logger logger = LoggerFactory.getLogger(TagService.class);
 
-  /**
-   * Gateway to C2monService
-   */
   @Autowired
-  private C2monTagManager tagManager;
+  private cern.c2mon.client.core.service.TagService tagManager;
+
+  @Autowired
+  private ConfigurationService configurationService;
 
 
   /**
@@ -58,7 +58,7 @@ public class TagService {
     TagConfig tc = null;
     List<Long> tagIds = new ArrayList<Long>();
     tagIds.add(tagId);
-    Collection<TagConfig> tagConfigs = tagManager.getTagConfigurations(tagIds);
+    Collection<TagConfig> tagConfigs = configurationService.getTagConfigurations(tagIds);
     Iterator<TagConfig> it = tagConfigs.iterator();
     if (it.hasNext()) {
       tc = it.next();
@@ -73,7 +73,7 @@ public class TagService {
    * @return tag value
    */
   public Tag getTag(final long dataTagId) {
-    Tag dataTag = tagManager.getDataTag(dataTagId);
+    Tag dataTag = tagManager.get(dataTagId);
     logger.debug("Datatag value fetch for tag " + dataTagId + ": " + (dataTag == null ? "NULL" : "SUCCESS"));
     return dataTag;
   }

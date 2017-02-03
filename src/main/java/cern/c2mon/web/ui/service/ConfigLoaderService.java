@@ -16,25 +16,22 @@
  *****************************************************************************/
 package cern.c2mon.web.ui.service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.naming.CannotProceedException;
 
-import cern.c2mon.client.core.manager.TagManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import cern.c2mon.client.core.service.ConfigurationService;
 import cern.c2mon.shared.client.configuration.ConfigurationReport;
 import cern.c2mon.shared.client.configuration.ConfigurationReportHeader;
 import cern.c2mon.shared.client.request.ClientRequestProgressReport;
 import cern.c2mon.web.ui.util.ReportHandler;
+
+//import org.springframework.security.acls.model.NotFoundException;
 
 /**
  * ConfigLoaderService service providing the XML representation for a given
@@ -52,7 +49,7 @@ public class ConfigLoaderService {
    * Gateway to ConfigLoaderService
    */
   @Autowired
-  private TagManager tagManager;
+  private ConfigurationService configurationService;
 
   /**
    * Stores the ProgressReports.
@@ -85,7 +82,7 @@ public class ConfigLoaderService {
     ReportHandler reportHandler = new ReportHandler(configurationId);
     progressReports.put(String.valueOf(configurationId), reportHandler);
 
-    ConfigurationReport report = tagManager.applyConfiguration(configurationId, reportHandler);
+    ConfigurationReport report = configurationService.applyConfiguration(configurationId, reportHandler);
 
     logger.debug("getConfigurationReport: Received configuration report? -> " + configurationId + ": " + (report == null ? "NULL" : "SUCCESS"));
 
@@ -127,7 +124,7 @@ public class ConfigLoaderService {
     }
 
     else {
-      reports = new ArrayList<>(tagManager.getConfigurationReports(Long.valueOf(configurationId)));
+      reports = new ArrayList<>(configurationService.getConfigurationReports(Long.valueOf(configurationId)));
       Collections.sort(reports);
     }
 
@@ -147,7 +144,7 @@ public class ConfigLoaderService {
    */
   public List<ConfigurationReportHeader> getConfigurationReports(boolean refresh) {
     if (refresh || configurationReportHeaders.isEmpty()) {
-      configurationReportHeaders = new ArrayList<>(tagManager.getConfigurationReports());
+      configurationReportHeaders = new ArrayList<>(configurationService.getConfigurationReports());
       Collections.reverse(configurationReportHeaders);
     }
 

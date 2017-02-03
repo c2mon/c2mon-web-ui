@@ -21,12 +21,12 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import cern.c2mon.client.core.manager.TagManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cern.c2mon.client.core.service.AlarmService;
 import cern.c2mon.shared.client.alarm.AlarmValue;
 import cern.c2mon.shared.client.alarm.AlarmValueImpl;
 
@@ -41,11 +41,8 @@ public class WebAlarmService {
    */
   private static Logger logger = LoggerFactory.getLogger(WebAlarmService.class);
 
-  /**
-   * Gateway to C2monService
-   */
   @Autowired
-  private TagManager tagManager;
+  private AlarmService alarmService;
 
   /**
    * Gets the XML representation of the current value and configuration of an
@@ -82,7 +79,7 @@ public class WebAlarmService {
     AlarmValue av = null;
     List<Long> alarmIds = new ArrayList<Long>();
     alarmIds.add(alarmId);
-    Collection<AlarmValue> alarms = tagManager.getAlarms(alarmIds);
+    Collection<AlarmValue> alarms = alarmService.getAlarms(alarmIds);
     // tagManager.getAlarms(alarmIds);
     Iterator<AlarmValue> it = alarms.iterator();
     if (it.hasNext()) {

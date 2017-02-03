@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import cern.c2mon.client.core.manager.TagManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.simpleframework.xml.Serializer;
@@ -28,6 +27,7 @@ import org.simpleframework.xml.core.Persister;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cern.c2mon.client.core.service.ConfigurationService;
 import cern.c2mon.shared.client.process.ProcessNameResponse;
 import cern.c2mon.shared.common.process.ProcessConfiguration;
 
@@ -46,7 +46,7 @@ public class ProcessService {
    * Gateway to ConfigLoaderService
    */
   @Autowired
-  private TagManager tagManager;
+  private ConfigurationService configurationService;
 
 
   /**
@@ -75,7 +75,7 @@ public class ProcessService {
    */
   public Collection<String> getProcessNames() {
 
-    Collection <ProcessNameResponse> processNames = tagManager.getProcessNames();
+    Collection <ProcessNameResponse> processNames = configurationService.getProcessNames();
     Collection <String> names = new ArrayList<String>();
 
     Iterator<ProcessNameResponse> i = processNames.iterator();
@@ -103,7 +103,7 @@ public class ProcessService {
    */
   private String getXml(final String processName) {
 
-    String xml = tagManager.getProcessXml(processName);
+    String xml = configurationService.getProcessXml(processName);
 
     logger.debug("getXml fetch for process " + processName + ": "
         + (xml == null ? "NULL" : "SUCCESS"));
