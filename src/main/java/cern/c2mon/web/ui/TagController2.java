@@ -18,11 +18,9 @@ package cern.c2mon.web.ui;
 
 import cern.c2mon.client.common.listener.TagListener;
 import cern.c2mon.client.common.tag.Tag;
-//import cern.c2mon.client.core.elasticsearch.ElasticsearchService;
-import cern.c2mon.client.core.ConfigurationService;
-import cern.c2mon.client.core.TagService;
-import cern.c2mon.client.core.manager.SupervisionManager;
-//import cern.c2mon.shared.client.expression.Expression;
+import cern.c2mon.client.core.elasticsearch.ElasticsearchService;
+import cern.c2mon.client.core.service.ConfigurationService;
+import cern.c2mon.client.core.service.TagService;
 import cern.c2mon.shared.client.tag.TagConfig;
 import cern.c2mon.shared.common.process.EquipmentConfiguration;
 import cern.c2mon.shared.common.process.ProcessConfiguration;
@@ -45,7 +43,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.lang.String.format;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 /**
@@ -53,7 +50,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
  */
 @RestController
 @RequestMapping("/api/tags")
-public class TagController implements TagListener {
+public class TagController2 implements TagListener {
 
   @Autowired
   private TagService tagService;
@@ -66,9 +63,6 @@ public class TagController implements TagListener {
 
   @Autowired
   private ElasticsearchService elasticsearchService;
-
-  @Autowired
-  SupervisionManager supervisionManager;
 
   @Autowired
   private ObjectMapper mapper;
@@ -117,12 +111,12 @@ public class TagController implements TagListener {
 
   @RequestMapping(value = "/search", method = GET)
   public Collection<Object> search(@RequestParam final String query) {
-    return mergeTagConfigs((List<Tag>) elasticsearchService.findByName(query));
+    return mergeTagConfigs((List<Tag>) tagService.findByName(query));
   }
 
   @RequestMapping(value = "/top", method = GET)
   public Collection<Object> getTopTags(@RequestParam final Integer size) {
-    List<Tag> tags = filterUnknownTags(elasticsearchService.getTopTags(size));
+    List<Tag> tags = filterUnknownTags((List<Tag>) tagService.get(elasticsearchService.getTopTags(size)));
     Collections.reverse(tags);
     return mergeTagConfigs(tags);
   }

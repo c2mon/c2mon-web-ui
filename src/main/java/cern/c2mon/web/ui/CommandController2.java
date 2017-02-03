@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cern.c2mon.client.common.tag.CommandTag;
-import cern.c2mon.client.core.CommandService;
+import cern.c2mon.client.core.service.CommandService;
 import cern.c2mon.shared.common.process.EquipmentConfiguration;
 import cern.c2mon.shared.common.process.ProcessConfiguration;
 import cern.c2mon.web.ui.service.ProcessService;

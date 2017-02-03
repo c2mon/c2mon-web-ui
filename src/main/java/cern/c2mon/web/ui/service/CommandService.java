@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cern.c2mon.client.common.tag.CommandTag;
-import cern.c2mon.client.core.tag.CommandTagImpl;
 
 /**
  * Command service providing the XML representation of a given tag
@@ -50,7 +49,7 @@ public class CommandService {
    */
   public String getCommandTagXml(final String commandId) throws TagIdException {
     try {
-      CommandTagImpl command = (CommandTagImpl) getCommandTag(Long.parseLong(commandId));
+      CommandTag command = (CommandTag) getCommandTag(Long.parseLong(commandId));
       if (command.isExistingCommand())
         return command.getXml();
       else

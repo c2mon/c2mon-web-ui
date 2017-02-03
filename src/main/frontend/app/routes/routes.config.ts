@@ -15,7 +15,7 @@ export class RouteConfig {
 
     $urlRouterProvider.otherwise('/');
     $stateProvider
-      .state('tags',      { component: 'tagList',         url: '/tags'})
+      .state('tags',      { component: 'tagList',         url: '/'})
       .state('tag',       { component: 'tagDetail',       url: '/tags/:tname',
                             resolve: { tag: RouteConfig.resolveTag() }})
       .state('processes', { component: 'processList',     url: '/processes'})
