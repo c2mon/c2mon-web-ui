@@ -4,8 +4,7 @@ import {IHttpService, IQService, IPromise, IDeferred} from 'angular';
 export class TagService {
   public static $inject: string[] = ['$http', '$q'];
 
-  public constructor(private $http: IHttpService, private $q: IQService) {
-  }
+  public constructor(private $http: IHttpService, private $q: IQService) {}
 
   public getTag(id: string): IPromise<Tag> {
     let q: IDeferred<Tag[]> = this.$q.defer();

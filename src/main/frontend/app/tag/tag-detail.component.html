@@ -83,7 +83,13 @@
             <dt>Subequipment</dt>
             <dd><code>{{$ctrl.tag.subEquipmentIds}}</code></dd>
             <dt>Alarms</dt>
-            <dd><code>{{$ctrl.tag.alarmIds}}</code></dd>
+            <dd>
+              <code>
+                <span ng-repeat="alarmId in $ctrl.tag.alarmIds">
+                  <a href="/alarms/{{alarmId}}">{{alarmId}}</a>,
+                </span>
+              </code>
+            </dd>
             <dt>Rules</dt>
             <dd><code>{{$ctrl.tag.ruleIds}}</code></dd>
             <dt>Rule expression</dt>

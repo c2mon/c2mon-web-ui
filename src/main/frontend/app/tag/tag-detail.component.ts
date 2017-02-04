@@ -4,7 +4,6 @@ import {Process} from '../process/process';
 import {ProcessService} from '../process/process.service';
 import {Equipment} from '../equipment/equipment';
 import {IComponentOptions, IHttpService, IScope} from 'angular';
-import {IStateParamsService} from 'angular-ui-router';
 import 'moment';
 import Moment = moment.Moment;
 

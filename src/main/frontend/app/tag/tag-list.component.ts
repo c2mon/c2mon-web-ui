@@ -1,7 +1,7 @@
 import {Tag} from '../tag/tag';
 import {TagService} from '../tag/tag.service';
 import {IComponentOptions} from 'angular';
-import {IStateService} from "angular-ui-router";
+import {IStateService} from 'angular-ui-router';
 
 export class TagListComponent implements IComponentOptions {
   public templateUrl: string = '/tag/tag-list.component.html';

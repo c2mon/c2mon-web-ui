@@ -1,0 +1,86 @@
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+
+      <!--<tag-search-bar></tag-search-bar>-->
+
+      <!--<ol class="breadcrumb">-->
+        <!--<li><a href="/processes/{{$ctrl.tag.processName}}">{{$ctrl.tag.processName}}</a></li>-->
+        <!--<li><a href="/processes/{{$ctrl.tag.processName}}/equipment/{{$ctrl.tag.equipmentName}}">{{$ctrl.tag.equipmentName}}</a></li>-->
+        <!--<li>{{$ctrl.tag.name}}</li>-->
+      <!--</ol>-->
+
+      <h3>
+        {{$ctrl.alarm.faultFamily}}:{{$ctrl.alarm.faultMemeber}}:{{$ctrl.alarm.faultCode}}
+        <small>#{{$ctrl.alarm.id}}</small>
+
+        <span class="pull-right" style="font-size: 24px;">
+          <code ng-class="$ctrl.alarm.active ? 'text-danger' : 'text-muted'">
+            {{$ctrl.alarm.active ? 'ACTIVE' : 'TERMINATED'}}
+          </code>
+        </span>
+      </h3>
+
+      <p>
+        <span ng-if="$ctrl.tag.description">{{$ctrl.tag.description}}</span>
+
+        <span class="pull-right">
+          {{$ctrl.tag.dataTagQuality.description}}
+          {{$ctrl.formatTimestamp($ctrl.tag.serverTimestamp)}}
+        </span>
+      </p>
+
+
+      <uib-tabset>
+        <uib-tab>
+          <uib-tab-heading>
+            <i class="fa fa-table"></i> History
+          </uib-tab-heading>
+
+          <div class="history-table-container">
+            <table class="table table-striped table-hover table-condensed">
+              <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Value</th>
+              </tr>
+              </thead>
+
+              <tbody>
+              <tr ng-repeat="item in $ctrl.history">
+                <td>{{$ctrl.formatTimestamp(item[0])}}</td>
+                <td>
+                  <span class="label" ng-class="item[1] ? 'label-danger' : 'label-default'">
+                    {{item[1] ? 'ACTIVE' : 'TERMINATED'}} {{$ctrl.alarm.info}}
+                  </span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </uib-tab>
+
+        <uib-tab>
+          <uib-tab-heading>
+            <i class="fa fa-cog"></i> Config
+          </uib-tab-heading>
+
+          <p>
+          <dl class="dl-horizontal">
+            <dt>Tag</dt>
+            <dd>
+              <code><a href="/tags/{{$ctrl.alarm.tagId}}">{{$ctrl.alarm.tagId}}</a></code>
+            </dd>
+          <dt>Metadata</dt>
+          <dd><code>{{$ctrl.alarm.metadata}}</code></dd>
+          </dl>
+          </p>
+
+        </uib-tab>
+      </uib-tabset>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+
+      <alarm-search-bar></alarm-search-bar>
+
+      <ul class="list-group">
+        <li class="list-group-item" ng-repeat="alarm in $ctrl.alarms" style="cursor: pointer">
+          <div ng-click="$ctrl.onAlarmSelected(alarm)">
+            {{alarm.faultFamily}}:{{alarm.faultMemeber}}:{{alarm.faultCode}}
+
+            <span class="text-muted">#{{alarm.id}}</span>
+
+            <span class="label pull-right"
+                  ng-class="alarm.active ? 'label-danger' : 'label-default'">
+              {{alarm.active ? 'ACTIVE': 'TERMINATED'}}
+            </span>
+          </div>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</div>

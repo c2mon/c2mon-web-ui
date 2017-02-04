@@ -1,4 +1,5 @@
 import {TagService} from '../tag/tag.service';
+import {AlarmService} from '../alarm/alarm.service';
 import {ProcessService} from '../process/process.service';
 import {CommandService} from '../command/command.service';
 import {ConfigService} from '../config/config.service';
@@ -18,6 +19,9 @@ export class RouteConfig {
       .state('tags',      { component: 'tagList',         url: '/'})
       .state('tag',       { component: 'tagDetail',       url: '/tags/:tname',
                             resolve: { tag: RouteConfig.resolveTag() }})
+      .state('alarms',    { component: 'alarmList',       url: '/alarms'})
+      .state('alarm',     { component: 'alarmDetail',     url: '/alarms/:aid',
+                            resolve: { alarm: RouteConfig.resolveAlarm() }})
       .state('processes', { component: 'processList',     url: '/processes'})
       .state('process',   { component: 'processDetail',   url: '/processes/:pname',
                             resolve: { process: RouteConfig.resolveProcess() }})
@@ -33,6 +37,12 @@ export class RouteConfig {
   private static resolveTag(): any {
     return ['$stateParams', 'TagService', ($stateParams: IStateParamsService, tagService: TagService) => {
       return tagService.getTag($stateParams['tname']);
+    }];
+  }
+
+  private static resolveAlarm(): any {
+    return ['$stateParams', 'AlarmService', ($stateParams: IStateParamsService, alarmService: AlarmService) => {
+      return alarmService.getAlarm($stateParams['aid']);
     }];
   }
 

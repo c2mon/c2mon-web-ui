@@ -135,7 +135,8 @@ public class TagController2 implements TagListener {
     List<Object> merged = new ArrayList<>();
 
     for (Tag tag : tags) {
-      merged.add(mergeTagConfig(tag, tagConfigs.get(tags.indexOf(tag))));
+      TagConfig config = tagConfigs.stream().filter(tagConfig -> tagConfig.getId().equals(tag.getId())).findFirst().get();
+      merged.add(mergeTagConfig(tag, config));
     }
 
     return merged;
