@@ -7,11 +7,30 @@ export class AlarmService {
   public constructor(private $http: IHttpService, private $q: IQService) {}
 
   public getAlarm(id: number): IPromise<Alarm> {
-    let q: IDeferred<Alarm[]> = this.$q.defer();
+    let q: IDeferred<Alarm> = this.$q.defer();
 
     this.$http.get('/api/alarms/' + id).then((response: any) => {
       q.resolve(response.data);
     });
+
+    return q.promise;
+  }
+
+  public findAlarms(query: string): IPromise<Alarm[]> {
+    let q: IDeferred<Alarm[]> = this.$q.defer();
+
+    if (isNaN(Number(query))) {
+      // If we have a non-numeric string, search by name
+      this.$http.get('/api/alarms/search?query=' + '.*' + query + '.*').then((response: any) => {
+        q.resolve(response.data);
+      });
+
+    } else {
+      // Otherwise, look for an exact alarm by id
+      this.$http.get('/api/alarms/' + query).then((response: any) => {
+        q.resolve(response.data ? [response.data] : []);
+      });
+    }
 
     return q.promise;
   }

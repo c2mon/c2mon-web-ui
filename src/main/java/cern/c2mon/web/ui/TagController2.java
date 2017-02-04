@@ -80,6 +80,10 @@ public class TagController2 implements TagListener {
       tag = ((List<Tag>) tagService.findByName(id)).get(0);
     }
 
+    if (!tag.getDataTagQuality().isExistingTag()) {
+      return null;
+    }
+
     return mergeTagConfig(tag, getTagConfig(tag));
   }
 
@@ -135,8 +139,10 @@ public class TagController2 implements TagListener {
     List<Object> merged = new ArrayList<>();
 
     for (Tag tag : tags) {
-      TagConfig config = tagConfigs.stream().filter(tagConfig -> tagConfig.getId().equals(tag.getId())).findFirst().get();
-      merged.add(mergeTagConfig(tag, config));
+      TagConfig config = tagConfigs.stream().filter(tagConfig -> tagConfig.getId().equals(tag.getId())).findFirst().orElse(null);
+      if (config != null) {
+        merged.add(mergeTagConfig(tag, config));
+      }
     }
 
     return merged;

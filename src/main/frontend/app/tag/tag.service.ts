@@ -7,7 +7,7 @@ export class TagService {
   public constructor(private $http: IHttpService, private $q: IQService) {}
 
   public getTag(id: string): IPromise<Tag> {
-    let q: IDeferred<Tag[]> = this.$q.defer();
+    let q: IDeferred<Tag> = this.$q.defer();
 
     this.$http.get('/api/tags/' + id).then((response: any) => {
       q.resolve(response.data);
@@ -21,17 +21,16 @@ export class TagService {
 
     if (isNaN(Number(query))) {
       // If we have a non-numeric string, search by name
-      this.$http.get('/api/tags/search?query=' + query).then((response: any) => {
+      this.$http.get('/api/tags/search?query=' + '.*' + query + '.*').then((response: any) => {
         console.log(response.data);
         q.resolve(response.data);
-      })
+      });
 
     } else {
       // Otherwise, look for an exact tag by id
       this.$http.get('/api/tags/' + query).then((response: any) => {
-        console.log(response.data);
-        q.resolve([response.data]);
-      })
+        q.resolve(response.data ? [response.data] : []);
+      });
     }
 
     return q.promise;

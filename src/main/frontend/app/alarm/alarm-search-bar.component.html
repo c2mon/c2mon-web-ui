@@ -1,0 +1,23 @@
+<form>
+  <div class="form-group">
+
+    <input type="text"
+           ng-model="$ctrl.alarm"
+           placeholder="Enter alarm id or search by fault family/member/code"
+           uib-typeahead="alarm as alarm.name for alarm in $ctrl.findAlarms($viewValue)"
+           typeahead-loading="loadingAlarms"
+           typeahead-select-on-exact="true"
+           typeahead-on-select="$ctrl.onAlarmSelected($item, $model, $label, $event)"
+           typeahead-no-results="noResults" class="form-control">
+    <i ng-show="loadingAlarms" class="fa fa-cog fa-spin"></i>
+
+    <div ng-show="noResults">
+      <i class="fa fa-remove"></i> No alarms found
+    </div>
+
+    <!--<script type="text/ng-template" id="customTemplate.html">-->
+      <!--{{match}}-->
+    <!--</script>-->
+
+  </div>
+</form>
