@@ -27,6 +27,10 @@ class TagDetailController {
   public tag: Tag;
   public history: Tag[];
   public chart: Highcharts;
+  public range: string = 'hour';
+  public aggregate: string = 'auto';
+  private min: number;
+  private max: number;
   private stompClient: any;
 
   public constructor(private tagService: TagService, private processService: ProcessService,
@@ -46,15 +50,15 @@ class TagDetailController {
     });
 
     // Ask for one hour by default
-    let max: Moment = moment();
-    let min: Moment = moment(max).subtract(1, 'hour');
+    this.max = moment().valueOf();
+    this.min = moment(this.max).subtract(1, this.range).valueOf();
 
-    this.tagService.getHistory(this.tag, min.valueOf(), max.valueOf()).then((history: Tag[]) => {
+    this.tagService.getHistory(this.tag, this.min, this.max, this.aggregate).then((history: Tag[]) => {
       this.history = history;
       this.createTagHistoryChart(this.history);
     });
 
-    var socket = new SockJS('/websocket');
+    let socket = new SockJS('/websocket');
     this.stompClient = Stomp.over(socket);
     this.stompClient.connect({}, this.onConnection);
   }
@@ -62,7 +66,7 @@ class TagDetailController {
   public onConnection = (frame) => {
     console.log('Connected: ' + frame);
 
-    var tagId = this.tag.id;
+    let tagId: number = this.tag.id;
     this.stompClient.subscribe('/topic/tags/' + tagId, this.onTagUpdate);
     this.stompClient.send('/app/tags/' + tagId);
   };
@@ -82,13 +86,16 @@ class TagDetailController {
         }
       },
       scrollbar: {liveRedraw: false},
+      // rangeSelector: {
+      //   buttons: [
+      //     {type: 'minute', count: 1, text: '1m'}, {type: 'hour', count: 1, text: '1h'},
+      //     {type: 'day', count: 1, text: '1d'}, {type: 'month', count: 1, text: '1m'},
+      //     {type: 'year', count: 1, text: '1y'}, {type: 'all', text: 'All'}],
+      //   inputEnabled: false,
+      //   selected: 1
+      // },
       rangeSelector: {
-        buttons: [
-          {type: 'minute', count: 1, text: '1m'}, {type: 'hour', count: 1, text: '1h'},
-          {type: 'day', count: 1, text: '1d'}, {type: 'month', count: 1, text: '1m'},
-          {type: 'year', count: 1, text: '1y'}, {type: 'all', text: 'All'}],
-        inputEnabled: false,
-        selected: 1
+        enabled: false
       },
       xAxis: {
         events: {
@@ -108,30 +115,34 @@ class TagDetailController {
   }
 
   public afterSetExtremes = (event: any) => {
-    this.chart.showLoading('Loading...');
+    this.min = Math.round(event.min);
+    this.max = Math.round(event.max);
+    this.reloadHistory();
+  };
 
-    this.tagService.getHistory(this.tag, Math.round(event.min), Math.round(event.max)).then((history: Tag[]) => {
+  public reloadHistory(): void {
+    this.chart.showLoading('Loading...');
+    this.tagService.getHistory(this.tag, this.min, this.max, this.aggregate).then((history: Tag[]) => {
       this.history = history;
 
       this.chart.showLoading('Rendering...');
       this.chart.series[0].setData(history);
       this.chart.hideLoading();
     });
-  };
+  }
+
+  public useRange(range: string): void {
+    if (!this.chart) {
+      return;
+    }
+
+    let extremes: any = this.chart.xAxis[0].getExtremes();
+    this.max = extremes.max;
+    this.min = moment(this.max).subtract(1, range).valueOf();
+    this.chart.xAxis[0].setExtremes(this.min, this.max);
+  }
 
   public formatTimestamp(timestamp: number): string {
     return moment(timestamp).format();
   }
-
-  // public submit(expression: any): void {
-  //   console.log(expression.expression);
-  //
-  //   this.$http.patch('/api/tags/' + this.tag.id + '/expressions/' + expression.name, expression.expression).then((response: any) => {
-  //     console.log(response);
-  //
-  //     this.tagService.getTag(this.tag.name).then((tag: Tag) => {
-  //       this.tag = tag;
-  //     })
-  //   });
-  // }
 }

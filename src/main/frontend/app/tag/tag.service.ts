@@ -22,7 +22,6 @@ export class TagService {
     if (isNaN(Number(query))) {
       // If we have a non-numeric string, search by name
       this.$http.get('/api/tags/search?query=' + '.*' + query + '.*').then((response: any) => {
-        console.log(response.data);
         q.resolve(response.data);
       });
 
@@ -46,13 +45,10 @@ export class TagService {
     return q.promise;
   }
 
-  public getHistory(tag: Tag, min: number, max: number): IPromise<Tag[]> {
+  public getHistory(tag: Tag, min: number, max: number, aggregate: string): IPromise<Tag[]> {
     let q: IDeferred<Tag[]> = this.$q.defer();
-    console.log('min:' + min);
-    console.log('max:' + max);
 
-    this.$http.get('/api/tags/' + tag.id + '/history', {params: {min: min, max: max}}).then((response: any) => {
-      console.log(response.data);
+    this.$http.get('/api/tags/' + tag.id + '/history', {params: {min: min, max: max, aggregate: aggregate}}).then((response: any) => {
       q.resolve(response.data);
     });
 

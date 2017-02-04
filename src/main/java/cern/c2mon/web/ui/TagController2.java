@@ -90,8 +90,9 @@ public class TagController2 implements TagListener {
   @RequestMapping(value = "/{id}/history", method = GET)
   public List<Object[]> getTagHistory(@PathVariable final Long id,
                                       @RequestParam("min") Long min,
-                                      @RequestParam("max") Long max) {
-    return elasticsearchService.getHistory(id, min, max);
+                                      @RequestParam("max") Long max,
+                                      @RequestParam("aggregate") String aggregate) {
+    return elasticsearchService.getHistory(id, min, max, aggregate);
   }
 
   @MessageMapping("/tags/{id}")
