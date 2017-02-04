@@ -19,7 +19,6 @@ package cern.c2mon.web.ui;
 
 import cern.c2mon.client.common.tag.Tag;
 import cern.c2mon.client.core.service.TagService;
-import cern.c2mon.client.core.service.SupervisionService;
 import cern.c2mon.shared.common.process.EquipmentConfiguration;
 import cern.c2mon.shared.common.process.ProcessConfiguration;
 import cern.c2mon.web.ui.service.ProcessService;

@@ -116,7 +116,7 @@ public class TagController2 implements TagListener {
 
   @RequestMapping(value = "/top", method = GET)
   public Collection<Object> getTopTags(@RequestParam final Integer size) {
-    List<Tag> tags = filterUnknownTags((List<Tag>) tagService.get(elasticsearchService.getTopTags(size)));
+    List<Tag> tags = filterUnknownTags((List<Tag>) tagService.get(elasticsearchService.findByName("")));
     Collections.reverse(tags);
     return mergeTagConfigs(tags);
   }

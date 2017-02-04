@@ -33,11 +33,14 @@ class ProcessDetailController {
   public onConnection = (frame) => {
     console.log('Connected: ' + frame);
 
-    this.stompClient.subscribe('/topic/tags/' + this.process.aliveTagID, this.onHeartbeat);
-    this.stompClient.send("/app/tags/" + this.process.aliveTagID);
-
-    this.stompClient.subscribe('/topic/tags/' + this.process.statusTagId, this.onStatusUpdate);
-    this.stompClient.send("/app/tags/" + this.process.statusTagId);
+    if (this.process.aliveTagID) {
+      this.stompClient.subscribe('/topic/tags/' + this.process.aliveTagID, this.onHeartbeat);
+      this.stompClient.send("/app/tags/" + this.process.aliveTagID);
+    }
+    if (this.process.statusTagId) {
+      this.stompClient.subscribe('/topic/tags/' + this.process.statusTagId, this.onStatusUpdate);
+      this.stompClient.send("/app/tags/" + this.process.statusTagId);
+    }
   };
 
   public onHeartbeat = (message) => {
