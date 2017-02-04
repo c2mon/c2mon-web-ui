@@ -64,7 +64,7 @@ public class ProcessController2 {
     // Hack in the status tags (unfortunately there is no API method for getting
     // these, and the don't come with the process configuration
     Tag processStatusTag = null;
-    List<Tag> statusTags = (List<Tag>) tagService.findByName("*" + name.substring(2, name.length()) + ":STATUS");
+    List<Tag> statusTags = (List<Tag>) tagService.findByName(name + ":STATUS");
     if (statusTags.size() >= 1) {
       for (Tag tag : statusTags) {
         if (tag.getEquipmentIds().isEmpty() && !tag.getProcessIds().isEmpty()) {
@@ -81,10 +81,10 @@ public class ProcessController2 {
     for (EquipmentConfiguration equipment : process.getEquipmentConfigurations().values()) {
       Tag equipmentStatusTag = null;
 
-      statusTags = (List<Tag>) tagService.findByName("*" + equipment.getName().substring(6, equipment.getName().length()) + ":STATUS");
+      statusTags = (List<Tag>) tagService.findByName(".*" + equipment.getName().substring(6, equipment.getName().length()) + ":STATUS");
 
       if (statusTags.size() == 0) {
-        statusTags = (List<Tag>) tagService.findByName("*" + equipment.getName() + ":STATUS");
+        statusTags = (List<Tag>) tagService.findByName(".*" + equipment.getName() + ":STATUS");
       }
 
       if (statusTags.size() >= 1) {
