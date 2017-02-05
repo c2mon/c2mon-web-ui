@@ -46,6 +46,7 @@
     "karma-jasmine": "1.0.*",
     "karma-phantomjs-launcher": "1.0.*",
     "node-sass": "3.8.*",
+    "npm": "^4.1.2",
     "phantomjs-polyfill": "0.0.2",
     "phantomjs-prebuilt": "2.1.*",
     "protractor": "4.0.*",
