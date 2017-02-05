@@ -60,6 +60,7 @@ class TagDetailController {
 
     let socket = new SockJS('/websocket');
     this.stompClient = Stomp.over(socket);
+    this.stompClient.debug = null;
     this.stompClient.connect({}, this.onConnection);
   }
 
@@ -86,14 +87,6 @@ class TagDetailController {
         }
       },
       scrollbar: {liveRedraw: false},
-      // rangeSelector: {
-      //   buttons: [
-      //     {type: 'minute', count: 1, text: '1m'}, {type: 'hour', count: 1, text: '1h'},
-      //     {type: 'day', count: 1, text: '1d'}, {type: 'month', count: 1, text: '1m'},
-      //     {type: 'year', count: 1, text: '1y'}, {type: 'all', text: 'All'}],
-      //   inputEnabled: false,
-      //   selected: 1
-      // },
       rangeSelector: {
         enabled: false
       },
@@ -132,12 +125,9 @@ class TagDetailController {
   }
 
   public useRange(range: string): void {
-    if (!this.chart) {
-      return;
-    }
-
+    this.range = range;
     let extremes: any = this.chart.xAxis[0].getExtremes();
-    this.max = extremes.max;
+    this.max = moment().valueOf();
     this.min = moment(this.max).subtract(1, range).valueOf();
     this.chart.xAxis[0].setExtremes(this.min, this.max);
   }
