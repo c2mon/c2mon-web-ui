@@ -32,6 +32,7 @@ class TagDetailController {
   private min: number;
   private max: number;
   private stompClient: any;
+  private subscription: any;
 
   public constructor(private tagService: TagService, private processService: ProcessService,
                      private $http: IHttpService, private $scope: IScope) {
@@ -58,17 +59,17 @@ class TagDetailController {
       this.createTagHistoryChart(this.history);
     });
 
-    let socket = new SockJS('/websocket');
+    let socket: any = new SockJS('/websocket');
     this.stompClient = Stomp.over(socket);
     this.stompClient.debug = null;
     this.stompClient.connect({}, this.onConnection);
   }
 
-  public onConnection = (frame) => {
+  public onConnection = (frame: any) => {
     console.log('Connected: ' + frame);
 
     let tagId: number = this.tag.id;
-    this.stompClient.subscribe('/topic/tags/' + tagId, this.onTagUpdate);
+    this.subscription = this.stompClient.subscribe('/topic/tags/' + tagId, this.onTagUpdate);
     this.stompClient.send('/app/tags/' + tagId);
   };
 
@@ -77,7 +78,7 @@ class TagDetailController {
     this.$scope.$apply();
   };
 
-  public createTagHistoryChart(data) {
+  public createTagHistoryChart(data: any[]): Highcharts {
     this.chart = Highcharts.stockChart('chart', {
       chart: {zoomType: 'x'},
       navigator: {
@@ -134,5 +135,9 @@ class TagDetailController {
 
   public formatTimestamp(timestamp: number): string {
     return moment(timestamp).format();
+  }
+
+  public $onDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

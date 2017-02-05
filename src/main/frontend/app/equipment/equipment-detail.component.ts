@@ -3,7 +3,7 @@ import {Equipment} from './equipment';
 import {Tag} from '../tag/tag';
 import {Command} from '../command/command';
 import {IScope, IComponentOptions} from 'angular';
-import {IStateService, IStateParamsService} from "angular-ui-router";
+import {IStateService, IStateParamsService} from 'angular-ui-router';
 
 var Stomp = require('stompjs/lib/stomp.js').Stomp;
 var SockJS = require('sockjs-client');
@@ -22,8 +22,11 @@ class EquipmentDetailController {
   public process: Process;
   public equipment: Equipment;
   public status: Tag;
+  public statusSubscription: any;
   public heartbeat: Tag;
+  public heartbeatSubscription: any;
   public commFault: Tag;
+  public commFaultSubscription: any;
   private stompClient: any;
 
   public constructor(private $scope: IScope, private $state: IStateService, private $stateParams: IStateParamsService) {
@@ -37,27 +40,28 @@ class EquipmentDetailController {
       }
     }
 
-    var socket = new SockJS('/websocket');
+    let socket: any = new SockJS('/websocket');
     this.stompClient = Stomp.over(socket);
+    this.stompClient.debug = null;
     this.stompClient.connect({}, this.onConnection);
   }
 
-  public onConnection = (frame) => {
+  public onConnection = (frame: any) => {
     console.log('Connected: ' + frame);
 
     if (this.equipment.statusTagId) {
-      this.stompClient.subscribe('/topic/tags/' + this.equipment.statusTagId, this.onStatusUpdate);
-      this.stompClient.send("/app/tags/" + this.equipment.statusTagId);
+      this.statusSubscription = this.stompClient.subscribe('/topic/tags/' + this.equipment.statusTagId, this.onStatusUpdate);
+      this.stompClient.send('/app/tags/' + this.equipment.statusTagId);
     }
 
     if (this.equipment.aliveTagId) {
-      this.stompClient.subscribe('/topic/tags/' + this.equipment.aliveTagId, this.onHeartbeat);
-      this.stompClient.send("/app/tags/" + this.equipment.aliveTagId);
+      this.heartbeatSubscription = this.stompClient.subscribe('/topic/tags/' + this.equipment.aliveTagId, this.onHeartbeat);
+      this.stompClient.send('/app/tags/' + this.equipment.aliveTagId);
     }
 
     if (this.equipment.commFaultTagId) {
-      this.stompClient.subscribe('/topic/tags/' + this.equipment.commFaultTagId, this.onCommFault);
-      this.stompClient.send("/app/tags/" + this.equipment.commFaultTagId);
+      this.commFaultSubscription = this.stompClient.subscribe('/topic/tags/' + this.equipment.commFaultTagId, this.onCommFault);
+      this.stompClient.send('/app/tags/' + this.equipment.commFaultTagId);
     }
   };
 
@@ -91,5 +95,19 @@ class EquipmentDetailController {
       ename: this.equipment.name,
       cid: command.id
     });
+  }
+
+  public $onDestroy(): void {
+    if (this.statusSubscription) {
+      this.statusSubscription.unsubscribe();
+    }
+
+    if (this.heartbeatSubscription) {
+      this.heartbeatSubscription.unsubscribe();
+    }
+
+    if (this.commFaultSubscription) {
+      this.commFaultSubscription.unsubscribe();
+    }
   }
 }

@@ -21,25 +21,28 @@ class ProcessDetailController {
 
   public process: Process;
   public heartbeat: Tag;
+  public heartbeatSubscription: any;
   public status: Tag;
+  public statusSubscription: any;
   private stompClient: any;
 
   public constructor(private $scope: IScope, private $state: IStateService) {
-    var socket = new SockJS('/websocket');
+    let socket: any = new SockJS('/websocket');
     this.stompClient = Stomp.over(socket);
+    this.stompClient.debug = null;
     this.stompClient.connect({}, this.onConnection);
   }
 
-  public onConnection = (frame) => {
+  public onConnection = (frame: any) => {
     console.log('Connected: ' + frame);
 
     if (this.process.aliveTagID) {
-      this.stompClient.subscribe('/topic/tags/' + this.process.aliveTagID, this.onHeartbeat);
-      this.stompClient.send("/app/tags/" + this.process.aliveTagID);
+      this.heartbeatSubscription = this.stompClient.subscribe('/topic/tags/' + this.process.aliveTagID, this.onHeartbeat);
+      this.stompClient.send('/app/tags/' + this.process.aliveTagID);
     }
     if (this.process.statusTagId) {
-      this.stompClient.subscribe('/topic/tags/' + this.process.statusTagId, this.onStatusUpdate);
-      this.stompClient.send("/app/tags/" + this.process.statusTagId);
+      this.statusSubscription = this.stompClient.subscribe('/topic/tags/' + this.process.statusTagId, this.onStatusUpdate);
+      this.stompClient.send('/app/tags/' + this.process.statusTagId);
     }
   };
 
@@ -55,5 +58,15 @@ class ProcessDetailController {
 
   public onEquipmentSelected(equipment: Equipment) {
     this.$state.go('equipment', { pname: this.process.processName, ename: equipment.name });
+  }
+
+  public $onDestroy(): void {
+    if (this.statusSubscription) {
+      this.statusSubscription.unsubscribe();
+    }
+
+    if (this.heartbeatSubscription) {
+      this.heartbeatSubscription.unsubscribe();
+    }
   }
 }
