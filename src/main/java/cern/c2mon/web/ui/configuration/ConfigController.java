@@ -49,7 +49,7 @@ public class ConfigController {
   ConfigLoaderService configLoaderService;
 
   @RequestMapping(value = "/api/config/history", method = GET)
-  public List<ConfigurationReportHeader> getConfigHistory(@RequestParam(required = false, defaultValue = "true") final boolean refresh) {
+  public List<ConfigurationReportHeader> getConfigHistory(@RequestParam(name = "refresh", required = false, defaultValue = "true") final boolean refresh) {
     List<ConfigurationReportHeader> headers = configHistoryService.getCachedReports(refresh);
     Collections.sort(headers);
     Collections.reverse(headers);
