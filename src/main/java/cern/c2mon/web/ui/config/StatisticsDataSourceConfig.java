@@ -15,7 +15,7 @@ import javax.sql.DataSource;
  */
 @Configuration
 @MapperScan(
-    value = "cern.c2mon.web.ui.statistics",
+    value = "cern.c2mon.web.ui.legacy.statistics",
     sqlSessionFactoryRef = "statisticsSqlSessionFactory"
 )
 public class StatisticsDataSourceConfig {
