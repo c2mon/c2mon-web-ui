@@ -11,6 +11,10 @@ For more details on a given release, please check also the [Milestone planning](
 ### Changed
 
 ### Fixed
+
+
+## [0.1.8]
+### Fixed
 - Listing of last N alarms (#10)
 
 ### Removed
@@ -18,4 +22,5 @@ For more details on a given release, please check also the [Milestone planning](
 
 
 
-[Unreleased]: https://gitlab.cern.ch/c2mon/c2mon-web-ui/milestones/1
+[Unreleased]: https://gitlab.cern.ch/c2mon/c2mon-web-ui/milestones/2
+[0.1.7]: https://gitlab.cern.ch/c2mon/c2mon-web-ui/milestones/1
