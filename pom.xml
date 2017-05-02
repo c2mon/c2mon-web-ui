@@ -3,7 +3,7 @@
   <parent>
     <groupId>cern.c2mon.client</groupId>
     <artifactId>c2mon-client</artifactId>
-    <version>1.8.9-SNAPSHOT</version>
+    <version>1.8.16-SNAPSHOT</version>
   </parent>
 
   <groupId>cern.c2mon.web</groupId>
@@ -117,6 +117,20 @@
       <groupId>org.apache.activemq</groupId>
       <artifactId>activemq-openwire-legacy</artifactId>
       <version>5.14.0</version>
+    </dependency>
+    
+    <!-- Runtime dependencies required to support HTTP via ActiveMQ -->
+    <dependency>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>activemq-http</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
     </dependency>
 
     <!-- Test dependencies -->
