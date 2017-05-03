@@ -230,6 +230,8 @@
           </exposes>
           <runs>
             <run>chmod 755 /c2mon-web-ui/bin/*</run>
+            <run>mkdir /c2mon-web-ui/tmp</run>
+            <run>chmod 777 /c2mon-web-ui/tmp</run>
           </runs>
           <volumes>
             <volume>/c2mon-web-ui/log</volume>
