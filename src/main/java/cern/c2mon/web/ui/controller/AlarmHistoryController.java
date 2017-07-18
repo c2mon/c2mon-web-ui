@@ -16,12 +16,16 @@
  *****************************************************************************/
 package cern.c2mon.web.ui.controller;
 
-import cern.c2mon.client.ext.history.alarm.Alarm;
-import cern.c2mon.web.ui.service.HistoryAlarmService;
-import cern.c2mon.web.ui.service.HistoryService;
-import cern.c2mon.web.ui.util.FormUtility;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,18 +34,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import cern.c2mon.client.ext.history.alarm.Alarm;
+import cern.c2mon.web.ui.service.HistoryAlarmService;
+import cern.c2mon.web.ui.service.HistoryService;
+import cern.c2mon.web.ui.util.FormUtility;
 
 /**
  * A controller for the alarm history viewer.
  */
 @Controller
+@Slf4j
 public class AlarmHistoryController {
 
   /**
@@ -83,19 +85,14 @@ public class AlarmHistoryController {
    * A history service
    */
   @Autowired
-  private HistoryAlarmService service;
-
-  /**
-   * HistoryController logger
-   */
-  private static Logger logger = LoggerFactory.getLogger(AlarmHistoryController.class);
+  private HistoryAlarmService historyService;
 
   /**
    * @return Redirects to the form
    */
   @RequestMapping(value = HISTORY_URL, method = {RequestMethod.GET})
   public final String viewHistory(final Model model) {
-    logger.info(HISTORY_URL);
+    log.info(HISTORY_URL);
     return ("redirect:" + HISTORY_FORM_URL);
   }
 
@@ -113,25 +110,23 @@ public class AlarmHistoryController {
                                   @RequestParam(value = START_DATE_PARAMETER, required = false) final String startTime,
                                   @RequestParam(value = END_DATE_PARAMETER, required = false) final String endTime,
                                   final HttpServletResponse response, final Model model) throws IOException {
-    logger.info("/alarmhistoryviewer/{id} " + id);
+    log.info("/alarmhistoryviewer/{id} " + id);
 
     List<Alarm> history = new ArrayList<>();
     String description = null;
 
     try {
       if (startTime != null && endTime != null) {
-        history = service.requestHistoryData(id, HistoryService.stringToTimestamp(startTime), HistoryService
-            .stringToTimestamp(endTime));
+        history = historyService.requestAlarmHistory(Long.parseLong(id), HistoryService.stringToLocalDateTime(startTime),
+                                                 HistoryService.stringToLocalDateTime(endTime));
         description = " (From " + startTime + " to " + endTime + ")";
       } else if (lastDays != null) {
-        history = service.requestAlarmHistoryDataForLastDays(id, Integer.parseInt(lastDays));
+        history = historyService.requestAlarmHistoryForLastDays(Long.parseLong(id), Integer.parseInt(lastDays));
         description = "(Last " + lastDays + " days)";
-      } else if (maxRecords != null) {
-        history = service.requestHistoryData(id, Integer.parseInt(maxRecords));
-        description = "(Last " + maxRecords + " records)";
       } else if (id != null) {
-        history = service.requestHistoryData(id, HISTORY_RECORDS_TO_ASK_FOR);
-        description = "(Last " + HISTORY_RECORDS_TO_ASK_FOR + " records)";
+        int numRecords = maxRecords != null ? Integer.parseInt(maxRecords) : HISTORY_RECORDS_TO_ASK_FOR;
+        history = historyService.requestAlarmHistory(Long.parseLong(id), numRecords);
+        description = "(Last " + numRecords + " records)";
       }
     } catch (Exception e) {
       return ("redirect:" + HISTORY_FORM_URL + "?error=" + id);
@@ -160,7 +155,7 @@ public class AlarmHistoryController {
                                           @RequestParam(value = "startTime", required = false) final String startTime,
                                           @RequestParam(value = "endTime", required = false) final String endTime,
                                           final Model model) {
-    logger.info(HISTORY_URL + "form" + id);
+    log.info(HISTORY_URL + "form" + id);
 
     if (id == null) {
       model.addAllAttributes(FormUtility.getFormModel(HISTORY_FORM_TITLE, HISTORY_FORM_INSTR, HISTORY_FORM_URL, null,

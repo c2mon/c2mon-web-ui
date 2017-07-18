@@ -16,19 +16,15 @@
  *****************************************************************************/
 package cern.c2mon.web.ui.service;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
-import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import cern.c2mon.client.ext.history.alarm.Alarm;
 import cern.c2mon.client.ext.history.alarm.AlarmHistoryService;
-import cern.c2mon.client.ext.history.alarm.HistoricAlarmQuery;
 import cern.c2mon.client.ext.history.common.exception.HistoryProviderException;
 import cern.c2mon.client.ext.history.common.exception.LoadingParameterException;
 
@@ -40,31 +36,18 @@ import cern.c2mon.client.ext.history.common.exception.LoadingParameterException;
 public class HistoryAlarmService {
 
   @Autowired
-  private AlarmHistoryService alarmService;
+  private AlarmHistoryService alarmHistoryService;
 
   /**
    * Used to make a request for HistoryData.
    *
-   * @param alarmId         The alarm id whose history we are looking for
-   * @param numberOfRecords number of records to retrieve from history
-   * @return history as a List of HistoryTagValueUpdates
-   */
-  public final List<Alarm> requestHistoryData(final String alarmId, final int numberOfRecords) {
-    final long id = Long.parseLong(alarmId);
-    Page<Alarm> alarmHistory = alarmService.findBy(new HistoricAlarmQuery().id(id), new PageRequest(0, numberOfRecords, new Sort(Sort.Direction.DESC, "timestamp")));
-    return Lists.reverse(alarmHistory.getContent());
-  }
-
-  /**
-   * Used to make a request for HistoryData.
-   *
-   * @param dataTagId The alarm id whose history we are looking for
+   * @param alarmId The alarm id whose history we are looking for
+   * @param localStartTime The start time expressed in the local time zone
+   * @param localEndTime The end time expressed in the local time zone
    * @return history as a List of Alarm
    */
-  public final List<Alarm> requestHistoryData(final String dataTagId, final Timestamp startTime,
-                                              final Timestamp endTime) {
-    final long id = Long.parseLong(dataTagId);
-    return alarmService.findBy(new HistoricAlarmQuery().id(id).between(startTime, endTime));
+  public final List<Alarm> requestAlarmHistory(final Long alarmId, final LocalDateTime localStartTime, final LocalDateTime localEndTime) {
+    return alarmHistoryService.findAllDistinctByIdAndTimestampBetweenOrderByTimestamp(alarmId, localStartTime, localEndTime);
   }
 
   /**
@@ -76,12 +59,17 @@ public class HistoryAlarmService {
    * @throws HistoryProviderException  in case a HistoryProvider cannot be created
    * @throws LoadingParameterException in case of an invalid configurations
    */
-  public final List<Alarm> requestAlarmHistoryDataForLastDays(final String alarmId, final int numberOfDays) {
-    // calculate the number of days in milliseconds
-    Long daysInMillis = new Long(numberOfDays) * 24 * 60 * 60 * 1000;
+  public final List<Alarm> requestAlarmHistoryForLastDays(final Long alarmId, final int numberOfDays) {
+    LocalDateTime now = LocalDateTime.now();
+    return alarmHistoryService.findAllDistinctByIdAndTimestampBetweenOrderByTimestamp(alarmId, now.minusDays(numberOfDays), now);
+  }
 
-    Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-    Timestamp startTime = new Timestamp(System.currentTimeMillis() - daysInMillis);
-    return requestHistoryData(alarmId, startTime, currentTime);
+  /**
+   * @param alarmId The alarm id
+   * @param numRecords number of records to be retrieved
+   * @return The last N alarm records for the given alarm id
+   */
+  public final List<Alarm> requestAlarmHistory(final Long alarmId, final int numRecords) {
+    return alarmHistoryService.findAllDistinctByIdOrderByTimestampDesc(alarmId, new PageRequest(0, numRecords)).getContent();
   }
 }

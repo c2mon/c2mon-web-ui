@@ -21,17 +21,19 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import cern.c2mon.client.ext.history.HistoryManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cern.c2mon.client.ext.history.HistoryManager;
 import cern.c2mon.client.ext.history.common.HistoryLoadingConfiguration;
 import cern.c2mon.client.ext.history.common.HistoryLoadingManager;
 import cern.c2mon.client.ext.history.common.HistoryProvider;
@@ -219,7 +221,7 @@ public class HistoryService {
 
 
     final long id = Long.parseLong(dataTagId);
-    Collection<Long> dataTagIds = new ArrayList<Long>();
+    Collection<Long> dataTagIds = new ArrayList<>();
     dataTagIds.add(id);
     final HistoryLoadingManager loadingManager = historyManager
         .createHistoryLoadingManager(getHistoryProvider(), dataTagIds);
@@ -237,7 +239,7 @@ public class HistoryService {
       throw new LoadingParameterException("The configuration is invalid", e);
     }
 
-    final List<HistoryTagValueUpdate> historyValues = new ArrayList<HistoryTagValueUpdate>();
+    final List<HistoryTagValueUpdate> historyValues = new ArrayList<>();
     for (final Long tagId : dataTagIds) {
       historyValues.addAll(loadingManager.getAllHistoryConverted(tagId));
     }
@@ -258,7 +260,7 @@ public class HistoryService {
       throws HistoryProviderException, LoadingParameterException {
 
     final long id = Long.parseLong(dataTagId);
-    Collection<Long> dataTagIds = new ArrayList<Long>();
+    Collection<Long> dataTagIds = new ArrayList<>();
     dataTagIds.add(id);
     final HistoryLoadingManager loadingManager = historyManager
         .createHistoryLoadingManager(getHistoryProvider(), dataTagIds);
@@ -277,7 +279,7 @@ public class HistoryService {
       throw new LoadingParameterException("The configuration is invalid", e);
     }
 
-    final List<HistoryTagValueUpdate> historyValues = new ArrayList<HistoryTagValueUpdate>();
+    final List<HistoryTagValueUpdate> historyValues = new ArrayList<>();
     for (final Long tagId : dataTagIds) {
       historyValues.addAll(loadingManager.getAllHistoryConverted(tagId));
     }
@@ -299,7 +301,7 @@ public class HistoryService {
       throws HistoryProviderException, LoadingParameterException {
 
     final long id = Long.parseLong(dataTagId);
-    Collection<Long> dataTagIds = new ArrayList<Long>();
+    Collection<Long> dataTagIds = new ArrayList<>();
     dataTagIds.add(id);
     final HistoryLoadingManager loadingManager = historyManager
         .createHistoryLoadingManager(getHistoryProvider(), dataTagIds);
@@ -317,7 +319,7 @@ public class HistoryService {
       throw new LoadingParameterException("The configuration is invalid", e);
     }
 
-    final List<HistoryTagValueUpdate> historyValues = new ArrayList<HistoryTagValueUpdate>();
+    final List<HistoryTagValueUpdate> historyValues = new ArrayList<>();
     for (final Long tagId : dataTagIds) {
       historyValues.addAll(loadingManager.getAllHistoryConverted(tagId));
     }
@@ -436,7 +438,7 @@ public class HistoryService {
    */
   public Collection<InvalidPoint> getInvalidPoints(final List<HistoryTagValueUpdate> historyValues) {
 
-    final Collection<InvalidPoint> invalidPoints = new ArrayList<InvalidPoint>();
+    final Collection<InvalidPoint> invalidPoints = new ArrayList<>();
 
     final Iterator<HistoryTagValueUpdate> i = historyValues.iterator();
 
@@ -485,6 +487,19 @@ public class HistoryService {
     java.util.Date date = dateFormat.parse(dateString);
     final long time = date.getTime();
     return new Timestamp(time);
+  }
+
+  /**
+   * @return Converts a string to Timestamp
+   *
+   * @param dateString
+   * should represent a Date in the following format: {@link TrendViewController#DATE_FORMAT}
+   *
+   * @throws ParseException in case of wrong Date Format
+   */
+  public static LocalDateTime stringToLocalDateTime(final String dateString) throws ParseException {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+    return LocalDateTime.parse(dateString, formatter);
   }
 
   private HistoryProvider getHistoryProvider() throws HistoryProviderException {

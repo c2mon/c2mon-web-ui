@@ -21,6 +21,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -39,16 +40,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import cern.c2mon.client.common.tag.Tag;
 import cern.c2mon.client.ext.history.alarm.Alarm;
 import cern.c2mon.client.ext.history.alarm.AlarmHistoryService;
-import cern.c2mon.client.ext.history.alarm.HistoricAlarmQuery;
 import cern.c2mon.client.ext.history.common.HistoryTagValueUpdate;
 import cern.c2mon.client.ext.history.common.exception.HistoryProviderException;
 import cern.c2mon.client.ext.history.common.exception.LoadingParameterException;
 import cern.c2mon.client.ext.history.updates.HistoryTagValueUpdateImpl;
 import cern.c2mon.shared.client.alarm.AlarmValue;
 import cern.c2mon.shared.client.alarm.AlarmValueImpl;
+import cern.c2mon.web.ui.service.HistoryAlarmService;
 import cern.c2mon.web.ui.service.HistoryService;
 import cern.c2mon.web.ui.service.TagService;
 import cern.c2mon.web.ui.util.FormUtility;
+
+import static cern.c2mon.client.ext.history.util.LocalDateTimeConverter.convertToLocalDateTime;
+import static cern.c2mon.client.ext.history.util.LocalDateTimeConverter.convertToTimestamp;
 
 /**
  * A controller for the history viewer.
@@ -120,7 +124,7 @@ public class HistoryController {
   private TagService tagService;
 
   @Autowired
-  private AlarmHistoryService alarmService;
+  private HistoryAlarmService alarmService;
 
   /**
    * HistoryController logger
@@ -283,12 +287,13 @@ public class HistoryController {
 
       if (!alarms.isEmpty() && !tagValueUpdates.isEmpty()) {
         // get the range of the history of the sorted list
-        Timestamp start = tagValueUpdates.get(0).getServerTimestamp();
-        Timestamp end = tagValueUpdates.get(tagValueUpdates.size() - 1).getServerTimestamp();
-        for(Alarm alarm : alarmService.findBy(new HistoricAlarmQuery().id(alarms.get(0).getId()).between(start, end))){
-          timeToAlarmValue.put(alarm.getTimestamp(), alarm);
-        }
+        LocalDateTime start = convertToLocalDateTime(tagValueUpdates.get(0).getServerTimestamp());
+        LocalDateTime end   = convertToLocalDateTime(tagValueUpdates.get(tagValueUpdates.size() - 1).getServerTimestamp());
+        List<Alarm> alarmHistory = alarmService.requestAlarmHistory(alarms.get(0).getId(), start, end);
+
+        alarmHistory.forEach(alarm -> timeToAlarmValue.put(convertToTimestamp(alarm.getTimestamp()), alarm));
       }
+
       for(HistoryTagValueUpdate tagValueUpdate : tagValueUpdates){
         HistoryTagValueUpdateImpl tagValue = (HistoryTagValueUpdateImpl) tagValueUpdate;
         Timestamp currentTime = tagValueUpdate.getServerTimestamp();
@@ -302,7 +307,7 @@ public class HistoryController {
               alarm.getFaultFamily(),
               alarm.getInfo(),
               alarm.getTagId(),
-              alarm.getTimestamp(),
+              currentTime,
               alarm.isActive());
           tagValue.getAlarms().add(alarmValue);
         }
