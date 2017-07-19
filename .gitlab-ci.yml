@@ -1,3 +1,7 @@
+stages:
+- build
+- deploy
+
 # Fully build and publish master branch
 build_and_publish:
   script:
@@ -11,3 +15,14 @@ build:
     - mvn -U -B clean test -DskipDockerBuild -DskipDockerTag --settings settings.xml
   except:
     - master
+
+deploy_test:
+  stage: deploy
+  script:
+    - version=`xmllint --xpath "//*[local-name()='project']/*[local-name()='version']/text()" ./pom.xml`; ssh timtest@tim-test.cern.ch "~/scripts/deploy-web-ui-test.sh $version"
+    - ssh timtest@tim-test.cern.ch '/usr/opt/bin/wreboot -N C2MON-WEB-UI-TEST.jvm'
+  environment:
+    name: test
+    url: https://tim-test.cern.ch/c2mon-web-ui/
+  only:
+  - master
