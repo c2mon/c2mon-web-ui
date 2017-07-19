@@ -4,6 +4,7 @@ stages:
 
 # Fully build and publish master branch
 build_and_publish:
+  stage: build
   script:
     - mvn -q -U -B clean deploy --settings settings.xml
   only:
@@ -11,6 +12,7 @@ build_and_publish:
 
 # Just run tests on feature branches
 build:
+  stage: build
   script:
     - mvn -U -B clean test -DskipDockerBuild -DskipDockerTag --settings settings.xml
   except:
