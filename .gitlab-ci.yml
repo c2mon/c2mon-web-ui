@@ -21,10 +21,10 @@ build:
 deploy_test:
   stage: deploy
   script:
-    - version=`xmllint --xpath "//*[local-name()='project']/*[local-name()='version']/text()" ./pom.xml`; ssh timtest@tim-test.cern.ch "~/scripts/deploy-web-ui-test.sh $version"
-    - ssh timtest@tim-test.cern.ch '/usr/opt/bin/wreboot -N C2MON-WEB-UI-TEST.jvm'
+    - version=`xmllint --xpath "//*[local-name()='project']/*[local-name()='version']/text()" ./pom.xml`; ssh timtest@timweb-test.cern.ch "~/scripts/deploy-web-ui-test.sh $version"
+    - ssh timtest@timweb-test.cern.ch '/usr/opt/bin/wreboot -N C2MON-WEB-UI-TEST.jvm'
   environment:
     name: test
-    url: https://tim-test.cern.ch/c2mon-web-ui/
+    url: https://timweb-test.cern.ch/c2mon-web-ui/
   only:
   - master
