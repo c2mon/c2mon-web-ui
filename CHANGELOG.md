@@ -11,7 +11,7 @@ For more details on a given release, please check also the [Milestone planning](
 ### Changed
 
 ### Fixed
-
+- Fixed problems with timestamp in alarm history, which is not correctly converted to actual timezone (#12)
 
 ## [0.1.8]
 ### Fixed
