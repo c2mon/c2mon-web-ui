@@ -86,7 +86,11 @@
         <c:forEach var="item" items="${history}">
 
           <tr>
-            <td>${item.timestamp}</td>
+            <td>
+              <script type="text/javascript">
+                document.write('${item.timestamp}'.replace("T", " "));
+              </script>
+            </td>
             <td>
               <c:choose>
                 <c:when test="${item.active == true}">
