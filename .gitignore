@@ -2,6 +2,7 @@
 *.class
 build/
 target/
+log/
 
 # IDE files
 *.iml
