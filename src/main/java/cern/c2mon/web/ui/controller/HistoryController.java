@@ -294,22 +294,24 @@ public class HistoryController {
         alarmHistory.forEach(alarm -> timeToAlarmValue.put(convertToTimestamp(alarm.getTimestamp()), alarm));
       }
 
-      for(HistoryTagValueUpdate tagValueUpdate : tagValueUpdates){
-        HistoryTagValueUpdateImpl tagValue = (HistoryTagValueUpdateImpl) tagValueUpdate;
-        Timestamp currentTime = tagValueUpdate.getServerTimestamp();
+      if (!timeToAlarmValue.isEmpty()) {
+        for(HistoryTagValueUpdate tagValueUpdate : tagValueUpdates){
+          HistoryTagValueUpdateImpl tagValue = (HistoryTagValueUpdateImpl) tagValueUpdate;
+          Timestamp currentTime = tagValueUpdate.getServerTimestamp();
 
-        if(timeToAlarmValue.containsKey(currentTime)){
-          Alarm alarm = timeToAlarmValue.get(currentTime);
-          AlarmValueImpl alarmValue = new AlarmValueImpl(
-              alarm.getId(),
-              alarm.getFaultCode(),
-              alarm.getFaultMember(),
-              alarm.getFaultFamily(),
-              alarm.getInfo(),
-              alarm.getTagId(),
-              currentTime,
-              alarm.isActive());
-          tagValue.getAlarms().add(alarmValue);
+          if(timeToAlarmValue.containsKey(currentTime)){
+            Alarm alarm = timeToAlarmValue.get(currentTime);
+            AlarmValueImpl alarmValue = new AlarmValueImpl(
+                alarm.getId(),
+                alarm.getFaultCode(),
+                alarm.getFaultMember(),
+                alarm.getFaultFamily(),
+                alarm.getInfo(),
+                alarm.getTagId(),
+                currentTime,
+                alarm.isActive());
+            tagValue.getAlarms().add(alarmValue);
+          }
         }
       }
     }
