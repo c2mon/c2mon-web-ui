@@ -5,9 +5,9 @@
     <application name="default">
       <startscript>
         <main-class name="org.springframework.boot.loader.JarLauncher" />
-        <property name="c2mon.client.conf.url" value="file:///${INSTALL_DIR}/conf/c2mon-client.properties" />
+        <property name="c2mon.client.conf.url" value="file://${INSTALL_DIR}/conf/c2mon-client.properties" />
         <property name="server.port" value="8081" />
-        <property name="logging.path" value="${INSTALL_DIR}/log/" />
+        <property name="logging.config" value="file://${INSTALL_DIR}/conf/loback.xml" />
         <property name="logging.file" value="${INSTALL_DIR}/log/c2mon-web-ui.log" />
       </startscript>
       <deployment>
