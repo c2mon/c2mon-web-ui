@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,14 +35,13 @@ import cern.c2mon.shared.client.tag.TagConfig;
 /**
  * Datatag service providing the XML representation of a given datatag
  */
+@Slf4j
 @Service
 public class TagService {
 
   /**
-   * TagService logger
+   * Gateway to C2monService
    */
-  private static Logger logger = LoggerFactory.getLogger(TagService.class);
-
   @Autowired
   private cern.c2mon.client.core.service.TagService tagManager;
 
@@ -63,7 +63,7 @@ public class TagService {
     if (it.hasNext()) {
       tc = it.next();
     }
-    logger.debug("Tag config fetch for tag " + tagId + ": " + (tc == null ? "NULL" : "SUCCESS"));
+    log.debug("Tag config fetch for tag " + tagId + ": " + (tc == null ? "NULL" : "SUCCESS"));
     return tc;
   }
 
@@ -74,7 +74,7 @@ public class TagService {
    */
   public Tag getTag(final long dataTagId) {
     Tag dataTag = tagManager.get(dataTagId);
-    logger.debug("Datatag value fetch for tag " + dataTagId + ": " + (dataTag == null ? "NULL" : "SUCCESS"));
+    log.debug("Datatag value fetch for tag " + dataTagId + ": " + (dataTag == null ? "NULL" : "SUCCESS"));
     return dataTag;
   }
 }

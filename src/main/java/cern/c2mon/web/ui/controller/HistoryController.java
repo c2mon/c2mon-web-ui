@@ -21,7 +21,6 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -50,9 +49,6 @@ import cern.c2mon.web.ui.service.HistoryAlarmService;
 import cern.c2mon.web.ui.service.HistoryService;
 import cern.c2mon.web.ui.service.TagService;
 import cern.c2mon.web.ui.util.FormUtility;
-
-import static cern.c2mon.client.ext.history.util.LocalDateTimeConverter.convertToLocalDateTime;
-import static cern.c2mon.client.ext.history.util.LocalDateTimeConverter.convertToTimestamp;
 
 /**
  * A controller for the history viewer.
@@ -287,11 +283,11 @@ public class HistoryController {
 
       if (!alarms.isEmpty() && !tagValueUpdates.isEmpty()) {
         // get the range of the history of the sorted list
-        LocalDateTime start = convertToLocalDateTime(tagValueUpdates.get(0).getServerTimestamp());
-        LocalDateTime end   = convertToLocalDateTime(tagValueUpdates.get(tagValueUpdates.size() - 1).getServerTimestamp());
+        Timestamp start = tagValueUpdates.get(0).getServerTimestamp();
+        Timestamp end   = tagValueUpdates.get(tagValueUpdates.size() - 1).getServerTimestamp();
         List<Alarm> alarmHistory = alarmService.requestAlarmHistory(alarms.get(0).getId(), start, end);
 
-        alarmHistory.forEach(alarm -> timeToAlarmValue.put(convertToTimestamp(alarm.getTimestamp()), alarm));
+        alarmHistory.forEach(alarm -> timeToAlarmValue.put(alarm.getTimestamp(), alarm));
       }
 
       if (!timeToAlarmValue.isEmpty()) {

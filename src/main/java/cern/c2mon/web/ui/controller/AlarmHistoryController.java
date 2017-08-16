@@ -117,8 +117,8 @@ public class AlarmHistoryController {
 
     try {
       if (startTime != null && endTime != null) {
-        history = historyService.requestAlarmHistory(Long.parseLong(id), HistoryService.stringToLocalDateTime(startTime),
-                                                 HistoryService.stringToLocalDateTime(endTime));
+        history = historyService.requestAlarmHistory(Long.parseLong(id), HistoryService.stringToTimestamp(startTime),
+                                                 HistoryService.stringToTimestamp(endTime));
         description = " (From " + startTime + " to " + endTime + ")";
       } else if (lastDays != null) {
         history = historyService.requestAlarmHistoryForLastDays(Long.parseLong(id), Integer.parseInt(lastDays));

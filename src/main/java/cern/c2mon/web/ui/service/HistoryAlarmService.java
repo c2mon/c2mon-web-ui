@@ -16,6 +16,7 @@
  *****************************************************************************/
 package cern.c2mon.web.ui.service;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,6 +28,7 @@ import cern.c2mon.client.ext.history.alarm.Alarm;
 import cern.c2mon.client.ext.history.alarm.AlarmHistoryService;
 import cern.c2mon.client.ext.history.common.exception.HistoryProviderException;
 import cern.c2mon.client.ext.history.common.exception.LoadingParameterException;
+import cern.c2mon.client.ext.history.util.LocalDateTimeConverter;
 
 /**
  * HistoryService providing the XML representation for the history of a given
@@ -46,7 +48,7 @@ public class HistoryAlarmService {
    * @param localEndTime The end time expressed in the local time zone
    * @return history as a List of Alarm
    */
-  public final List<Alarm> requestAlarmHistory(final Long alarmId, final LocalDateTime localStartTime, final LocalDateTime localEndTime) {
+  public final List<Alarm> requestAlarmHistory(final Long alarmId, final Timestamp localStartTime, final Timestamp localEndTime) {
     return alarmHistoryService.findAllDistinctByIdAndTimestampBetweenOrderByTimestamp(alarmId, localStartTime, localEndTime);
   }
 
@@ -61,7 +63,7 @@ public class HistoryAlarmService {
    */
   public final List<Alarm> requestAlarmHistoryForLastDays(final Long alarmId, final int numberOfDays) {
     LocalDateTime now = LocalDateTime.now();
-    return alarmHistoryService.findAllDistinctByIdAndTimestampBetweenOrderByTimestamp(alarmId, now.minusDays(numberOfDays), now);
+    return alarmHistoryService.findAllDistinctByIdAndTimestampBetweenOrderByTimestamp(alarmId, LocalDateTimeConverter.convertToTimestamp(now.minusDays(numberOfDays)), LocalDateTimeConverter.convertToTimestamp(now));
   }
 
   /**
@@ -70,6 +72,7 @@ public class HistoryAlarmService {
    * @return The last N alarm records for the given alarm id
    */
   public final List<Alarm> requestAlarmHistory(final Long alarmId, final int numRecords) {
-    return alarmHistoryService.findAllDistinctByIdOrderByTimestampDesc(alarmId, new PageRequest(0, numRecords)).getContent();
+    List<Alarm> temp = alarmHistoryService.findAllDistinctByIdOrderByTimestampDesc(alarmId, new PageRequest(0, numRecords)).getContent();
+    return temp;
   }
 }

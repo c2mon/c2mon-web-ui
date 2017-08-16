@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.simpleframework.xml.Serializer;
@@ -34,13 +35,9 @@ import cern.c2mon.shared.common.process.ProcessConfiguration;
 /**
  * ProcessService providing the XML representation for a given process.
  */
+@Slf4j
 @Service
 public class ProcessService {
-
-  /**
-   * ProcessService logger
-   */
-  private static Logger logger = LoggerFactory.getLogger(ProcessService.class);
 
   /**
    * Gateway to ConfigLoaderService
@@ -74,16 +71,10 @@ public class ProcessService {
    * @return a collection of all available process names
    */
   public Collection<String> getProcessNames() {
+    Collection <String> names = new ArrayList<>();
 
-    Collection <ProcessNameResponse> processNames = configurationService.getProcessNames();
-    Collection <String> names = new ArrayList<String>();
-
-    Iterator<ProcessNameResponse> i = processNames.iterator();
-
-    while (i.hasNext()) {
-
-      ProcessNameResponse p = i.next();
-      names.add(p.getProcessName());
+    for(ProcessNameResponse response : configurationService.getProcessNames()){
+      names.add(response.getProcessName());
     }
     return names;
   }
@@ -105,7 +96,7 @@ public class ProcessService {
 
     String xml = configurationService.getProcessXml(processName);
 
-    logger.debug("getXml fetch for process " + processName + ": "
+    log.debug("getXml fetch for process " + processName + ": "
         + (xml == null ? "NULL" : "SUCCESS"));
 
     return xml;

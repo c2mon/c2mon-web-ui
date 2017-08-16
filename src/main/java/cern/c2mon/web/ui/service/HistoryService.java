@@ -156,8 +156,8 @@ public class HistoryService {
 
     final List<HistoryTagValueUpdate> historyValues =
         requestHistoryData(dataTagId,
-            stringToTimestamp(startTime),
-            stringToTimestamp(endTime));
+            Timestamp.valueOf(startTime),
+            Timestamp.valueOf(endTime));
 
     final String description = " (From " + startTime + " to " + endTime + ")";
     final String trendURL = "?" + TrendViewController.START_DATE_PARAMETER + "=" + startTime
@@ -487,19 +487,6 @@ public class HistoryService {
     java.util.Date date = dateFormat.parse(dateString);
     final long time = date.getTime();
     return new Timestamp(time);
-  }
-
-  /**
-   * @return Converts a string to Timestamp
-   *
-   * @param dateString
-   * should represent a Date in the following format: {@link TrendViewController#DATE_FORMAT}
-   *
-   * @throws ParseException in case of wrong Date Format
-   */
-  public static LocalDateTime stringToLocalDateTime(final String dateString) throws ParseException {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
-    return LocalDateTime.parse(dateString, formatter);
   }
 
   private HistoryProvider getHistoryProvider() throws HistoryProviderException {

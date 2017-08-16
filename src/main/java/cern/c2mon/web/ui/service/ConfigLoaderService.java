@@ -20,8 +20,7 @@ import java.util.*;
 
 import javax.naming.CannotProceedException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,19 +30,13 @@ import cern.c2mon.shared.client.configuration.ConfigurationReportHeader;
 import cern.c2mon.shared.client.request.ClientRequestProgressReport;
 import cern.c2mon.web.ui.util.ReportHandler;
 
-//import org.springframework.security.acls.model.NotFoundException;
-
 /**
  * ConfigLoaderService service providing the XML representation for a given
  * config
  */
+@Slf4j
 @Service
 public class ConfigLoaderService {
-
-  /**
-   * ConfigLoaderService logger
-   */
-  private static Logger logger = LoggerFactory.getLogger(ConfigLoaderService.class);
 
   /**
    * Gateway to ConfigLoaderService
@@ -84,13 +77,13 @@ public class ConfigLoaderService {
 
     ConfigurationReport report = configurationService.applyConfiguration(configurationId, reportHandler);
 
-    logger.debug("getConfigurationReport: Received configuration report? -> " + configurationId + ": " + (report == null ? "NULL" : "SUCCESS"));
+    log.debug("getConfigurationReport: Received configuration report? -> " + configurationId + ": " + (report == null ? "NULL" : "SUCCESS"));
 
     if (report == null) {
-      logger.error("Received NULL Configuration report for configuration id:" + configurationId);
+      log.error("Received NULL Configuration report for configuration id:" + configurationId);
       throw new CannotProceedException("Did not receive Configuration Report.");
     }
-    logger.debug("getConfigurationReport: Report=" + report.toXML());
+    log.debug("getConfigurationReport: Report=" + report.toXML());
 
     if (report.getName().equals("UNKNOWN")) {
       if (configurationReports.containsKey(String.valueOf(configurationId))) {
@@ -129,10 +122,10 @@ public class ConfigLoaderService {
     }
 
     if (reports == null) {
-      logger.error("Could not retrieve Stored Configuration Report for configuration id:" + configurationId);
+      log.error("Could not retrieve Stored Configuration Report for configuration id:" + configurationId);
       throw new RuntimeException("Cannot find Configuration Report for configuration id:" + configurationId);
     }
-    logger.debug("Successfully retrieved Stored Configuration Report for configuration id:" + configurationId);
+    log.debug("Successfully retrieved Stored Configuration Report for configuration id:" + configurationId);
 
     return reports;
   }
@@ -164,7 +157,7 @@ public class ConfigLoaderService {
     if (reportHandler != null)
       report = reportHandler.getProgressReport();
 
-    logger.debug("ClientRequestProgressReport: fetch for report: " + configurationId + ": " + (report == null ? "NULL" : "SUCCESS"));
+    log.debug("ClientRequestProgressReport: fetch for report: " + configurationId + ": " + (report == null ? "NULL" : "SUCCESS"));
     return report;
   }
 }

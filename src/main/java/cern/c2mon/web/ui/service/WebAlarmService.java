@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,14 +34,13 @@ import cern.c2mon.shared.client.alarm.AlarmValueImpl;
 /**
  * Alarm service providing the XML representation of a given alarm
  */
+@Slf4j
 @Service
 public class WebAlarmService {
 
   /**
-   * AlarmService logger
+   * Gateway to C2monService
    */
-  private static Logger logger = LoggerFactory.getLogger(WebAlarmService.class);
-
   @Autowired
   private AlarmService alarmService;
 
@@ -85,8 +85,7 @@ public class WebAlarmService {
     if (it.hasNext()) {
       av = it.next();
     }
-    logger.debug("Alarm fetch for alarm " + alarmId + ": " + (av == null ? "NULL" : "SUCCESS"));
+    log.debug("Alarm fetch for alarm " + alarmId + ": " + (av == null ? "NULL" : "SUCCESS"));
     return av;
   }
-
 }
