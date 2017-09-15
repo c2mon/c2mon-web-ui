@@ -20,6 +20,17 @@
     <developerConnection>scm:git:ssh://git@gitlab.cern.ch:7999/c2mon/c2mon-web-ui.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
+  
+  <!-- Those managed dependencies resolve the CBNG issue with the default dependencies.set.direct.unresolved profile -->
+  <dependencyManagement>
+    <dependencies>
+        <dependency>
+          <groupId>cern.accsoft.commons</groupId>
+          <artifactId>accsoft-commons-util</artifactId>
+          <version>3.4.7</version>
+        </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <!-- C2MON dependencies -->
