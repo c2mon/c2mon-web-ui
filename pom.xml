@@ -3,7 +3,7 @@
   <parent>
     <groupId>cern.c2mon.client</groupId>
     <artifactId>c2mon-client</artifactId>
-    <version>1.8.18</version>
+    <version>1.8.24</version>
   </parent>
 
   <groupId>cern.c2mon.web</groupId>
@@ -152,6 +152,7 @@
       <artifactId>spring-boot-starter-test</artifactId>
     </dependency>
   </dependencies>
+
 
   <build>
     <finalName>${project.name}-${project.version}</finalName>
