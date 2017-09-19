@@ -146,8 +146,9 @@ public class ConfigLoaderService {
     if (refresh || configurationReportHeaders.isEmpty()) {
       configurationReportHeaders = new ArrayList<>(configurationService.getConfigurationReports());
     }
-    //order by timestamp
+    //order by timestamp (date)
     configurationReportHeaders.sort(Comparator.comparing((ConfigurationReportHeader::getTimestamp)));
+    Collections.reverse(configurationReportHeaders);
     return configurationReportHeaders;
   }
 
