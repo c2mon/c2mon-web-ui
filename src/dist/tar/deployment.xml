@@ -9,6 +9,7 @@
         <property name="server.port" value="8081" />
         <property name="logging.config" value="file://${INSTALL_DIR}/conf/logback.xml" />
         <property name="logging.file" value="${INSTALL_DIR}/log/c2mon-web-ui.log" />
+        <property name="c2mon.web.statistics.chartConfigLocation" value="${INSTALL_DIR}/conf/chart-config.xml" />
       </startscript>
       <deployment>
         <backupPolicy keepBackups="2">
@@ -19,9 +20,7 @@
 
 
     <application name="tim-web-ui-pro" extends="default">
-      <startscript name="C2MON-WEB-UI-PRO">
-        <property name="c2mon.web.statistics.chartConfigLocation" value="${INSTALL_DIR}/conf/chart-config.xml" />
-      </startscript>
+      <startscript name="C2MON-WEB-UI-PRO"/>
       <deployment installLocation="/opt/c2mon-web-ui-pro">
         <directory name="conf">
           <file name="c2mon-client.properties" source="/user/timoper/rep/c2mon/client/c2mon-web-ui.properties" mask="400" />
