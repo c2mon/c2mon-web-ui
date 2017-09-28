@@ -29,10 +29,7 @@ import org.springframework.stereotype.Service;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * This class acts as a service to provide statistics about the C2MON server and
@@ -109,7 +106,7 @@ public class StatisticsService {
     Date from = format.parse(String.valueOf(year) + "-01-01");
     Date to = format.parse(String.valueOf(year) + "-12-31");
 
-//    return mapper.getSupervisionEvents(id, new Timestamp(from.getTime()), new Timestamp(to.getTime()));
+    //return mapper.getSupervisionEvents(id, new Timestamp(from.getTime()), new Timestamp(to.getTime()));
     return null;
   }
 
@@ -128,8 +125,11 @@ public class StatisticsService {
     DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     Date from = format.parse(String.valueOf(year) + "-01-01");
     Date to = format.parse(String.valueOf(year) + "-12-31");
+    // Retrieve a list (ServerLifecycleEvent), order by date.
+    List<ServerLifecycleEvent> serverLifecycleEvents = serverLifecycleEventRepository.findByEventTimeBetween(from, to);
+    Collections.sort(serverLifecycleEvents, (o1,o2) -> o1.getEventTime().compareTo(o2.getEventTime()));
 
-    return serverLifecycleEventRepository.findByEventTimeBetween(from, to);
+    return serverLifecycleEvents;
 //    return mapper.getServerLifecycleEvents(new Timestamp(from.getTime()), new Timestamp(to.getTime()));
   }
 
