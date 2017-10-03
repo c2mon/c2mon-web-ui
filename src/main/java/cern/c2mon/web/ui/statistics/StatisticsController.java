@@ -310,9 +310,9 @@ public class StatisticsController {
    * @return a JSON object containing the monthly availability statistics
    * @throws Exception if an error occurs getting the statistics
    */
-  @RequestMapping(value = "/process/{name}/uptime", method = RequestMethod.GET)
-  @ResponseBody
-  public BarChart getProcessUptime(@PathVariable("name") final String name, @RequestParam("year") final Integer year) throws Exception {
+/*  @RequestMapping(value = "/process/{name}/uptime", method = RequestMethod.GET)
+  @ResponseBody*/
+ /* public BarChart getProcessUptime(@PathVariable("name") final String name, @RequestParam("year") final Integer year) throws Exception {
     List<SupervisionEvent> all = service.getSupervisionEventsForYear(name, year);
 
     List<List<SupervisionEvent>> monthlyEvents = new ArrayList<>(12);
@@ -332,7 +332,7 @@ public class StatisticsController {
     List<String> xData = Arrays.asList("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
     return new BarChart("Availability for " + name + " (By Month)", "Total availability of " + name + " for the year " + year, "", "Month", xData,
             "Availability (%)", monthlyUptimes);
-  }
+  }*/
 
   /**
    * Calculate the total uptime of a process for a given set of supervision
