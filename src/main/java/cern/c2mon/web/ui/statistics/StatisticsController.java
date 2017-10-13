@@ -20,6 +20,7 @@ import java.text.ParseException;
 import java.util.*;
 
 import cern.c2mon.client.ext.history.lifecycle.ServerLifecycleEvent;
+import cern.c2mon.client.ext.history.supervision.ServerSupervisionEvent;
 import cern.c2mon.web.ui.statistics.charts.WebChart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -310,17 +311,17 @@ public class StatisticsController {
    * @return a JSON object containing the monthly availability statistics
    * @throws Exception if an error occurs getting the statistics
    */
-/*  @RequestMapping(value = "/process/{name}/uptime", method = RequestMethod.GET)
-  @ResponseBody*/
- /* public BarChart getProcessUptime(@PathVariable("name") final String name, @RequestParam("year") final Integer year) throws Exception {
-    List<SupervisionEvent> all = service.getSupervisionEventsForYear(name, year);
+  @RequestMapping(value = "/process/{name}/uptime", method = RequestMethod.GET)
+  @ResponseBody
+  public BarChart getProcessUptime(@PathVariable("name") final String name, @RequestParam("year") final Integer year) throws Exception {
+    List<ServerSupervisionEvent> all = service.getSupervisionEventsForYear(name, year);
 
-    List<List<SupervisionEvent>> monthlyEvents = new ArrayList<>(12);
+    List<List<ServerSupervisionEvent>> monthlyEvents = new ArrayList<>(12);
     for (int i = 0; i < 12; i++) {
-      monthlyEvents.add(new ArrayList<SupervisionEvent>());
+      monthlyEvents.add(new ArrayList<ServerSupervisionEvent>());
     }
 
-    for (SupervisionEvent event : all) {
+    for (ServerSupervisionEvent event : all) {
       monthlyEvents.get(event.getEventTime().getMonth()).add(event);
     }
 
@@ -332,7 +333,7 @@ public class StatisticsController {
     List<String> xData = Arrays.asList("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
     return new BarChart("Availability for " + name + " (By Month)", "Total availability of " + name + " for the year " + year, "", "Month", xData,
             "Availability (%)", monthlyUptimes);
-  }*/
+  }
 
   /**
    * Calculate the total uptime of a process for a given set of supervision
@@ -344,7 +345,7 @@ public class StatisticsController {
    *
    * @return the total uptime
    */
-  private Double calculateProcessUptime(List<SupervisionEvent> events, int month, int year) {
+  private Double calculateProcessUptime(List<ServerSupervisionEvent> events, int month, int year) {
 
     // If we have no events, then there were either no events for that month
     // (which implies 100% availability) or the month/year is in the future.
@@ -363,13 +364,13 @@ public class StatisticsController {
 
     double downtime = 0;
     for (int i = 0; i < events.size(); i++) {
-      SupervisionEvent event = events.get(i);
+      ServerSupervisionEvent event = events.get(i);
 
       if (event.getStatus().equals(SupervisionStatus.DOWN) || event.getStatus().equals(SupervisionStatus.STOPPED)) {
         // find the next STARTUP or RUNNING event
 
         for (int j = i + 1; j < events.size(); j++) {
-          SupervisionEvent event2 = events.get(j);
+          ServerSupervisionEvent event2 = events.get(j);
           if (event2.getStatus().equals(SupervisionStatus.RUNNING) || event2.getStatus().equals(SupervisionStatus.RUNNING_LOCAL)) {
             downtime += event2.getEventTime().getTime() - event.getEventTime().getTime();
             i = j;

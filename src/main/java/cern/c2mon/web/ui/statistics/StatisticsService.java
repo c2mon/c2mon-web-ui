@@ -18,8 +18,10 @@ package cern.c2mon.web.ui.statistics;
 
 import cern.c2mon.client.ext.history.lifecycle.ServerLifecycleEvent;
 import cern.c2mon.client.ext.history.lifecycle.ServerLifecycleEventRepository;
-import cern.c2mon.shared.client.statistics.TagStatisticsResponse;
+import cern.c2mon.client.ext.history.supervision.ServerSupervisionEvent;
+import cern.c2mon.client.ext.history.supervision.SupervisionEventRepository;
 import cern.c2mon.shared.client.supervision.SupervisionEvent;
+import cern.c2mon.shared.client.statistics.TagStatisticsResponse;
 import cern.c2mon.web.ui.service.ProcessService;
 import cern.c2mon.web.ui.statistics.charts.WebChart;
 
@@ -30,6 +32,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.sql.Timestamp;
 
 /**
  * This class acts as a service to provide statistics about the C2MON server and
@@ -42,6 +45,9 @@ public class StatisticsService {
 
   @Autowired
   private ServerLifecycleEventRepository serverLifecycleEventRepository;
+
+  @Autowired
+  private SupervisionEventRepository supervisionEventRepository;
 
   /**
    * Reference to the {@link ProcessService} bean.
@@ -98,16 +104,17 @@ public class StatisticsService {
    * @throws Exception if an invalid year was given, or if an error occurs
    *           getting the process id
    */
-  public List<SupervisionEvent> getSupervisionEventsForYear(String name, Integer year) throws Exception {
+  public List<ServerSupervisionEvent> getSupervisionEventsForYear(String name, Integer year) throws Exception {
     Long id = processService.getProcessConfiguration(name).getProcessID();
 
     // Generate dates for the first and last days of the given year.
     DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     Date from = format.parse(String.valueOf(year) + "-01-01");
     Date to = format.parse(String.valueOf(year) + "-12-31");
-
-    //return mapper.getSupervisionEvents(id, new Timestamp(from.getTime()), new Timestamp(to.getTime()));
-    return null;
+    // Retrieve a list (ServerSupervisionEvent), find by id and date, order by date.
+    List<ServerSupervisionEvent> serverSupervisionEvents = supervisionEventRepository.findByIdAndEventTimeBetween(id,from,to);
+    Collections.sort(serverSupervisionEvents, (o1,o2) -> o1.getEventTime().compareTo(o2.getEventTime()));
+    return serverSupervisionEvents;
   }
 
   /**

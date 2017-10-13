@@ -192,7 +192,7 @@ function initialiseProcessCharts(process) {
   // Unhide all the chart containers
   $('.chart-container').show();
 
-/*
+
   $.getJSON('statistics/process/' + process + '/uptime', {
     year : new Date().getFullYear()
   }, function(chart) {
@@ -203,7 +203,7 @@ function initialiseProcessCharts(process) {
   }).fail(function(e) {
     $('#daq-availability-monthly').html('<div class="alert alert-warning"><strong>Oh dear!</strong> Availability statistics are not available for this DAQ.</div>');
   });
-*/
+
 
   $.getJSON('statistics/process/' + process + '/updates/filtered/reasons', function(chart) {
     var options = getPieChartOptions(chart, 'daq-filtered-reasons');

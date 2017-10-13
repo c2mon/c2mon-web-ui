@@ -243,22 +243,22 @@
               </div>
             </div>
 
-       <%--     <div class="row">
+            <div class="row">
               <div class="chart-container col-lg-6">
                 <div class="panel panel-default">
                   <div class="panel-heading">
                     <i class="fa fa-bar-chart-o fa-fw"></i> DAQ Availability
-                  </div>--%>
+                  </div>
                   <!-- /.panel-heading -->
-                  <%--<div class="panel-body">
+                  <div class="panel-body">
                     <div class="flot-chart">
                       <div class="flot-chart-content" id="daq-availability-monthly" style="width: 100%; margin: 0 auto"></div>
                     </div>
-                  </div>--%>
+                  </div>
                   <!-- /.panel-body -->
-                <%--</div>--%>
+                </div>
                 <!-- /.panel -->
-              <%--</div>--%>
+              </div>
               <!-- /.col-lg-6 -->
 
               <div class="chart-container col-lg-6">
