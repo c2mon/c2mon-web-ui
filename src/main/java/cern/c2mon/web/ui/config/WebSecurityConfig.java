@@ -67,7 +67,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     Map<String, String> authorisationDetails = new HashMap<>();
     authorisationDetails.put("configloader/progress", environment.getProperty("c2mon.web.rbac.admin"));
     // Allow show charts without login
-    // authorisationDetails.put("process", environment.getProperty("c2mon.web.rbac.user"));
     authorisationDetails.put("commandviewer", environment.getProperty("c2mon.web.rbac.user"));
 
     return new RbacDecisionManager(authorisationDetails);
