@@ -116,7 +116,7 @@ a.btn.btn-default.status {
                         <c:when test="${report.status == 'OK'}">
                           <span class="label label-success">${report.status}</span>
                         </c:when>
-                        <c:when test="${report.status == 'RESTART'}">
+                        <c:when test="${report.status == 'WARNING' or report.status == 'RESTART'}">
                           <span class="label label-warning">${report.status}</span>
                         </c:when>
                         <c:otherwise>

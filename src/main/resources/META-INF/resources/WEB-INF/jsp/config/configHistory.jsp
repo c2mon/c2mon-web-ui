@@ -69,13 +69,13 @@ tr {
                 <td class="cell-label">
                   <c:choose>
                     <c:when test="${report.status == 'FAILURE'}">
-                      <span class="label label-danger">FAILURE</span>
+                      <span class="label label-danger">${report.status}</span>
                     </c:when>
-                    <c:when test="${report.status == 'RESTART'}">
-                      <span class="label label-warning">RESTART</span>
+                    <c:when test="${report.status == 'WARNING' or report.status == 'RESTART'}">
+                      <span class="label label-warning">${report.status}</span>
                     </c:when>
                     <c:otherwise>
-                      <span class="label label-success">OK</span>
+                      <span class="label label-success">${report.status}</span>
                     </c:otherwise>
                   </c:choose>
                 </td>
