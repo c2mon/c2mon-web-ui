@@ -18,7 +18,7 @@ build_and_publish:
 build:
   stage: build
   script:
-    - mvn -U -B clean test -DskipDockerBuild -DskipDockerTag --settings settings.xml -Ddependencies.set.direct
+    - mvn -U -B clean test -DskipDockerBuild -DskipDockerTag --settings settings.xml -Ddependencies.set.direct -X
   except:
     - master
 
