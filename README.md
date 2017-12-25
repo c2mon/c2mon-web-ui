@@ -27,7 +27,7 @@ extracted from the JDK download.
 `git clone git@github.com:c2mon/c2mon-web-ui.git`
 
 ### Compile and test; build all jars, distribution zips, and docs
-`mvn package`
+`mvn package -DskipDockerBuild -DskipDockerTag`
 
 ## Contributing
 [Pull requests][] are welcome; see the [contributor guidelines][] for details.
