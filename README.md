@@ -1,14 +1,16 @@
-# C2MON : CERN Control and Monitoring Platform
-## C2MON web interface application
-
+# C2MON Web User Interface (UI)
 [![build status](https://gitlab.cern.ch/c2mon/c2mon-web-ui/badges/master/build.svg)](https://gitlab.cern.ch/c2mon/c2mon-web-ui/commits/master)
 
-The CERN Control and Monitoring Platform (C2MON) is a heterogeneous data acquisition and monitoring framework. It contains many useful features
-such as historical metric persistence and browsing, command execution and alerting. It can be suitable for building many different types
-of monitoring and control system.
+The C2MON Web UI is based on the [C2MON Client API] and allows:
+- to browse through the C2MON Data Acquisition (DAQ) Process-, Equipment- and Tag configuration
+- to display the actual Tag value, status and properties.
+- to query the Tag history and to display trends of numeric values
+
+Every page of the Web UI has a unique URL based on the Tag id, which makes it simple to point from other applications to the Tag information.
 
 ## Documentation
-See the current [reference docs][].
+This tool is very simple and intuitive and does not require a detailed documentation. 
+To give it a trial you should follow the [Getting Started] guideline that will setup C2MON with some sample data. 
 
 ## Issue Tracking
 Please report issues on GitLab via the [issue tracker][].
@@ -35,6 +37,8 @@ extracted from the JDK download.
 ## License
 C2MON is released under the [GNU LGPLv3 License][].
 
+[C2MON Client API]: http://c2mon.web.cern.ch/c2mon/docs/latest/user-guide/client-api/
+[Getting started]: http://c2mon.web.cern.ch/c2mon/docs/latest/getting-started/
 [reference docs]: http://c2mon.web.cern.ch/c2mon/docs/latest/
 [issue tracker]: https://gitlab.cern.ch/c2mon/c2mon-web-ui/issues
 [Maven]: http://maven.apache.org
