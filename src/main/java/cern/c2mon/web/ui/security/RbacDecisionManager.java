@@ -1,21 +1,20 @@
 package cern.c2mon.web.ui.security;
 
-import cern.c2mon.client.common.service.SessionService;
-import cern.c2mon.client.common.util.RbacAuthorizationDetailsParser;
-import cern.c2mon.shared.client.command.RbacAuthorizationDetails;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Map;
+
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.FilterInvocation;
-import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Map;
+import cern.c2mon.client.common.service.SessionService;
+import cern.c2mon.client.common.util.RbacAuthorizationDetailsParser;
+import cern.c2mon.shared.client.command.RbacAuthorizationDetails;
 
 /**
  * Decides whether the current user has enough permissions
@@ -24,17 +23,15 @@ import java.util.Map;
  * @author ekoufaki
  * @author Justin Lewis Salmon
  */
-@Component
 @Slf4j
 public class RbacDecisionManager implements AccessDecisionManager {
 
   /**
    * A map of (PageUrls, AuthorizationDetails) required to access each page.
    */
-  private Map<String, String> authorizationDetails;
+  private final Map<String, String> authorizationDetails;
 
-  @Autowired
-  private SessionService sessionService;
+  private final SessionService sessionService;
 
   /**
    * Decides whether the current user has enough permissions
@@ -45,8 +42,8 @@ public class RbacDecisionManager implements AccessDecisionManager {
    *                             in the following order: "Class,Device,Property"
    *                             Example: "TIM_APPLICATIONS,TIM_WEBCONFIG,RUN"
    */
-  @Autowired
-  public RbacDecisionManager(final Map<String, String> authorizationDetails) {
+  public RbacDecisionManager(final SessionService sessionService, final Map<String, String> authorizationDetails) {
+    this.sessionService = sessionService;
     this.authorizationDetails = authorizationDetails;
   }
 

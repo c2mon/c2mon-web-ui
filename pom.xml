@@ -21,27 +21,20 @@
     <tag>HEAD</tag>
   </scm>
   
-  <!-- Those managed dependencies resolve the CBNG issue with the default dependencies.set.direct.unresolved profile -->
-  <dependencyManagement>
-    <dependencies>
-        <dependency>
-          <groupId>cern.accsoft.commons</groupId>
-          <artifactId>accsoft-commons-util</artifactId>
-          <version>3.4.7</version>
-        </dependency>
-    </dependencies>
-  </dependencyManagement>
+  <repositories>
+    <!-- This is needed to retrieve the C2MON dependencies -->
+    <repository>
+      <id>cern-nexus</id>
+      <name>CERN Central Nexus</name>
+      <url>https://nexus.web.cern.ch/nexus/content/groups/public</url>
+    </repository>
+  </repositories>
 
   <dependencies>
     <!-- C2MON dependencies -->
     <dependency>
       <groupId>cern.c2mon.client</groupId>
       <artifactId>c2mon-client-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>cern.c2mon.client</groupId>
-      <artifactId>c2mon-client-ext-rbac</artifactId>
-      <version>1.8.5</version>
     </dependency>
     <dependency>
       <groupId>cern.c2mon.client</groupId>
