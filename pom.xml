@@ -217,11 +217,6 @@
           <exposes>
             <expose>8080</expose>
           </exposes>
-          <runs>
-            <run>chmod 755 /c2mon-web-ui/bin/*</run>
-            <run>mkdir /c2mon-web-ui/tmp</run>
-            <run>chmod 777 /c2mon-web-ui/tmp</run>
-          </runs>
           <volumes>
             <volume>/c2mon-web-ui/log</volume>
             <volume>/c2mon-web-ui/conf</volume>
@@ -231,10 +226,6 @@
               <directory>${project.build.directory}</directory>
               <include>c2mon-web-ui-${project.version}.tar.gz</include>
               <targetPath>/c2mon-web-ui</targetPath>
-            </resource>
-            <resource>
-              <directory>src/dist/docker/conf</directory>
-              <targetPath>/c2mon-web-ui/conf</targetPath>
             </resource>
           </resources>
         </configuration>
