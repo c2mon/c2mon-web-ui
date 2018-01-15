@@ -213,7 +213,7 @@
             <imageTag>latest</imageTag>
           </imageTags>
           <workdir>/c2mon-web-ui</workdir>
-          <cmd>["bin/webapp.sh","run"]</cmd>
+          <cmd>["bin/c2mon-web-ui.sh","run"]</cmd>
           <exposes>
             <expose>8080</expose>
           </exposes>
