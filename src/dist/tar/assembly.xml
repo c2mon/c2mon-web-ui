@@ -16,13 +16,6 @@
     </dependencySet>
   </dependencySets>
 
-  <files>
-    <file>
-      <source>src/dist/tar/deployment.xml</source>
-      <outputDirectory>/</outputDirectory>
-    </file>
-  </files>
-
   <fileSets>
     <!-- create default tmp, log and reports folders in the assembly -->
     <fileSet>
