@@ -52,7 +52,7 @@ if [ -n "${REMOTE_DEBUG_ENABLED+set}" ] ; then
     JVM_OTHER_OPTS+=(-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044)
 fi
 
-LOGGING_CONFIG="-Dlogging.config=$C2MON_HOME/conf/logback.xml -Dlogging.file="${C2MON_HOME}/log/c2mon-web-ui.log"
+LOGGING_CONFIG="-Dlogging.config=$C2MON_HOME/conf/logback.xml -Dlogging.file=${C2MON_HOME}/log/c2mon-web-ui.log"
 
 # if $RUN_FOREGROUND is set, we disable logging to a file
 if [ -n "${RUN_FOREGROUND+set}" ] ; then
