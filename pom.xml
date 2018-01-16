@@ -225,7 +225,7 @@
             <resource>
               <directory>${project.build.directory}</directory>
               <include>c2mon-web-ui-${project.version}.tar.gz</include>
-              <targetPath>/c2mon-web-ui</targetPath>
+              <targetPath>/</targetPath>
             </resource>
             <resource>
               <directory>src/dist/docker/conf</directory>
