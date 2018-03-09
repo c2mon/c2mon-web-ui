@@ -3,7 +3,7 @@
   <parent>
     <groupId>cern.c2mon.client</groupId>
     <artifactId>c2mon-client</artifactId>
-    <version>1.8.31-SNAPSHOT</version>
+    <version>1.8.30</version>
   </parent>
 
   <groupId>cern.c2mon.web</groupId>
