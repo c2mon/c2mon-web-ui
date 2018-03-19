@@ -22,15 +22,11 @@ build:
     - mvn -U -B clean test -DskipDockerBuild -DskipDockerTag --settings settings.xml -Ddependencies.set.direct
   except:
     - master
-
-deploy_test:
+  
+trigger_build:
   stage: deploy
   script:
-    - version=`xmllint --xpath "//*[local-name()='project']/*[local-name()='version']/text()" ./pom.xml`; ssh timtest@timweb-test.cern.ch "~/scripts/deploy-web-ui-test.sh $version"
-    - ssh timtest@timweb-test.cern.ch '/usr/opt/bin/wreboot -N C2MON-WEB-UI-TEST.jvm'
-  environment:
-    name: test
-    url: https://timweb-test.cern.ch/c2mon-web-ui/
+    - "curl -X POST -F token=TOKEN -F ref=REF_NAME https://gitlab.cern.ch/api/v4/projects/33220/trigger/pipeline"
   only:
   - master
 
