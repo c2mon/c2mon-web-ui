@@ -26,7 +26,7 @@ build:
 trigger_build:
   stage: deploy
   script:
-    - "curl -X POST -F token=TOKEN -F ref=REF_NAME https://gitlab.cern.ch/api/v4/projects/33220/trigger/pipeline"
+    - "curl -X POST -F token=$TIM_WEB_UI_TOKEN -F ref=master https://gitlab.cern.ch/api/v4/projects/33220/trigger/pipeline"
   only:
   - master
 
