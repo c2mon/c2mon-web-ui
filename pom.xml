@@ -103,10 +103,6 @@
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-openwire-legacy</artifactId>
-    </dependency>
     
     <!-- Runtime dependencies required to support HTTP via ActiveMQ -->
     <dependency>
