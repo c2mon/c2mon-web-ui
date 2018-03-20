@@ -7,6 +7,17 @@
   <formats>
     <format>tar.gz</format>
   </formats>
+  
+  <dependencySets>
+    <dependencySet>
+      <includes>
+        <include>${project.groupId}:${project.artifactId}:jar:exec:${project.version}</include>
+      </includes>
+      <useProjectArtifact>false</useProjectArtifact>
+      <useProjectAttachments>true</useProjectAttachments>
+      <outputDirectory>lib</outputDirectory>
+    </dependencySet>
+  </dependencySets>
 
   <fileSets>
     <!-- create default tmp, log and reports folders in the assembly -->
@@ -23,14 +34,6 @@
       <excludes>
         <exclude>*/**</exclude>
       </excludes>
-    </fileSet>
-    
-    <fileSet>
-      <directory>${project.build.directory}</directory>
-      <outputDirectory>/lib</outputDirectory>
-      <includes>
-        <include>${project.name}-${version}.jar</include>
-      </includes>
     </fileSet>
     
     <!-- copy start scripts -->
@@ -56,5 +59,6 @@
       <fileMode>0644</fileMode>
       <directoryMode>0644</directoryMode>
     </fileSet>
+
   </fileSets>
 </assembly>
