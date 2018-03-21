@@ -116,7 +116,31 @@
           </tr>
           <tr>
             <th>Metadata</th>
-            <td>${alarm.metadata}</td>
+            <td>
+              <table class="table table-striped table-bordered">
+                <tbody>
+                  <c:forEach var="entry" items="${alarm.metadata}">
+                    <tr>
+                      <td>
+                        <c:out value="${entry.key}"/>
+                      </td>
+                      <c:catch var="catchException">
+                        <c:set var="className" value="${entry.value['class']}"/>
+                        <td>
+                          <c:out value="${entry.value}"/>
+                        </td>
+                      </c:catch>
+                    
+                      <c:if test="${catchException != null}">
+                        <td>
+                          ${fn:join(entry.value, ", ")}
+                        </td>
+                      </c:if>
+                    </tr>
+                  </c:forEach>
+                </tbody>  
+              </table>
+            </td>
           </tr>
         </tbody>
       </table>
