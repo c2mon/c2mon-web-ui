@@ -124,18 +124,10 @@
                       <td>
                         <c:out value="${entry.key}"/>
                       </td>
-                      <c:catch var="catchException">
-                        <c:set var="className" value="${entry.value['class']}"/>
-                        <td>
-                          <c:out value="${entry.value}"/>
-                        </td>
-                      </c:catch>
-                    
-                      <c:if test="${catchException != null}">
-                        <td>
-                          ${fn:join(entry.value, ", ")}
-                        </td>
-                      </c:if>
+
+                      <td>
+                        <c:out value="${entry.value}"/>
+                      </td>
                     </tr>
                   </c:forEach>
                 </tbody>  
