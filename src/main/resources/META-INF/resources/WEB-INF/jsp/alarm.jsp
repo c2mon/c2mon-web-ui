@@ -8,6 +8,8 @@
 <c:url var="alarmviewer" value="../alarmviewer/form" />
 <c:url var="history" value="../alarmhistoryviewer/${alarm.id}" />
 
+<script type="text/javascript" src="<c:url value="/js/sort-table.js"/>"></script>
+
 <c2mon:template title="${title}">
 
 <style type="text/css">
@@ -117,7 +119,11 @@
           <tr>
             <th>Metadata</th>
             <td>
-              <table class="table table-striped table-bordered">
+              <table id="alarmMetadata" class="table table-striped table-bordered">
+                <tr>
+                  <th onclick="sortTable('alarmMetadata', 0)">Key</th>
+                  <th onclick="sortTable('alarmMetadata', 1)">Value</th>
+                </tr>
                 <tbody>
                   <c:forEach var="entry" items="${alarm.metadata}">
                     <tr>

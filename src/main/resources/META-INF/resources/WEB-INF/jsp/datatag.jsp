@@ -9,6 +9,8 @@
 <c:url var="history" value="/historyviewer/${tag.id}" />
 <c:url var="trend" value="/trendviewer/${tag.id}" />
 
+<script type="text/javascript" src="<c:url value="/js/sort-table.js"/>"></script>
+
 <c2mon:template title="${title}">
 
 <style type="text/css">
@@ -142,7 +144,11 @@ th {
           <tr>
             <th>Metadata</th>
             <td>
-              <table class="table table-striped table-bordered">
+              <table id="tagMetadata" class="table table-striped table-bordered">
+                <tr>
+                  <th onclick="sortTable('tagMetadata', 0)">Key</th>
+                  <th onclick="sortTable('tagMetadata', 1)">Value</th>
+                </tr>
                 <tbody>
                   <c:forEach var="entry" items="${tag.metadata}">
                     <tr>
@@ -281,7 +287,11 @@ th {
             <tr>
               <th>Metadata</th>
               <td>
-                <table class="table table-striped table-bordered">
+                <table id="alarmMetadata" class="table table-striped table-bordered">
+                  <tr>
+                    <th onclick="sortTable('alarmMetadata', 0)">Key</th>
+                    <th onclick="sortTable('alarmMetadata', 1)">Value</th>
+                  </tr>
                   <tbody>
                     <c:forEach var="entry" items="${alarm.metadata}">
                       <tr>
