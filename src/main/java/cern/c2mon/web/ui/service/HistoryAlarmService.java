@@ -16,17 +16,17 @@
  *****************************************************************************/
 package cern.c2mon.web.ui.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-
 import cern.c2mon.client.ext.history.alarm.Alarm;
 import cern.c2mon.client.ext.history.alarm.AlarmHistoryService;
 import cern.c2mon.client.ext.history.common.exception.HistoryProviderException;
 import cern.c2mon.client.ext.history.common.exception.LoadingParameterException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * HistoryService providing the XML representation for the history of a given
@@ -70,6 +70,8 @@ public class HistoryAlarmService {
    * @return The last N alarm records for the given alarm id
    */
   public final List<Alarm> requestAlarmHistory(final Long alarmId, final int numRecords) {
-    return alarmHistoryService.findAllDistinctByIdOrderByTimestampDesc(alarmId, new PageRequest(0, numRecords)).getContent();
+//    return alarmHistoryService.findAllDistinctByIdOrderByTimestampDesc(alarmId, new PageRequest(0, numRecords)).getContent();
+    return alarmHistoryService.findAllDistinctByIdOrderByTimestampAndLogdate(alarmId,
+            new PageRequest(0, numRecords)).distinct().collect(Collectors.toList());
   }
 }

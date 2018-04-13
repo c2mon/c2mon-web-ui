@@ -76,6 +76,7 @@
       <table class="table table-striped table-bordered">
         <thead>
         <tr>
+          <th width="250">LogDate</th>
           <th width="250">Timestamp</th>
           <th width="150">Status</th>
           <th >Info</th>
@@ -86,6 +87,11 @@
         <c:forEach var="item" items="${history}">
 
           <tr>
+              <td>
+                  <script type="application/javascript">
+                      document.write('${item.logdate}'.replace("T", " "));
+                  </script>
+              </td>
             <td>
               <script type="text/javascript">
                 document.write('${item.timestamp}'.replace("T", " "));

@@ -16,15 +16,10 @@
  *****************************************************************************/
 package cern.c2mon.web.ui.controller;
 
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-
+import cern.c2mon.client.ext.history.alarm.Alarm;
+import cern.c2mon.web.ui.service.HistoryAlarmService;
+import cern.c2mon.web.ui.service.HistoryService;
+import cern.c2mon.web.ui.util.FormUtility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,10 +29,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import cern.c2mon.client.ext.history.alarm.Alarm;
-import cern.c2mon.web.ui.service.HistoryAlarmService;
-import cern.c2mon.web.ui.service.HistoryService;
-import cern.c2mon.web.ui.util.FormUtility;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * A controller for the alarm history viewer.
@@ -125,6 +123,7 @@ public class AlarmHistoryController {
         description = "(Last " + lastDays + " days)";
       } else if (id != null) {
         int numRecords = maxRecords != null ? Integer.parseInt(maxRecords) : HISTORY_RECORDS_TO_ASK_FOR;
+//        history = historyService.requestAlarmHistory(Long.parseLong(id), numRecords);
         history = historyService.requestAlarmHistory(Long.parseLong(id), numRecords);
         description = "(Last " + numRecords + " records)";
       }
