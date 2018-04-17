@@ -123,7 +123,6 @@ public class AlarmHistoryController {
         description = "(Last " + lastDays + " days)";
       } else if (id != null) {
         int numRecords = maxRecords != null ? Integer.parseInt(maxRecords) : HISTORY_RECORDS_TO_ASK_FOR;
-//        history = historyService.requestAlarmHistory(Long.parseLong(id), numRecords);
         history = historyService.requestAlarmHistory(Long.parseLong(id), numRecords);
         description = "(Last " + numRecords + " records)";
       }
