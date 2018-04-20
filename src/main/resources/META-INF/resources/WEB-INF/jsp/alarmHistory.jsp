@@ -65,7 +65,11 @@
         </a>
         <a onclick="viewTagHistory()" class="btn btn-default btn-large">
           <span class="glyphicon glyphicon-tags"></span>
-          &nbsp;View Tag History
+            &nbsp;View Tag History
+        </a>
+        <a onclick="showHideInfo()" class="btn btn-default btn-large">
+          <span class="glyphicon glyphicon-tags"></span>
+            &nbsp;Show/Hide Info
         </a>
       </p>
     </div>
@@ -79,7 +83,7 @@
           <th width="250">LogDate</th>
           <th width="250">Timestamp</th>
           <th width="150">Status</th>
-          <th >Info</th>
+          <th class="col-info">Info</th>
         </tr>
         </thead>
 
@@ -111,7 +115,7 @@
                 </c:otherwise>
               </c:choose>
             </td>
-            <td>${item.info}</td>
+            <td class="col-info">${item.info}</td>
           </tr>
         </c:forEach>
 
@@ -120,13 +124,33 @@
     </div>
   </div>
 
-  <script type="text/javascript">
+    <script type="text/javascript">
+        var isHidden = true;
 
-    function viewTagHistory() {
-      var url = '${taghistory}' + '?' + window.location.href.split('?')[1];
-      window.location.href = url;
-    }
+        function viewTagHistory() {
+            var url = '${taghistory}' + '?' + window.location.href.split('?')[1];
+            window.location.href = url;
+        }
 
-  </script>
+        function removeColumn() {
+            $(".col-info").hide();
+            console.log("is hidden");
+        }
+
+        function addColumn() {
+            $(".col-info").show();
+            console.log("is shown");
+        }
+
+        function showHideInfo() {
+            if (!this.isHidden) {
+                this.isHidden = true;
+                this.removeColumn();
+            } else {
+                this.isHidden = false;
+                this.addColumn();
+            }
+        }
+    </script>
 
 </c2mon:template>
