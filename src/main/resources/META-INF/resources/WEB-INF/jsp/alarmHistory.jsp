@@ -125,31 +125,9 @@
   </div>
 
     <script type="text/javascript">
-        var isHidden = true;
-
         function viewTagHistory() {
             var url = '${taghistory}' + '?' + window.location.href.split('?')[1];
             window.location.href = url;
-        }
-
-        function removeColumn() {
-            $(".col-info").hide();
-            console.log("is hidden");
-        }
-
-        function addColumn() {
-            $(".col-info").show();
-            console.log("is shown");
-        }
-
-        function showHideInfo() {
-            if (!this.isHidden) {
-                this.isHidden = true;
-                this.removeColumn();
-            } else {
-                this.isHidden = false;
-                this.addColumn();
-            }
         }
     </script>
 

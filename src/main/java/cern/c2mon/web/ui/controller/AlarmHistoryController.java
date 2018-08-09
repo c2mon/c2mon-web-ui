@@ -16,10 +16,15 @@
  *****************************************************************************/
 package cern.c2mon.web.ui.controller;
 
-import cern.c2mon.client.ext.history.alarm.Alarm;
-import cern.c2mon.web.ui.service.HistoryAlarmService;
-import cern.c2mon.web.ui.service.HistoryService;
-import cern.c2mon.web.ui.util.FormUtility;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,13 +34,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import cern.c2mon.client.ext.history.alarm.Alarm;
+import cern.c2mon.web.ui.service.HistoryAlarmService;
+import cern.c2mon.web.ui.service.HistoryService;
+import cern.c2mon.web.ui.util.FormUtility;
 
 /**
  * A controller for the alarm history viewer.

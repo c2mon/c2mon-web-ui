@@ -60,6 +60,17 @@
     </dependency>
 
     <dependency>
+      <groupId>com.oracle</groupId>
+      <artifactId>ojdbc</artifactId>
+      <version>11.2.0.3</version>
+    </dependency>
+    <dependency>
+      <groupId>com.oracle</groupId>
+      <artifactId>orai18n</artifactId>
+      <version>11.2.0.3</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.apache.tomcat.embed</groupId>
       <artifactId>tomcat-embed-jasper</artifactId>
       <version>8.5.6</version>
