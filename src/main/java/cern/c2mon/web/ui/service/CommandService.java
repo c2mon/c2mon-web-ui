@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2016 CERN. All rights not expressly granted are reserved.
+ * Copyright (C) 2010-2019 CERN. All rights not expressly granted are reserved.
  *
  * This file is part of the CERN Control and Monitoring Platform 'C2MON'.
  * C2MON is free software: you can redistribute it and/or modify it under the
@@ -16,8 +16,7 @@
  *****************************************************************************/
 package cern.c2mon.web.ui.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,13 +26,9 @@ import cern.c2mon.client.core.tag.CommandTagImpl;
 /**
  * Command service providing the XML representation of a given tag
  */
+@Slf4j
 @Service
 public class CommandService {
-
-  /**
-   * CommandService logger
-   */
-  private static Logger logger = LoggerFactory.getLogger(CommandService.class);
 
   @Autowired
   private cern.c2mon.client.core.service.CommandService commandManager;
@@ -47,6 +42,7 @@ public class CommandService {
    *           requested ({@link TagIdException}), or any other exception thrown
    *           by the underlying service gateway.
    */
+  @SuppressWarnings("rawtypes")
   public String getCommandTagXml(final String commandId) throws TagIdException {
     try {
       CommandTagImpl command = (CommandTagImpl) getCommandTag(Long.parseLong(commandId));
@@ -66,8 +62,10 @@ public class CommandService {
    * @return command tag
    */
   public CommandTag<Object> getCommandTag(final long commandId) {
+    commandManager.clearCommandCache();
     CommandTag<Object> ct = commandManager.getCommandTag(commandId);
-    logger.debug("Command fetch for command " + commandId + ": " + (ct == null ? "NULL" : "SUCCESS"));
+    String result = ct == null ? "NULL" : "SUCCESS";
+    log.debug("Command fetch for command #{}: {}", commandId, result);
     return ct;
   }
 }
