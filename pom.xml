@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>cern.c2mon.client</groupId>
@@ -11,7 +12,12 @@
   <version>0.1.14-SNAPSHOT</version>
 
   <properties>
-    <docker.image.base>java:8-jdk</docker.image.base>
+    <image.base>openjdk:8-jdk</image.base>
+    <image.name>c2mon-web-ui</image.name>
+    <registry>registry.hub.docker.com</registry>
+    <repository>cern/${image.name}</repository>
+    <c2mon.webhome>/c2mon-web-ui-${project.version}</c2mon.webhome>
+    <explodeDir>${project.build.directory}/exploded/</explodeDir>
   </properties>
 
   <scm>
@@ -20,7 +26,7 @@
     <developerConnection>scm:git:ssh://git@gitlab.cern.ch:7999/c2mon/c2mon-web-ui.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
-  
+
   <repositories>
     <!-- This is needed to retrieve the C2MON dependencies -->
     <repository>
@@ -103,7 +109,7 @@
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
     </dependency>
-    
+
     <!-- Runtime dependencies required to support HTTP via ActiveMQ -->
     <dependency>
       <groupId>org.apache.activemq</groupId>
@@ -141,7 +147,7 @@
         <version>${org.springframework.boot.version}</version>
         <configuration>
           <classifier>exec</classifier>
-       	</configuration>
+        </configuration>
         <executions>
           <execution>
             <goals>
@@ -180,60 +186,79 @@
       </plugin>
 
       <plugin>
-        <groupId>com.spotify</groupId>
-        <artifactId>docker-maven-plugin</artifactId>
-        <version>0.4.10</version>
+        <artifactId>maven-antrun-plugin</artifactId>
         <executions>
           <execution>
-            <id>build-image</id>
-            <phase>package</phase>
+            <phase>install</phase>
+            <configuration>
+              <target>
+                <mkdir dir="${explodeDir}"/>
+                <gunzip src="${project.build.directory}/${build.finalName}.tar.gz"/>
+                <untar src="${project.build.directory}/${build.finalName}.tar" dest="${explodeDir}"/>
+                <copy todir="${explodeDir}/${build.finalName}/conf" overwrite="true">
+                  <fileset dir="src/dist/docker/conf"/>
+                </copy>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>com.google.cloud.tools</groupId>
+        <artifactId>jib-maven-plugin</artifactId>
+        <version>1.0.2</version>
+        <executions>
+          <execution>
+            <configuration>
+              <from>
+                <image>${image.base}</image>
+              </from>
+              <to>
+                <image>${registry}/${repository}</image>
+                <tags>
+                  <tag>${project.version}</tag>
+                  <tag>latest</tag>
+                </tags>
+              </to>
+              <container>
+                <useCurrentTimestamp>true</useCurrentTimestamp>
+                <ports>
+                  <port>8080</port>
+                </ports>
+                <volumes>
+                  <volume>/log</volume>
+                  <volume>/conf</volume>
+                </volumes>
+                <entrypoint>
+                  <entrypoint>/bin/c2mon-web-ui.sh</entrypoint>
+                  <entrypoint>run</entrypoint>
+                </entrypoint>
+              </container>
+              <extraDirectory>
+                <path>${explodeDir}/${build.finalName}/</path>
+                <permissions>
+                  <permission>
+                    <file>/bin/c2mon-web-ui.sh</file>
+                    <mode>755</mode>
+                  </permission>
+                  <permission>
+                    <file>/bin/C2MON-WEB-UI.jvm</file>
+                    <mode>755</mode>
+                  </permission>
+                </permissions>
+              </extraDirectory>
+            </configuration>
             <goals>
               <goal>build</goal>
             </goals>
           </execution>
-          <execution>
-            <id>push-image</id>
-            <phase>deploy</phase>
-            <goals>
-              <goal>push</goal>
-            </goals>
-            <configuration>
-              <imageName>gitlab-registry.cern.ch/c2mon/c2mon-web-ui</imageName>
-            </configuration>
-          </execution>
         </executions>
-        <configuration>
-          <imageName>gitlab-registry.cern.ch/c2mon/c2mon-web-ui</imageName>
-          <baseImage>${docker.image.base}</baseImage>
-          <serverId>gitlab-registry.cern.ch</serverId>
-          <registryUrl>https://gitlab-registry.cern.ch</registryUrl>
-          <forceTags>true</forceTags>
-          <imageTags>
-            <imageTag>${project.version}</imageTag>
-            <imageTag>latest</imageTag>
-          </imageTags>
-          <workdir>/c2mon-web-ui-${project.version}</workdir>
-          <cmd>["bin/c2mon-web-ui.sh","run"]</cmd>
-          <exposes>
-            <expose>8080</expose>
-          </exposes>
-          <volumes>
-            <volume>/c2mon-web-ui-${project.version}/log</volume>
-            <volume>/c2mon-web-ui-${project.version}/conf</volume>
-          </volumes>
-          <resources>
-            <resource>
-              <directory>${project.build.directory}</directory>
-              <include>c2mon-web-ui-${project.version}.tar.gz</include>
-              <targetPath>/</targetPath>
-            </resource>
-            <resource>
-              <directory>src/dist/docker/conf</directory>
-              <targetPath>/c2mon-web-ui-${project.version}/conf</targetPath>
-            </resource>
-          </resources>
-        </configuration>
       </plugin>
+
     </plugins>
   </build>
 
