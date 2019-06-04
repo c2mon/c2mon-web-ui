@@ -176,7 +176,7 @@ public class HistoryController {
     } catch (Exception e) {
       return ("redirect:" + HISTORY_FORM_URL + "?error=" + id);
     }
-
+    Collections.reverse(history);
     setAlarmsForHistory(Long.parseLong(id), history);
 
     model.addAttribute("description", description);
