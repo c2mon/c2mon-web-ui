@@ -77,6 +77,7 @@
         <thead>
         <tr>
           <th width="250">Timestamp</th>
+          <th width="250">Source Timestamp</th>
           <th width="150">Status</th>
           <th >Info</th>
         </tr>
@@ -89,6 +90,11 @@
             <td>
               <script type="text/javascript">
                 document.write('${item.timestamp}'.replace("T", " "));
+              </script>
+            </td>
+            <td>
+              <script type="text/javascript">
+                  document.write('${item.sourceTime}'.replace("T", " "));
               </script>
             </td>
             <td>

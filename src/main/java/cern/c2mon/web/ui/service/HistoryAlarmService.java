@@ -47,7 +47,7 @@ public class HistoryAlarmService {
    * @return history as a List of Alarm
    */
   public final List<Alarm> requestAlarmHistory(final Long alarmId, final LocalDateTime localStartTime, final LocalDateTime localEndTime) {
-    return alarmHistoryService.findAllDistinctByIdAndTimestampBetweenOrderByTimestamp(alarmId, localStartTime, localEndTime);
+    return alarmHistoryService.findAllDistinctByIdAndTimestampBetweenOrderByTimestampDesc(alarmId, localStartTime, localEndTime);
   }
 
   /**
@@ -61,7 +61,7 @@ public class HistoryAlarmService {
    */
   public final List<Alarm> requestAlarmHistoryForLastDays(final Long alarmId, final int numberOfDays) {
     LocalDateTime now = LocalDateTime.now();
-    return alarmHistoryService.findAllDistinctByIdAndTimestampBetweenOrderByTimestamp(alarmId, now.minusDays(numberOfDays), now);
+    return alarmHistoryService.findAllDistinctByIdAndTimestampBetweenOrderByTimestampDesc(alarmId, now.minusDays(numberOfDays), now);
   }
 
   /**

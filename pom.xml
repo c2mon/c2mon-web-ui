@@ -4,7 +4,7 @@
   <parent>
     <groupId>cern.c2mon.client</groupId>
     <artifactId>c2mon-client</artifactId>
-    <version>1.8.41-SNAPSHOT</version>
+    <version>1.8.43-SNAPSHOT</version>
   </parent>
 
   <groupId>cern.c2mon.web</groupId>
@@ -45,7 +45,7 @@
     <dependency>
       <groupId>cern.c2mon.client</groupId>
       <artifactId>c2mon-client-ext-history</artifactId>
-      <version>1.8.10</version>
+      <version>1.8.12-SNAPSHOT</version>
     </dependency>
 
     <!-- 3rd-party dependencies -->
@@ -64,7 +64,6 @@
       <artifactId>spring-boot-starter-web</artifactId>
       <version>${org.springframework.boot.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.apache.tomcat.embed</groupId>
       <artifactId>tomcat-embed-jasper</artifactId>
