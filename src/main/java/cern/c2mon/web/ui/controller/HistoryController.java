@@ -291,16 +291,17 @@ public class HistoryController {
         LocalDateTime end   = convertToLocalDateTime(tagValueUpdates.get(tagValueUpdates.size() - 1).getServerTimestamp());
         List<Alarm> alarmHistory = alarmService.requestAlarmHistory(alarms.get(0).getId(), start, end);
 
-        alarmHistory.forEach(alarm -> timeToAlarmValue.put(convertToTimestamp(alarm.getTimestamp()), alarm));
+        alarmHistory.forEach(alarm -> timeToAlarmValue.put(convertToTimestamp(alarm.getSourceTime()), alarm));
       }
 
       if (!timeToAlarmValue.isEmpty()) {
         for(HistoryTagValueUpdate tagValueUpdate : tagValueUpdates){
           HistoryTagValueUpdateImpl tagValue = (HistoryTagValueUpdateImpl) tagValueUpdate;
           Timestamp currentTime = tagValueUpdate.getServerTimestamp();
+          Timestamp sourceTime = tagValueUpdate.getSourceTimestamp();
 
-          if(timeToAlarmValue.containsKey(currentTime)){
-            Alarm alarm = timeToAlarmValue.get(currentTime);
+          if(timeToAlarmValue.containsKey(sourceTime)){
+            Alarm alarm = timeToAlarmValue.get(sourceTime);
             AlarmValueImpl alarmValue = new AlarmValueImpl(
                 alarm.getId(),
                 alarm.getFaultCode(),
@@ -309,6 +310,7 @@ public class HistoryController {
                 alarm.getInfo(),
                 alarm.getTagId(),
                 currentTime,
+                sourceTime,
                 alarm.isActive());
             tagValue.getAlarms().add(alarmValue);
           }
