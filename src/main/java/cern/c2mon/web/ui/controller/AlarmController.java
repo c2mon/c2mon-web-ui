@@ -132,7 +132,9 @@ public class AlarmController {
 
     model.addAttribute("alarm", alarm);
     model.addAttribute("title", ALARM_FORM_TITLE);
-    model.addAttribute("help_url", helpUrl.replaceAll("\\{id\\}", alarm.getId().toString()));
+    if (alarm.getId() != null) {
+      model.addAttribute("help_url", helpUrl.replaceAll("\\{id\\}", alarm.getId().toString()));
+    }
     return "alarm";
   }
 

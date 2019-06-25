@@ -121,7 +121,9 @@ public class TrendViewController {
     model.addAttribute("id", tag.getId());
     model.addAttribute("fill_graph", true);
     List<AlarmValue> alarmValueList = (List<AlarmValue>) tag.getAlarms();
-    model.addAttribute("help_url", helpUrl.replaceAll("\\{id\\}", alarmValueList.get(0).getId().toString()));
+    if (alarmValueList != null && !alarmValueList.isEmpty()) {
+      model.addAttribute("help_url", helpUrl.replaceAll("\\{id\\}", alarmValueList.get(0).getId().toString()));
+    }
     model.addAttribute("labels", new String[] { "Server Timestamp", "[" + tag.getId() + "] " });
     model.addAttribute("title", TREND_FORM_TITLE);
 

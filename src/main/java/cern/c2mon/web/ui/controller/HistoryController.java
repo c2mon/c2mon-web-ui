@@ -183,6 +183,7 @@ public class HistoryController {
     model.addAttribute("history", history);
     model.addAttribute("title", HISTORY_FORM_TITLE);
     List <AlarmValue> alarmValues = (List<AlarmValue>) tagService.getTag(Long.valueOf(id)).getAlarms();
+    if (alarmValues != null && !alarmValues.isEmpty())
     model.addAttribute("help_url", helpUrl.replaceAll("\\{id\\}", alarmValues.get(0).getId().toString()));
     return "history";
   }
