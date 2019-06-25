@@ -111,7 +111,7 @@ public class HistoryController {
    * Link to a custom help page. If the URL contains the placeholder "{id}" then
    * it will be replaced with the tag id.
    */
-  @Value("${c2mon.web.trend.viewer.help.url:}")
+  @Value("${c2mon.web.help.url:}")
   public String helpUrl;
 
   /**
@@ -182,7 +182,8 @@ public class HistoryController {
     model.addAttribute("description", description);
     model.addAttribute("history", history);
     model.addAttribute("title", HISTORY_FORM_TITLE);
-    model.addAttribute("help_url", helpUrl.replaceAll("\\{id\\}", id));
+    List <AlarmValue> alarmValues = (List<AlarmValue>) tagService.getTag(Long.valueOf(id)).getAlarms();
+    model.addAttribute("help_url", helpUrl.replaceAll("\\{id\\}", alarmValues.get(0).getId().toString()));
     return "history";
   }
 

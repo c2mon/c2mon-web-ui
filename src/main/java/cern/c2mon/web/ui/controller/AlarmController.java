@@ -33,8 +33,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import cern.c2mon.shared.client.alarm.AlarmValue;
-import cern.c2mon.web.ui.service.WebAlarmService;
 import cern.c2mon.web.ui.service.TagIdException;
+import cern.c2mon.web.ui.service.WebAlarmService;
 import cern.c2mon.web.ui.util.FormUtility;
 
 /**
@@ -73,7 +73,7 @@ public class AlarmController {
    * Link to a custom help page. If the URL contains the placeholder "{id}" then
    * it will be replaced with the tag id.
    */
-  @Value("${c2mon.web.trend.viewer.help.url:}")
+  @Value("${c2mon.web.help.url:}")
   public String helpUrl;
 
   /**
@@ -132,7 +132,7 @@ public class AlarmController {
 
     model.addAttribute("alarm", alarm);
     model.addAttribute("title", ALARM_FORM_TITLE);
-    model.addAttribute("help_url", helpUrl.replaceAll("\\{id\\}", alarm.getTagId().toString()));
+    model.addAttribute("help_url", helpUrl.replaceAll("\\{id\\}", alarm.getId().toString()));
     return "alarm";
   }
 

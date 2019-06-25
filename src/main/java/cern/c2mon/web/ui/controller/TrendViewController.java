@@ -40,6 +40,7 @@ import cern.c2mon.client.common.tag.Tag;
 import cern.c2mon.client.ext.history.common.HistoryTagValueUpdate;
 import cern.c2mon.client.ext.history.common.exception.HistoryProviderException;
 import cern.c2mon.client.ext.history.common.exception.LoadingParameterException;
+import cern.c2mon.shared.client.alarm.AlarmValue;
 import cern.c2mon.web.ui.service.HistoryService;
 import cern.c2mon.web.ui.service.TagIdException;
 import cern.c2mon.web.ui.service.TagService;
@@ -90,7 +91,7 @@ public class TrendViewController {
    * Link to a custom help page. If the URL contains the placeholder "{id}" then
    * it will be replaced with the tag id.
    */
-  @Value("${c2mon.web.trend.viewer.help.url:}")
+  @Value("${c2mon.web.help.url:}")
   public String helpUrl;
 
   /** HistoryService */
@@ -119,7 +120,8 @@ public class TrendViewController {
     model.addAttribute("unit", tag.getUnit());
     model.addAttribute("id", tag.getId());
     model.addAttribute("fill_graph", true);
-    model.addAttribute("help_url", helpUrl.replaceAll("\\{id\\}", tag.getId().toString()));
+    List<AlarmValue> alarmValueList = (List<AlarmValue>) tag.getAlarms();
+    model.addAttribute("help_url", helpUrl.replaceAll("\\{id\\}", alarmValueList.get(0).getId().toString()));
     model.addAttribute("labels", new String[] { "Server Timestamp", "[" + tag.getId() + "] " });
     model.addAttribute("title", TREND_FORM_TITLE);
 

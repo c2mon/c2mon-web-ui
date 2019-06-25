@@ -17,6 +17,7 @@
 package cern.c2mon.web.ui.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import cern.c2mon.client.common.tag.Tag;
+import cern.c2mon.shared.client.alarm.AlarmValue;
 import cern.c2mon.web.ui.service.TagService;
 import cern.c2mon.web.ui.util.FormUtility;
 
@@ -69,7 +71,7 @@ public class DataTagController {
    * Link to a custom help page. If the URL contains the placeholder "{id}" then
    * it will be replaced with the tag id.
    */
-  @Value("${c2mon.web.trend.viewer.help.url:}")
+  @Value("${c2mon.web.help.url:}")
   public String helpUrl;
 
   /**
@@ -112,7 +114,8 @@ public class DataTagController {
     model.addAttribute("title", TAG_FORM_TITLE);
     model.addAttribute("tag", tag);
     model.addAttribute("tagConfig", service.getTagConfig(new Long(id)));
-    model.addAttribute("help_url", helpUrl.replaceAll("\\{id\\}", tag.getId().toString()));
+    List<AlarmValue> alarmValueList = (List<AlarmValue>) tag.getAlarms();
+    model.addAttribute("help_url", helpUrl.replaceAll("\\{id\\}", alarmValueList.get(0).getId().toString()));
     return "datatag";
   }
 
