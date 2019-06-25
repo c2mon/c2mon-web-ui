@@ -115,8 +115,9 @@ public class DataTagController {
     model.addAttribute("tag", tag);
     model.addAttribute("tagConfig", service.getTagConfig(new Long(id)));
     List<AlarmValue> alarmValueList = (List<AlarmValue>) tag.getAlarms();
-    if (alarmValueList != null && !alarmValueList.isEmpty())
-    model.addAttribute("help_url", helpUrl.replaceAll("\\{id\\}", alarmValueList.get(0).getId().toString()));
+    if (alarmValueList != null && !alarmValueList.isEmpty()) {
+      model.addAttribute("help_url", helpUrl.replaceAll("\\{id\\}", alarmValueList.get(0).getId().toString()));
+    }
     return "datatag";
   }
 
