@@ -72,4 +72,39 @@ public class HistoryAlarmService {
   public final List<Alarm> requestAlarmHistory(final Long alarmId, final int numRecords) {
     return alarmHistoryService.findAllDistinctByIdOrderByTimestampDesc(alarmId, new PageRequest(0, numRecords)).getContent();
   }
+
+  /**
+   * Used to make a request for HistoryData.
+   *
+   * @param alarmId The alarm id whose history we are looking for
+   * @param localStartTime The start time expressed in the local time zone
+   * @param localEndTime The end time expressed in the local time zone
+   * @return history as a List of Alarm
+   */
+  public final List<Alarm> requestAlarmHistoryBySourceTimestamp(final Long alarmId, final LocalDateTime localStartTime, final LocalDateTime localEndTime) {
+    return alarmHistoryService.findAllDistinctByIdAndSourceTimeBetweenOrderBySourceTimeDesc(alarmId, localStartTime, localEndTime);
+  }
+
+  /**
+   * Used to make a request for HistoryData of an alarm.
+   *
+   * @param alarmId      The alarm id whose history we are looking for
+   * @param numberOfDays number of days to go back in History
+   * @return history as a List of HistoryTagValueUpdates
+   * @throws HistoryProviderException  in case a HistoryProvider cannot be created
+   * @throws LoadingParameterException in case of an invalid configurations
+   */
+  public final List<Alarm> requestAlarmHistoryBySourceTimestamForLastDays(final Long alarmId, final int numberOfDays) {
+    LocalDateTime now = LocalDateTime.now();
+    return alarmHistoryService.findAllDistinctByIdAndSourceTimeBetweenOrderBySourceTimeDesc(alarmId, now.minusDays(numberOfDays), now);
+  }
+
+  /**
+   * @param alarmId The alarm id
+   * @param numRecords number of records to be retrieved
+   * @return The last N alarm records for the given alarm id
+   */
+  public final List<Alarm> requestAlarmHistoryBySourceTimestamp(final Long alarmId, final int numRecords) {
+    return alarmHistoryService.findAllDistinctByIdOrderBySourceTimeDesc(alarmId, new PageRequest(0, numRecords)).getContent();
+  }
 }

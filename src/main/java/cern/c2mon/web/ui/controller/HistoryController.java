@@ -56,7 +56,7 @@ import static cern.c2mon.client.ext.history.util.LocalDateTimeConverter.convertT
 
 /**
  * A controller for the history viewer.
- *
+ * <p>
  * Creates Table views. Check {@link TrendViewController} for the trend views.
  */
 @Controller
@@ -67,16 +67,24 @@ public class HistoryController {
    */
   public static final String HISTORY_URL = "/historyviewer/";
 
-  /** Parameter: MAX RECORDS */
+  /**
+   * Parameter: MAX RECORDS
+   */
   public static final String MAX_RECORDS_PARAMETER = "RECORDS";
 
-  /** Parameter: LAST DAYS */
+  /**
+   * Parameter: LAST DAYS
+   */
   public static final String LAST_DAYS_PARAMETER = "DAYS";
 
-  /** Start Date */
+  /**
+   * Start Date
+   */
   public static final String START_DATE_PARAMETER = "START";
 
-  /** End Date */
+  /**
+   * End Date
+   */
   public static final String END_DATE_PARAMETER = "END";
 
   /**
@@ -104,7 +112,9 @@ public class HistoryController {
    */
   public static final String HISTORY_FORM_INSTR = "Enter a Tag Id to create a Table View.";
 
-  /** How many records in history to ask for. 100 looks ok! */
+  /**
+   * How many records in history to ask for. 100 looks ok!
+   */
   private static final int HISTORY_RECORDS_TO_ASK_FOR = 100;
 
   /**
@@ -134,25 +144,24 @@ public class HistoryController {
   /**
    * @return Redirects to the form
    */
-  @RequestMapping(value = HISTORY_URL, method = { RequestMethod.GET })
+  @RequestMapping(value = HISTORY_URL, method = {RequestMethod.GET})
   public final String viewHistory(final Model model) {
     logger.info(HISTORY_URL);
     return ("redirect:" + HISTORY_FORM_URL);
   }
 
   /**
-   * @return Displays the history of a given id.
-   *
-   * @param id the last 100 records of the given tag id are being shown
+   * @param id       the last 100 records of the given tag id are being shown
    * @param response the html result is written to that HttpServletResponse
-   *          response
+   *                 response
+   * @return Displays the history of a given id.
    */
-  @RequestMapping(value = HISTORY_URL + "{id}", method = { RequestMethod.GET })
+  @RequestMapping(value = HISTORY_URL + "{id}", method = {RequestMethod.GET})
   public final String viewHistory(@PathVariable(value = "id") final String id,
-      @RequestParam(value = MAX_RECORDS_PARAMETER, required = false) final String maxRecords,
-      @RequestParam(value = LAST_DAYS_PARAMETER, required = false) final String lastDays,
-      @RequestParam(value = START_DATE_PARAMETER, required = false) final String startTime,
-      @RequestParam(value = END_DATE_PARAMETER, required = false) final String endTime, final HttpServletResponse response, final Model model) throws IOException {
+                                  @RequestParam(value = MAX_RECORDS_PARAMETER, required = false) final String maxRecords,
+                                  @RequestParam(value = LAST_DAYS_PARAMETER, required = false) final String lastDays,
+                                  @RequestParam(value = START_DATE_PARAMETER, required = false) final String startTime,
+                                  @RequestParam(value = END_DATE_PARAMETER, required = false) final String endTime, final HttpServletResponse response, final Model model) throws IOException {
 
     logger.info("/historyviewer/{id} " + id);
 
@@ -190,17 +199,16 @@ public class HistoryController {
   }
 
   /**
-   * @return Displays the History in RAW XML for a tag with the given id.
-   *
-   * @param id tag id
+   * @param id    tag id
    * @param model Spring MVC Model instance to be filled in before jsp processes
-   *          it
+   *              it
+   * @return Displays the History in RAW XML for a tag with the given id.
    */
-  @RequestMapping(value = HISTORY_XML_URL + "/{id}", method = { RequestMethod.GET })
+  @RequestMapping(value = HISTORY_XML_URL + "/{id}", method = {RequestMethod.GET})
   public final String viewXml(@PathVariable final String id, @RequestParam(value = MAX_RECORDS_PARAMETER, required = false) final String maxRecords,
-      @RequestParam(value = LAST_DAYS_PARAMETER, required = false) final String lastDays,
-      @RequestParam(value = START_DATE_PARAMETER, required = false) final String startTime,
-      @RequestParam(value = END_DATE_PARAMETER, required = false) final String endTime, final Model model) throws ParseException {
+                              @RequestParam(value = LAST_DAYS_PARAMETER, required = false) final String lastDays,
+                              @RequestParam(value = START_DATE_PARAMETER, required = false) final String startTime,
+                              @RequestParam(value = END_DATE_PARAMETER, required = false) final String endTime, final Model model) throws ParseException {
 
     logger.info(HISTORY_XML_URL + id);
     try {
@@ -229,20 +237,19 @@ public class HistoryController {
   }
 
   /**
-   * @return Displays an input form for a tag id, and if a POST was made with a
-   *         tag id, it redirects to HISTORY_URL + id + LAST_RECORDS_URL +
-   *         records
-   *
-   * @param id tag id
+   * @param id    tag id
    * @param model Spring MVC Model instance to be filled in before jsp processes
-   *          it
+   *              it
+   * @return Displays an input form for a tag id, and if a POST was made with a
+   * tag id, it redirects to HISTORY_URL + id + LAST_RECORDS_URL +
+   * records
    */
-  @RequestMapping(value = HISTORY_URL + "form", method = { RequestMethod.GET, RequestMethod.POST })
+  @RequestMapping(value = HISTORY_URL + "form", method = {RequestMethod.GET, RequestMethod.POST})
   public final String viewHistoryFormPost(@RequestParam(value = "id", required = false) final String id,
-      @RequestParam(value = "error", required = false) final String wrongId, @RequestParam(value = "records", required = false) final String records,
-      @RequestParam(value = "days", required = false) final String days, @RequestParam(value = "start", required = false) final String startDate,
-      @RequestParam(value = "end", required = false) final String endDate, @RequestParam(value = "startTime", required = false) final String startTime,
-      @RequestParam(value = "endTime", required = false) final String endTime, final Model model) {
+                                          @RequestParam(value = "error", required = false) final String wrongId, @RequestParam(value = "records", required = false) final String records,
+                                          @RequestParam(value = "days", required = false) final String days, @RequestParam(value = "start", required = false) final String startDate,
+                                          @RequestParam(value = "end", required = false) final String endDate, @RequestParam(value = "startTime", required = false) final String startTime,
+                                          @RequestParam(value = "endTime", required = false) final String endTime, final Model model) {
 
     logger.info(HISTORY_URL + "form" + id);
 
@@ -278,33 +285,33 @@ public class HistoryController {
   /**
    * Helper method to populate the alarms to a given tag history from the {@link AlarmHistoryService}.
    *
-   * @param tagId The id of the tag which might hold the history of alarms
+   * @param tagId           The id of the tag which might hold the history of alarms
    * @param tagValueUpdates The history of the tag
    */
-  private void setAlarmsForHistory(Long tagId, List<HistoryTagValueUpdate> tagValueUpdates){
+  private void setAlarmsForHistory(Long tagId, List<HistoryTagValueUpdate> tagValueUpdates) {
     Map<Timestamp, Alarm> timeToAlarmValue = new HashMap<>();
     Tag clientTag = tagService.getTag(tagId);
 
-    if(clientTag.getAlarms() !=  null) {
+    if (clientTag.getAlarms() != null) {
       List<AlarmValue> alarms = new ArrayList<>(clientTag.getAlarms());
 
       if (!alarms.isEmpty() && !tagValueUpdates.isEmpty()) {
         // get the range of the history of the sorted list
-        LocalDateTime start = convertToLocalDateTime(tagValueUpdates.get(0).getServerTimestamp());
-        LocalDateTime end   = convertToLocalDateTime(tagValueUpdates.get(tagValueUpdates.size() - 1).getServerTimestamp());
-        List<Alarm> alarmHistory = alarmService.requestAlarmHistory(alarms.get(0).getId(), start, end);
+        LocalDateTime end = convertToLocalDateTime(tagValueUpdates.get(0).getSourceTimestamp() != null ? tagValueUpdates.get(0).getSourceTimestamp() : tagValueUpdates.get(0).getServerTimestamp());
+        LocalDateTime start = convertToLocalDateTime(tagValueUpdates.get(tagValueUpdates.size() - 1).getSourceTimestamp() != null ? tagValueUpdates.get(tagValueUpdates.size() - 1).getSourceTimestamp() : tagValueUpdates.get(tagValueUpdates.size() - 1).getServerTimestamp());
+        List<Alarm> alarmHistory = alarmService.requestAlarmHistoryBySourceTimestamp(alarms.get(0).getId(), start, end);
 
-        alarmHistory.forEach(alarm -> timeToAlarmValue.put(convertToTimestamp(alarm.getSourceTime()), alarm));
+        alarmHistory.forEach(alarm -> timeToAlarmValue.put(convertToTimestamp(alarm.getSourceTime()!= null ? alarm.getSourceTime():alarm.getTimestamp()), alarm));
       }
 
       if (!timeToAlarmValue.isEmpty()) {
-        for(HistoryTagValueUpdate tagValueUpdate : tagValueUpdates){
+        for (HistoryTagValueUpdate tagValueUpdate : tagValueUpdates) {
           HistoryTagValueUpdateImpl tagValue = (HistoryTagValueUpdateImpl) tagValueUpdate;
           Timestamp currentTime = tagValueUpdate.getServerTimestamp();
           Timestamp sourceTime = tagValueUpdate.getSourceTimestamp();
 
-          if(timeToAlarmValue.containsKey(sourceTime)){
-            Alarm alarm = timeToAlarmValue.get(sourceTime);
+          if (timeToAlarmValue.containsKey(sourceTime)) {
+            Alarm alarm = timeToAlarmValue.get(sourceTime != null ? sourceTime: currentTime);
             AlarmValueImpl alarmValue = new AlarmValueImpl(
                 alarm.getId(),
                 alarm.getFaultCode(),

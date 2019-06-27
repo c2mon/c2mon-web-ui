@@ -95,6 +95,7 @@
           <th>Mode</th>
           <c:if test="${alarmflag}">
             <th>Alarm status</th>
+            <th>Alarm info</th>
           </c:if>
         </tr>
         </thead>
@@ -161,6 +162,9 @@
               <c:otherwise>
               </c:otherwise>
             </c:choose>
+            <c:if test="${alarmflag}">
+            <td>${item.alarms[0].info}</td>
+            </c:if>
           </tr>
         </c:forEach>
 

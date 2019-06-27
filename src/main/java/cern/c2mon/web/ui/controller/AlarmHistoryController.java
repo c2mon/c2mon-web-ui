@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -131,6 +132,8 @@ public class AlarmHistoryController {
     } catch (Exception e) {
       return ("redirect:" + HISTORY_FORM_URL + "?error=" + id);
     }
+    List<Alarm> historyReverse = new ArrayList<>(history);
+    Collections.reverse(historyReverse);
 
     model.addAttribute("description", description);
     model.addAttribute("history", history);
