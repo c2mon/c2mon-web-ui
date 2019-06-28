@@ -13,7 +13,7 @@ For more details on a given release, please check also the [Milestone planning](
 ### Fixed
 
 
-## 0.1.13
+## 0.1.14
 ### Added
 - Added source timestamp column to alarm history and single alarm page (#30)
 
