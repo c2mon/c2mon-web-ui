@@ -6,7 +6,7 @@
 <!-- JSP variables -->
 <c:url var="home" value="../" />
 <c:url var="processviewer" value="../../form" />
-<c:url var="tagviewer" value="../tagviewer" />
+<c:url var="tagviewer" value="../../../tagviewer" />
 
 <c2mon:template title="${title}">
 
@@ -101,7 +101,9 @@ th {
                 </tr>
                 <tr>
                   <th>CommFault Tag ID</th>
-                  <td>${equipment.commFaultTagId}</td>
+                  <td>
+                    <a href="${tagviewer}/${equipment.commFaultTagId}">${equipment.commFaultTagId}</a>
+                  </td>
                 </tr>
                 <tr>
                   <th>CommFault Tag Value</th>
@@ -109,7 +111,9 @@ th {
                 </tr>
                 <tr>
                   <th>Alive Tag ID</th>
-                  <td>${equipment.aliveTagId}</td>
+                  <td>
+                    <a href="${tagviewer}/${equipment.aliveTagId}">${equipment.aliveTagId}</a>
+                  </td>
                 </tr>
                 <tr>
                   <th>Alive Tag Interval</th>
