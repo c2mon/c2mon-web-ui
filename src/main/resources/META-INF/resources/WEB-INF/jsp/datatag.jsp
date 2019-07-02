@@ -65,7 +65,7 @@ th {
       <!-- Only show the HelpAlarm button if the property is defined. -->
       <c:if test="${fn:length(help_url) > 0}">
         <p class="pull-right btn-toolbar">
-          <a href="${help_url}" class="btn btn-default btn-large btn-danger">
+          <a href="${help_url}" class="btn btn-default btn-large btn-danger" target="_blank">
             <span class="glyphicon glyphicon-question-sign"></span>
             View Help Alarm
           </a>
@@ -224,7 +224,7 @@ th {
         <!-- Only show the HelpAlarm button if the property is defined. -->
         <c:if test="${fn:length(help_url) > 0}">
           <p class="pull-right btn-toolbar">
-            <a href="${help_url}" class="btn btn-default btn-large btn-danger">
+            <a href="${help_url}" class="btn btn-default btn-large btn-danger" target="_blank">
               <span class="glyphicon glyphicon-question-sign"></span>
               View Help Alarm
             </a>
