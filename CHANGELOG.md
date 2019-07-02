@@ -7,13 +7,16 @@ For more details on a given release, please check also the [Milestone planning](
 
 ## [Unreleased]
 ### Added
+-  Added possibility to protect Process configuration view (#23)
+-  Add direct link to commfault tag and alive tag from Equipment view
 
 ### Changed
+- Alarm help link gets now opened in separate tab (CERN related)
 
 ### Fixed
 
 
-## 0.1.14
+## 0.1.14 - 2019-06-28
 ### Added
 - Added source timestamp column to alarm history and single alarm page (#30)
 
