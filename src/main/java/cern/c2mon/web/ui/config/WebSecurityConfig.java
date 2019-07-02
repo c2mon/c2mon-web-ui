@@ -76,9 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     http.authorizeRequests()
           .accessDecisionManager(accessDecisionManager())
-          .antMatchers("/configloader/progress").hasRole("ADMIN")
-          .antMatchers("/process/**").hasRole("ADMIN")
-          .antMatchers("/commandviewer/**").hasRole("ADMIN")
+          .antMatchers("/configloader/progress", "/process/**", "/commandviewer/**").hasRole("ADMIN")
           .anyRequest().anonymous()
         .and()
         .formLogin()
@@ -95,7 +93,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     if (properties.isSecurityEnabled() && sessionService() != null) {
       Map<String, String> authorisationDetails = new HashMap<>();
       authorisationDetails.put("configloader/progress", environment.getProperty("c2mon.web.rbac.admin"));
-      // Allow show charts without login
+      authorisationDetails.put("process", environment.getProperty("c2mon.web.rbac.user"));
       authorisationDetails.put("commandviewer", environment.getProperty("c2mon.web.rbac.user"));
 
       log.info("Using RbacDecisionManager");
