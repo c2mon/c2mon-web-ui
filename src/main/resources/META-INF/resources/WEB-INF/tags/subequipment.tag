@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
+<c:url var="tagviewer" value="/tagviewer" />
+
 <c:choose>
   <c:when test="${fn:length(equipment.subEquipmentConfigurations) == 0}">
     <div class="panel-body">
@@ -43,7 +45,9 @@
                   <tbody>
                     <tr>
                       <th class="col-sm-2">CommFault Tag ID</th>
-                      <td>${subEquipment.commFaultTagId}</td>
+                      <td>
+                        <a href="${tagviewer}/${subEquipment.commFaultTagId}">${subEquipment.commFaultTagId}</a>
+                      </td>
                     </tr>
                     <tr>
                       <th class="col-sm-2">CommFault Tag Value</th>
@@ -51,7 +55,9 @@
                     </tr>
                     <tr>
                       <th class="col-sm-2">Alive Tag ID</th>
-                      <td>${subEquipment.aliveTagId}</td>
+                      <td>
+                        <a href="${tagviewer}/${subEquipment.aliveTagId}">${subEquipment.aliveTagId}</a>
+                      </td>
                     </tr>
                     <tr>
                       <th class="col-sm-2">Alive Tag Interval</th>
