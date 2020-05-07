@@ -56,7 +56,7 @@
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-taglibs</artifactId>
-      <version>4.2.0.RELEASE</version>
+      <version>4.2.15.RELEASE</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -190,11 +190,11 @@
             <phase>install</phase>
             <configuration>
               <target>
-                <mkdir dir="${explodeDir}" />
-                <gunzip src="${project.build.directory}/${build.finalName}.tar.gz" />
-                <untar src="${project.build.directory}/${build.finalName}.tar" dest="${explodeDir}" />
+                <mkdir dir="${explodeDir}"/>
+                <gunzip src="${project.build.directory}/${build.finalName}.tar.gz"/>
+                <untar src="${project.build.directory}/${build.finalName}.tar" dest="${explodeDir}"/>
                 <copy todir="${explodeDir}/${build.finalName}/conf" overwrite="true">
-                  <fileset dir="src/dist/docker/conf" />
+                  <fileset dir="src/dist/docker/conf"/>
                 </copy>
               </target>
             </configuration>
