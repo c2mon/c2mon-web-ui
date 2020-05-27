@@ -3,12 +3,12 @@
   <parent>
     <groupId>cern.c2mon.client</groupId>
     <artifactId>c2mon-client</artifactId>
-    <version>1.8.45</version>
+    <version>1.9.6</version>
   </parent>
 
   <groupId>cern.c2mon.web</groupId>
   <artifactId>c2mon-web-ui</artifactId>
-  <version>0.1.16-SNAPSHOT</version>
+  <version>0.1.17-SNAPSHOT</version>
 
   <properties>
     <image.base>openjdk:8-jdk</image.base>
