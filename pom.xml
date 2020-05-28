@@ -11,7 +11,7 @@
   <version>0.1.18-SNAPSHOT</version>
 
   <properties>
-    <image.base>openjdk:8-jdk</image.base>
+    <image.base>openjdk:11-jdk-slim</image.base>
     <image.name>c2mon-web-ui</image.name>
     <registry>registry.hub.docker.com</registry>
     <repository>cern/${image.name}</repository>

@@ -9,7 +9,7 @@ stages:
 
 # Get the settings file from c2mon project
 before_script:
-  - wget https://gitlab.cern.ch/c2mon/c2mon/raw/master/settings.xml
+  - curl -O https://gitlab.cern.ch/c2mon/c2mon/raw/master/settings.xml
 
 # Fully build and publish master branch
 build_and_publish:
