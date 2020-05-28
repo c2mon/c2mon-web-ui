@@ -1,5 +1,5 @@
 # C2MON Web User Interface (UI)
-[![build status](https://gitlab.cern.ch/c2mon/c2mon-web-ui/badges/master/build.svg)](https://gitlab.cern.ch/c2mon/c2mon-web-ui/commits/master)
+[![build status](https://gitlab.cern.ch/c2mon/c2mon-web-ui/badges/master/pipeline.svg)](https://gitlab.cern.ch/c2mon/c2mon-web-ui/commits/master)
 
 The C2MON Web UI is based on the [C2MON Client API] and allows:
 - to browse through the C2MON Data Acquisition (DAQ) Process-, Equipment- and Tag configuration
