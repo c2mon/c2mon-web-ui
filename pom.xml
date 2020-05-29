@@ -44,7 +44,7 @@
     <dependency>
       <groupId>cern.c2mon.client</groupId>
       <artifactId>c2mon-client-ext-history</artifactId>
-      <version>1.8.12</version>
+      <version>1.9.3</version>
     </dependency>
 
     <!-- 3rd-party dependencies -->
