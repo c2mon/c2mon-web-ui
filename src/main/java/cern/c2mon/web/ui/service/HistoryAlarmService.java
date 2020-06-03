@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2016 CERN. All rights not expressly granted are reserved.
+ * Copyright (C) 2010-2020 CERN. All rights not expressly granted are reserved.
  *
  * This file is part of the CERN Control and Monitoring Platform 'C2MON'.
  * C2MON is free software: you can redistribute it and/or modify it under the
@@ -70,7 +70,7 @@ public class HistoryAlarmService {
    * @return The last N alarm records for the given alarm id
    */
   public final List<Alarm> requestAlarmHistory(final Long alarmId, final int numRecords) {
-    return alarmHistoryService.findAllDistinctByIdOrderByTimestampDesc(alarmId, new PageRequest(0, numRecords)).getContent();
+    return alarmHistoryService.findAllDistinctByIdOrderByTimestampDesc(alarmId, PageRequest.of(0, numRecords)).getContent();
   }
 
   /**
@@ -105,6 +105,6 @@ public class HistoryAlarmService {
    * @return The last N alarm records for the given alarm id
    */
   public final List<Alarm> requestAlarmHistoryBySourceTimestamp(final Long alarmId, final int numRecords) {
-    return alarmHistoryService.findAllDistinctByIdOrderBySourceTimeDesc(alarmId, new PageRequest(0, numRecords)).getContent();
+    return alarmHistoryService.findAllDistinctByIdOrderBySourceTimeDesc(alarmId, PageRequest.of(0, numRecords)).getContent();
   }
 }
