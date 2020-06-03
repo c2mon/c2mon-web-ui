@@ -10,6 +10,17 @@
   <groupId>cern.c2mon.web</groupId>
   <artifactId>c2mon-web-ui</artifactId>
   <version>0.1.20-SNAPSHOT</version>
+  
+  <distributionManagement>
+     <repository>
+       <id>c2mon-nexus-releases</id>
+       <url>${nexus.releases.url}</url>
+     </repository>
+     <snapshotRepository>
+       <id>c2mon-nexus-releases</id>
+       <url>${nexus.snapshots.url}</url>
+     </snapshotRepository>
+  </distributionManagement>
 
   <properties>
     <image.base>openjdk:11-jdk-slim</image.base>
