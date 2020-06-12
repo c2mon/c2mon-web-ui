@@ -280,5 +280,26 @@
 
     </plugins>
   </build>
+  
+  <profiles>
+   <profile>
+     <id>oracle</id>
+     <properties>
+       <com.oracle.version>12.1.1</com.oracle.version>
+     </properties>
+     <dependencies>
+      <dependency>
+	      <groupId>com.oracle</groupId>
+	      <artifactId>ojdbc7</artifactId>
+	      <version>${com.oracle.version}</version>
+	    </dependency>
+	    <dependency>
+	      <groupId>com.oracle</groupId>
+	      <artifactId>orai18n</artifactId>
+	      <version>${com.oracle.version}</version>
+	    </dependency>
+     </dependencies>
+   </profile>
+  </profiles>
 
 </project>
