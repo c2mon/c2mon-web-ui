@@ -25,9 +25,11 @@
 
   <properties>
     <image.base>openjdk:11-jdk-slim</image.base>
-    <image.name>c2mon-web-ui</image.name>
-    <registry>registry.hub.docker.com</registry>
-    <repository>cern/${image.name}</repository>
+    <gitlab>gitlab-registry.cern.ch/c2mon</gitlab>
+    <gitlab-repo>${project.artifactId}</gitlab-repo>
+    <dockerhub-repo>cern/${project.artifactId}</dockerhub-repo>
+    <dockerhub>registry.hub.docker.com</dockerhub>
+    <image.name>${project.artifactId}</image.name>
     <c2mon.webhome>/c2mon-web-ui-${project.version}</c2mon.webhome>
     <explodeDir>${project.build.directory}/exploded/</explodeDir>
     <java.version>8</java.version>
@@ -120,20 +122,6 @@
       <artifactId>lombok</artifactId>
     </dependency>
 
-    <!-- Runtime dependencies required to support HTTP via ActiveMQ -->
-    <!--dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-http</artifactId>
-    </dependency>
-    < dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-server</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpclient</artifactId>
-    </dependency-->
-
     <!-- Test dependencies -->
     <dependency>
       <groupId>junit</groupId>
@@ -148,7 +136,6 @@
 
 
   <build>
-    <finalName>${project.name}-${project.version}</finalName>
     <pluginManagement>
       <plugins>
         <plugin>
@@ -173,13 +160,6 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <!-- executions>
-          <execution>
-            <goals>
-              <goal>repackage</goal>
-            </goals>
-          </execution>
-        </executions-->
       </plugin>
 
       <plugin>
@@ -212,7 +192,7 @@
         <artifactId>maven-antrun-plugin</artifactId>
         <executions>
           <execution>
-            <phase>install</phase>
+            <phase>package</phase>
             <configuration>
               <target>
                 <mkdir dir="${explodeDir}" />
@@ -233,53 +213,76 @@
       <plugin>
         <groupId>com.google.cloud.tools</groupId>
         <artifactId>jib-maven-plugin</artifactId>
-        <version>1.0.2</version>
+        <version>2.4.0</version>
         <executions>
           <execution>
-            <configuration>
-              <from>
-                <image>${image.base}</image>
-              </from>
-              <to>
-                <image>${registry}/${repository}</image>
-                <tags>
-                  <tag>${project.version}</tag>
-                  <tag>latest</tag>
-                </tags>
-              </to>
-              <container>
-                <useCurrentTimestamp>true</useCurrentTimestamp>
-                <ports>
-                  <port>8080</port>
-                </ports>
-                <volumes>
-                  <volume>/log</volume>
-                  <volume>/conf</volume>
-                </volumes>
-                <entrypoint>
-                  <entrypoint>/bin/c2mon-web-ui.sh</entrypoint>
-                  <entrypoint>run</entrypoint>
-                </entrypoint>
-              </container>
-              <extraDirectory>
-                <path>${explodeDir}/${build.finalName}/</path>
-                <permissions>
-                  <permission>
-                    <file>/bin/c2mon-web-ui.sh</file>
-                    <mode>755</mode>
-                  </permission>
-                  <permission>
-                    <file>/bin/C2MON-WEB-UI.jvm</file>
-                    <mode>755</mode>
-                  </permission>
-                </permissions>
-              </extraDirectory>
-            </configuration>
+            <phase>deploy</phase>
+            <id>build-dockerhub</id>
             <goals>
               <goal>build</goal>
             </goals>
+            <configuration>
+              <skip>true</skip>
+              <to>
+                <image>${dockerhub}/${dockerhub-repo}</image>
+              </to>
+            </configuration>
+          </execution>
+          <execution>
+            <phase>deploy</phase>
+            <id>build-gitlab</id>
+            <goals>
+              <goal>build</goal>
+            </goals>
+            <configuration>
+              <allowInsecureRegistries>false</allowInsecureRegistries>
+              <to>
+                <image>${gitlab}/${gitlab-repo}</image>
+              </to>
+            </configuration>
           </execution>
         </executions>
+        <configuration>
+          <from>
+            <image>${image.base}</image>
+          </from>
+          <to>
+            <image>${image.name}</image>
+            <tags>
+              <tag>${project.version}</tag>
+              <tag>latest</tag>
+            </tags>
+          </to>
+          <container>
+            <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
+            <ports>
+              <port>8080</port>
+            </ports>
+            <volumes>
+              <volume>/log</volume>
+              <volume>/conf</volume>
+            </volumes>
+            <entrypoint>
+              <entrypoint>/bin/c2mon-web-ui.sh</entrypoint>
+              <entrypoint>run</entrypoint>
+            </entrypoint>
+          </container>
+          <extraDirectories>
+            <paths>
+                <path>${explodeDir}/${project.build.finalName}/</path>
+            </paths>
+            <permissions>
+              <permission>
+                <file>/bin/c2mon-web-ui.sh</file>
+                <mode>755</mode>
+              </permission>
+              <permission>
+                <file>/bin/C2MON-WEB-UI.jvm</file>
+                <mode>755</mode>
+              </permission>
+            </permissions>
+          </extraDirectories>
+        </configuration>
       </plugin>
 
     </plugins>
