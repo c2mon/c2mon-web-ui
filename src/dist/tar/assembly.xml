@@ -11,9 +11,8 @@
   <dependencySets>
     <dependencySet>
       <includes>
-        <include>${project.groupId}:${project.artifactId}:jar:exec:${project.version}</include>
+        <include>*:war</include>
       </includes>
-      <useProjectArtifact>false</useProjectArtifact>
       <useProjectAttachments>true</useProjectAttachments>
       <outputDirectory>lib</outputDirectory>
     </dependencySet>

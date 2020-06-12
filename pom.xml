@@ -10,6 +10,7 @@
   <groupId>cern.c2mon.web</groupId>
   <artifactId>c2mon-web-ui</artifactId>
   <version>0.1.20-SNAPSHOT</version>
+  <packaging>war</packaging>
   
   <distributionManagement>
      <repository>
@@ -75,8 +76,14 @@
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
     <dependency>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-starter-tomcat</artifactId>
+         <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.apache.tomcat.embed</groupId>
       <artifactId>tomcat-embed-jasper</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -114,18 +121,18 @@
     </dependency>
 
     <!-- Runtime dependencies required to support HTTP via ActiveMQ -->
-    <dependency>
+    <!--dependency>
       <groupId>org.apache.activemq</groupId>
       <artifactId>activemq-http</artifactId>
     </dependency>
-    <dependency>
+    < dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-server</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
-    </dependency>
+    </dependency-->
 
     <!-- Test dependencies -->
     <dependency>
@@ -166,16 +173,13 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <configuration>
-          <classifier>exec</classifier>
-        </configuration>
-        <executions>
+        <!-- executions>
           <execution>
             <goals>
               <goal>repackage</goal>
             </goals>
           </execution>
-        </executions>
+        </executions-->
       </plugin>
 
       <plugin>
@@ -212,9 +216,9 @@
             <configuration>
               <target>
                 <mkdir dir="${explodeDir}" />
-                <gunzip src="${project.build.directory}/${build.finalName}.tar.gz" />
-                <untar src="${project.build.directory}/${build.finalName}.tar" dest="${explodeDir}" />
-                <copy todir="${explodeDir}/${build.finalName}/conf" overwrite="true">
+                <gunzip src="${project.build.directory}/${project.build.finalName}.tar.gz" />
+                <untar src="${project.build.directory}/${project.build.finalName}.tar" dest="${explodeDir}" />
+                <copy todir="${explodeDir}/${project.build.finalName}/conf" overwrite="true">
                   <fileset dir="src/dist/docker/conf" />
                 </copy>
               </target>

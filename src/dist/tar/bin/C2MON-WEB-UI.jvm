@@ -38,7 +38,7 @@ if [ -z "${C2MON_HOME}/lib" ] ; then
   exit 1
 else
   # Initialise classpath
-  CLASSPATH=`ls $C2MON_HOME/lib/*.jar | tr -s '\n' ':'`
+  CLASSPATH=`ls $C2MON_HOME/lib/* | tr -s '\n' ':'`
 fi
 cd $C2MON_HOME
 
@@ -59,4 +59,5 @@ if [ -n "${RUN_FOREGROUND+set}" ] ; then
   LOGGING_CONFIG="";
 fi
 
-exec -a `basename $0` $JAVA_HOME/bin/java -cp "$CLASSPATH" -Dc2mon.client.conf.url="file://${C2MON_HOME}/conf/c2mon-client.properties" $LOGGING_CONFIG $JVM_MEM "${JVM_OTHER_OPTS[@]}" org.springframework.boot.loader.JarLauncher
+echo Running with classpath: $CLASSPATH
+exec -a `basename $0` $JAVA_HOME/bin/java -cp "$CLASSPATH" -Dc2mon.client.conf.url="file://${C2MON_HOME}/conf/c2mon-client.properties" $LOGGING_CONFIG $JVM_MEM "${JVM_OTHER_OPTS[@]}" org.springframework.boot.loader.WarLauncher
