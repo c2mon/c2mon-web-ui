@@ -24,7 +24,6 @@ public class StatisticsDataSourceConfig {
   private Environment environment;
 
   @Bean
-  @Primary
   public DataSource statisticsDataSource() {
     return DataSourceBuilder.create()
         .url(environment.getProperty("c2mon.web.statistics.jdbc.url"))
@@ -33,7 +32,6 @@ public class StatisticsDataSourceConfig {
   }
 
   @Bean
-  @Primary
   public static SqlSessionFactory statisticsSqlSessionFactory(DataSource statisticsDataSource) throws Exception {
     SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
     sessionFactory.setDataSource(statisticsDataSource);
