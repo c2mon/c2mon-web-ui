@@ -4,6 +4,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
@@ -24,16 +26,18 @@ public class StatisticsDataSourceConfig {
   private Environment environment;
 
   @Bean
-  @Primary
-  public DataSource statisticsDataSource() {
-    return DataSourceBuilder.create()
-        .url(environment.getProperty("c2mon.web.statistics.jdbc.url"))
-        .username(environment.getProperty("c2mon.web.statistics.jdbc.username"))
-        .password(environment.getProperty("c2mon.web.statistics.jdbc.password")).build();
+  @ConfigurationProperties("c2mon.web.statistics.jdbc")
+  public DataSourceProperties statisticsDataSourceProperties() {
+    return new DataSourceProperties();
   }
 
   @Bean
-  @Primary
+  @ConfigurationProperties("c2mon.web.statistics.jdbc")
+  public DataSource statisticsDataSource(DataSourceProperties statisticsDataSourceProperties) {
+    return statisticsDataSourceProperties.initializeDataSourceBuilder().build();
+  }
+
+  @Bean
   public static SqlSessionFactory statisticsSqlSessionFactory(DataSource statisticsDataSource) throws Exception {
     SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
     sessionFactory.setDataSource(statisticsDataSource);

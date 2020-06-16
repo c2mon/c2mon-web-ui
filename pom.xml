@@ -10,6 +10,7 @@
   <groupId>cern.c2mon.web</groupId>
   <artifactId>c2mon-web-ui</artifactId>
   <version>0.1.20-SNAPSHOT</version>
+  <packaging>war</packaging>
   
   <distributionManagement>
      <repository>
@@ -24,9 +25,11 @@
 
   <properties>
     <image.base>openjdk:11-jdk-slim</image.base>
-    <image.name>c2mon-web-ui</image.name>
-    <registry>registry.hub.docker.com</registry>
-    <repository>cern/${image.name}</repository>
+    <gitlab>gitlab-registry.cern.ch/c2mon</gitlab>
+    <gitlab-repo>${project.artifactId}</gitlab-repo>
+    <dockerhub-repo>cern/${project.artifactId}</dockerhub-repo>
+    <dockerhub>registry.hub.docker.com</dockerhub>
+    <image.name>${project.artifactId}</image.name>
     <c2mon.webhome>/c2mon-web-ui-${project.version}</c2mon.webhome>
     <explodeDir>${project.build.directory}/exploded/</explodeDir>
     <java.version>8</java.version>
@@ -75,8 +78,14 @@
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
     <dependency>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-starter-tomcat</artifactId>
+         <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.apache.tomcat.embed</groupId>
       <artifactId>tomcat-embed-jasper</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -113,20 +122,6 @@
       <artifactId>lombok</artifactId>
     </dependency>
 
-    <!-- Runtime dependencies required to support HTTP via ActiveMQ -->
-    <dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-http</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-server</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpclient</artifactId>
-    </dependency>
-
     <!-- Test dependencies -->
     <dependency>
       <groupId>junit</groupId>
@@ -141,7 +136,6 @@
 
 
   <build>
-    <finalName>${project.name}-${project.version}</finalName>
     <pluginManagement>
       <plugins>
         <plugin>
@@ -166,16 +160,6 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <configuration>
-          <classifier>exec</classifier>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>repackage</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
 
       <plugin>
@@ -208,13 +192,13 @@
         <artifactId>maven-antrun-plugin</artifactId>
         <executions>
           <execution>
-            <phase>install</phase>
+            <phase>package</phase>
             <configuration>
               <target>
                 <mkdir dir="${explodeDir}" />
-                <gunzip src="${project.build.directory}/${build.finalName}.tar.gz" />
-                <untar src="${project.build.directory}/${build.finalName}.tar" dest="${explodeDir}" />
-                <copy todir="${explodeDir}/${build.finalName}/conf" overwrite="true">
+                <gunzip src="${project.build.directory}/${project.build.finalName}.tar.gz" />
+                <untar src="${project.build.directory}/${project.build.finalName}.tar" dest="${explodeDir}" />
+                <copy todir="${explodeDir}/${project.build.finalName}/conf" overwrite="true">
                   <fileset dir="src/dist/docker/conf" />
                 </copy>
               </target>
@@ -229,56 +213,100 @@
       <plugin>
         <groupId>com.google.cloud.tools</groupId>
         <artifactId>jib-maven-plugin</artifactId>
-        <version>1.0.2</version>
+        <version>2.4.0</version>
         <executions>
           <execution>
-            <configuration>
-              <from>
-                <image>${image.base}</image>
-              </from>
-              <to>
-                <image>${registry}/${repository}</image>
-                <tags>
-                  <tag>${project.version}</tag>
-                  <tag>latest</tag>
-                </tags>
-              </to>
-              <container>
-                <useCurrentTimestamp>true</useCurrentTimestamp>
-                <ports>
-                  <port>8080</port>
-                </ports>
-                <volumes>
-                  <volume>/log</volume>
-                  <volume>/conf</volume>
-                </volumes>
-                <entrypoint>
-                  <entrypoint>/bin/c2mon-web-ui.sh</entrypoint>
-                  <entrypoint>run</entrypoint>
-                </entrypoint>
-              </container>
-              <extraDirectory>
-                <path>${explodeDir}/${build.finalName}/</path>
-                <permissions>
-                  <permission>
-                    <file>/bin/c2mon-web-ui.sh</file>
-                    <mode>755</mode>
-                  </permission>
-                  <permission>
-                    <file>/bin/C2MON-WEB-UI.jvm</file>
-                    <mode>755</mode>
-                  </permission>
-                </permissions>
-              </extraDirectory>
-            </configuration>
+            <phase>deploy</phase>
+            <id>build-dockerhub</id>
             <goals>
               <goal>build</goal>
             </goals>
+            <configuration>
+              <skip>true</skip>
+              <to>
+                <image>${dockerhub}/${dockerhub-repo}</image>
+              </to>
+            </configuration>
+          </execution>
+          <execution>
+            <phase>deploy</phase>
+            <id>build-gitlab</id>
+            <goals>
+              <goal>build</goal>
+            </goals>
+            <configuration>
+              <allowInsecureRegistries>false</allowInsecureRegistries>
+              <to>
+                <image>${gitlab}/${gitlab-repo}</image>
+              </to>
+            </configuration>
           </execution>
         </executions>
+        <configuration>
+          <from>
+            <image>${image.base}</image>
+          </from>
+          <to>
+            <image>${image.name}</image>
+            <tags>
+              <tag>${project.version}</tag>
+              <tag>latest</tag>
+            </tags>
+          </to>
+          <container>
+            <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
+            <ports>
+              <port>8080</port>
+            </ports>
+            <volumes>
+              <volume>/log</volume>
+              <volume>/conf</volume>
+            </volumes>
+            <entrypoint>
+              <entrypoint>/bin/c2mon-web-ui.sh</entrypoint>
+              <entrypoint>run</entrypoint>
+            </entrypoint>
+          </container>
+          <extraDirectories>
+            <paths>
+                <path>${explodeDir}/${project.build.finalName}/</path>
+            </paths>
+            <permissions>
+              <permission>
+                <file>/bin/c2mon-web-ui.sh</file>
+                <mode>755</mode>
+              </permission>
+              <permission>
+                <file>/bin/C2MON-WEB-UI.jvm</file>
+                <mode>755</mode>
+              </permission>
+            </permissions>
+          </extraDirectories>
+        </configuration>
       </plugin>
 
     </plugins>
   </build>
+  
+  <profiles>
+   <profile>
+     <id>oracle</id>
+     <properties>
+       <com.oracle.version>12.1.1</com.oracle.version>
+     </properties>
+     <dependencies>
+      <dependency>
+	      <groupId>com.oracle</groupId>
+	      <artifactId>ojdbc7</artifactId>
+	      <version>${com.oracle.version}</version>
+	    </dependency>
+	    <dependency>
+	      <groupId>com.oracle</groupId>
+	      <artifactId>orai18n</artifactId>
+	      <version>${com.oracle.version}</version>
+	    </dependency>
+     </dependencies>
+   </profile>
+  </profiles>
 
 </project>
