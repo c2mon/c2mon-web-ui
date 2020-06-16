@@ -235,6 +235,7 @@
               <goal>build</goal>
             </goals>
             <configuration>
+              <skip>true</skip>
               <allowInsecureRegistries>false</allowInsecureRegistries>
               <to>
                 <image>${gitlab}/${gitlab-repo}</image>
