@@ -161,7 +161,7 @@ th {
                           <c:out value="${entry.value}"/>
                         </td>
                       </c:catch>
-                      
+
                       <c:if test="${catchException != null}">
                         <td>
                           ${fn:join(entry.value, ", ")}
@@ -169,8 +169,8 @@ th {
                       </c:if>
                     </tr>
                   </c:forEach>
-                </tbody>  
-              </table>            
+                </tbody>
+              </table>
             </td>
           </tr>
         </tbody>
@@ -308,7 +308,7 @@ th {
                             <c:out value="${entry.value}"/>
                           </td>
                         </c:catch>
-                        
+
                         <c:if test="${catchException != null}">
                           <td>
                             ${fn:join(entry.value, ", ")}
@@ -316,7 +316,7 @@ th {
                         </c:if>
                       </tr>
                     </c:forEach>
-                  </tbody>  
+                  </tbody>
                 </table>
               </td>
           </tr>
@@ -343,8 +343,33 @@ th {
             <td>${tagConfig.valueDeadband}</td>
           </tr>
           <tr>
-            <th>Value Deadband Label</th>
-            <td>${tagConfig.valueDeadbandType}</td>
+            <th>Value Deadband Type</th>
+            <c:choose>
+              <c:when test="${tagConfig.valueDeadbandType == 0}">
+                <td>DEADBAND_NONE (0)</td>
+              </c:when>
+              <c:when test="${tagConfig.valueDeadbandType == 1}">
+                <td>DEADBAND_PROCESS_ABSOLUTE (1)</td>
+              </c:when>
+              <c:when test="${tagConfig.valueDeadbandType == 2}">
+                <td>DEADBAND_PROCESS_RELATIVE (2)</td>
+              </c:when>
+              <c:when test="${tagConfig.valueDeadbandType == 3}">
+                <td>DEADBAND_EQUIPMENT_ABSOLUTE (3)</td>
+              </c:when>
+              <c:when test="${tagConfig.valueDeadbandType == 4}">
+                <td>DEADBAND_EQUIPMENT_RELATIVE (4)</td>
+              </c:when>
+              <c:when test="${tagConfig.valueDeadbandType == 5}">
+                <td>DEADBAND_PROCESS_ABSOLUTE_VALUE_DESCR_CHANGE (5)</td>
+              </c:when>
+              <c:when test="${tagConfig.valueDeadbandType == 6}">
+                <td>DEADBAND_PROCESS_RELATIVE_VALUE_DESCR_CHANGE (6)</td>
+              </c:when>
+              <c:otherwise>
+                <td>UNKNOWN (${tagConfig.valueDeadbandType})</td>
+              </c:otherwise>
+            </c:choose>
           </tr>
           <tr>
             <th>Time Deadband</th>
