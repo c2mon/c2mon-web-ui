@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2016 CERN. All rights not expressly granted are reserved.
+ * Copyright (C) 2010-2020 CERN. All rights not expressly granted are reserved.
  *
  * This file is part of the CERN Control and Monitoring Platform 'C2MON'.
  * C2MON is free software: you can redistribute it and/or modify it under the
@@ -22,16 +22,13 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import lombok.extern.slf4j.Slf4j;
 
 import cern.c2mon.client.common.tag.Tag;
 import cern.c2mon.shared.client.alarm.AlarmValue;
@@ -42,6 +39,7 @@ import cern.c2mon.web.ui.util.FormUtility;
  * A controller for the datatag viewer
  */
 @Controller
+@Slf4j
 public class DataTagController {
 
 
@@ -81,17 +79,11 @@ public class DataTagController {
   private TagService service;
 
   /**
-   * DataTagController logger
-   */
-  private static Logger logger = LoggerFactory.getLogger(DataTagController.class);
-
-
-  /**
    * @return Redirects to the form
    */
-  @RequestMapping(value = "/" + TAGVIEWER_PAGE_NAME + "/", method = { RequestMethod.GET })
+  @GetMapping(value = "/" + TAGVIEWER_PAGE_NAME + "/")
   public String viewTag(final Model model) {
-    logger.info("/" + TAGVIEWER_PAGE_NAME + "/");
+    log.info("/" + TAGVIEWER_PAGE_NAME + "/");
     return ("redirect:" + "/" + TAGVIEWER_PAGE_NAME + "/form");
   }
 
@@ -102,18 +94,18 @@ public class DataTagController {
    * @param id tag id
    * @param response we write the html result to that HttpServletResponse response
    */
-  @RequestMapping(value = "/" + TAGVIEWER_PAGE_NAME + "/{id}", method = { RequestMethod.GET })
+  @GetMapping(value = "/" + TAGVIEWER_PAGE_NAME + "/{id}")
   public String viewTag(@PathVariable(value = "id") final String id, final HttpServletResponse response, final Model model, final HttpServletRequest request) throws IOException  {
-    logger.info("/" + TAGVIEWER_PAGE_NAME + "/{id} " + id);
+    log.info("/" + TAGVIEWER_PAGE_NAME + "/{id} " + id);
 
-    Tag tag = service.getTag(new Long(id));
+    Tag tag = service.getTag(Long.valueOf(id));
     if (tag == null) {
       return ("redirect:" + "/" + TAGVIEWER_PAGE_NAME + "/errorform/" + id);
     }
 
     model.addAttribute("title", TAG_FORM_TITLE);
     model.addAttribute("tag", tag);
-    model.addAttribute("tagConfig", service.getTagConfig(new Long(id)));
+    model.addAttribute("tagConfig", service.getTagConfig(Long.valueOf(id)));
     List<AlarmValue> alarmValueList = (List<AlarmValue>) tag.getAlarms();
     if (alarmValueList != null && !alarmValueList.isEmpty()) {
       model.addAttribute("help_url", helpUrl.replaceAll("\\{id\\}", alarmValueList.get(0).getId().toString()));
@@ -133,7 +125,7 @@ public class DataTagController {
   public String viewTagErrorForm(@PathVariable(value = "id") final String errorId,
       @RequestParam(value = "id", required = false) final String id, final Model model) {
 
-    logger.info("/" + TAGVIEWER_PAGE_NAME + "/errorform " + id);
+    log.info("/" + TAGVIEWER_PAGE_NAME + "/errorform " + id);
 
     if (id == null) {
       model.addAllAttributes(FormUtility.getFormModel(TAG_FORM_TITLE,
@@ -153,9 +145,9 @@ public class DataTagController {
    * @param model Spring MVC Model instance to be filled in before jsp processes it
    * @return name of a jsp page which will be displayed
    */
-  @RequestMapping(value = "/" + TAGVIEWER_PAGE_NAME + "/form/{id}", method = { RequestMethod.GET })
+  @GetMapping(value = "/" + TAGVIEWER_PAGE_NAME + "/form/{id}")
   public String viewTagWithForm(@PathVariable final String id, final Model model) {
-    logger.info("/" + TAGVIEWER_PAGE_NAME + "/form/{id} " + id);
+    log.info("/" + TAGVIEWER_PAGE_NAME + "/form/{id} " + id);
     model.addAllAttributes(FormUtility.getFormModel(TAG_FORM_TITLE, TAG_FORM_INSTR, TAG_FORM_URL, id, TAG_URL + id));
     return "genericForm";
   }
@@ -168,7 +160,7 @@ public class DataTagController {
    */
   @RequestMapping(value = "/" + TAGVIEWER_PAGE_NAME + "/form", method = { RequestMethod.GET, RequestMethod.POST })
   public String viewTagFormPost(@RequestParam(value = "id", required = false) final String id, final Model model) {
-    logger.info("/" + TAGVIEWER_PAGE_NAME + "/form " + id);
+    log.info("/" + TAGVIEWER_PAGE_NAME + "/form " + id);
     if (id == null) {
       model.addAllAttributes(FormUtility.getFormModel(TAG_FORM_TITLE, TAG_FORM_INSTR, TAG_FORM_URL, null, null));
     }
