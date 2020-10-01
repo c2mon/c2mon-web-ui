@@ -56,12 +56,12 @@
     <dependency>
       <groupId>cern.c2mon.client</groupId>
       <artifactId>c2mon-client-core</artifactId>
-      <version>1.9.8</version>
+      <version>1.9.10</version>
     </dependency>
     <dependency>
       <groupId>cern.c2mon.client</groupId>
       <artifactId>c2mon-client-ext-history</artifactId>
-      <version>1.9.4</version>
+      <version>1.9.5</version>
     </dependency>
 
     <!-- 3rd-party dependencies -->
@@ -297,15 +297,15 @@
      </properties>
      <dependencies>
       <dependency>
-	      <groupId>com.oracle</groupId>
-	      <artifactId>ojdbc7</artifactId>
-	      <version>${com.oracle.version}</version>
-	    </dependency>
-	    <dependency>
-	      <groupId>com.oracle</groupId>
-	      <artifactId>orai18n</artifactId>
-	      <version>${com.oracle.version}</version>
-	    </dependency>
+          <groupId>com.oracle</groupId>
+          <artifactId>ojdbc7</artifactId>
+          <version>${com.oracle.version}</version>
+        </dependency>
+        <dependency>
+           <groupId>com.oracle</groupId>
+           <artifactId>orai18n</artifactId>
+           <version>${com.oracle.version}</version>
+         </dependency>
      </dependencies>
    </profile>
   </profiles>
