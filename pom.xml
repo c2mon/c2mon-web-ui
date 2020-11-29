@@ -56,12 +56,12 @@
     <dependency>
       <groupId>cern.c2mon.client</groupId>
       <artifactId>c2mon-client-core</artifactId>
-      <version>1.9.10</version>
+      <version>1.10.0</version>
     </dependency>
     <dependency>
       <groupId>cern.c2mon.client</groupId>
       <artifactId>c2mon-client-ext-history</artifactId>
-      <version>1.9.5</version>
+      <version>1.10.1</version>
     </dependency>
 
     <!-- 3rd-party dependencies -->
