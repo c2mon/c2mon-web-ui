@@ -33,6 +33,7 @@
     <c2mon.webhome>/c2mon-web-ui-${project.version}</c2mon.webhome>
     <explodeDir>${project.build.directory}/exploded/</explodeDir>
     <java.version>8</java.version>
+    <com.oracle.version>19.8.0.0</com.oracle.version>
   </properties>
 
   <scm>
@@ -120,6 +121,17 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.oracle.database.jdbc</groupId>
+      <artifactId>ojdbc8</artifactId>
+      <version>${com.oracle.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.oracle.database.nls</groupId>
+      <artifactId>orai18n</artifactId>
+      <version>${com.oracle.version}</version>
     </dependency>
 
     <!-- Test dependencies -->
@@ -289,26 +301,4 @@
 
     </plugins>
   </build>
-  
-  <profiles>
-   <profile>
-     <id>oracle</id>
-     <properties>
-       <com.oracle.version>12.1.1</com.oracle.version>
-     </properties>
-     <dependencies>
-      <dependency>
-          <groupId>com.oracle</groupId>
-          <artifactId>ojdbc7</artifactId>
-          <version>${com.oracle.version}</version>
-        </dependency>
-        <dependency>
-           <groupId>com.oracle</groupId>
-           <artifactId>orai18n</artifactId>
-           <version>${com.oracle.version}</version>
-         </dependency>
-     </dependencies>
-   </profile>
-  </profiles>
-
 </project>
