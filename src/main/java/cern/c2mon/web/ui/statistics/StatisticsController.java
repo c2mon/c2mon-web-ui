@@ -365,12 +365,14 @@ public class StatisticsController {
     for (int i = 0; i < events.size(); i++) {
       ServerSupervisionEvent event = events.get(i);
 
-      if (event.getStatus().equals(SupervisionConstants.SupervisionStatus.DOWN) || event.getStatus().equals(SupervisionConstants.SupervisionStatus.STOPPED)) {
+      if (event.getStatus().equals(SupervisionConstants.SupervisionStatus.DOWN.toString())
+              || event.getStatus().equals(SupervisionConstants.SupervisionStatus.STOPPED.toString())) {
         // find the next STARTUP or RUNNING event
 
         for (int j = i + 1; j < events.size(); j++) {
           ServerSupervisionEvent event2 = events.get(j);
-          if (event2.getStatus().equals(SupervisionConstants.SupervisionStatus.RUNNING) || event2.getStatus().equals(SupervisionConstants.SupervisionStatus.RUNNING_LOCAL)) {
+          if (event2.getStatus().equals(SupervisionConstants.SupervisionStatus.RUNNING.toString())
+                  || event2.getStatus().equals(SupervisionConstants.SupervisionStatus.RUNNING_LOCAL.toString())) {
             downtime += event2.getEventTime().getTime() - event.getEventTime().getTime();
             i = j;
             break;

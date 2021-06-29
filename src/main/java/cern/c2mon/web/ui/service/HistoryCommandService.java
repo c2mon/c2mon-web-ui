@@ -18,8 +18,6 @@ package cern.c2mon.web.ui.service;
 
 import cern.c2mon.client.ext.history.command.CommandRecord;
 import cern.c2mon.client.ext.history.command.CommandRecordService;
-import cern.c2mon.client.ext.history.common.exception.HistoryProviderException;
-import cern.c2mon.client.ext.history.common.exception.LoadingParameterException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -27,6 +25,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * HistoryService providing the XML representation for the history of a given command tag.
+ */
 @Service
 public class HistoryCommandService {
 
@@ -58,6 +59,8 @@ public class HistoryCommandService {
     }
 
     /**
+     * Used to make a request for HistoryData of the last x command tags
+     *
      * @param commandId The command id
      * @param numRecords number of records to be retrieved
      * @return The last N command records for the given command id

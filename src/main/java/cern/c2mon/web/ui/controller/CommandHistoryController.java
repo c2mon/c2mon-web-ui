@@ -30,10 +30,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -88,6 +86,7 @@ public class CommandHistoryController {
     private HistoryCommandService historyService;
 
     /**
+     * Method responsible of redirecting to the form
      * @return Redirects to the form
      */
     @RequestMapping(value = HISTORY_URL, method = {RequestMethod.GET})
@@ -97,6 +96,7 @@ public class CommandHistoryController {
     }
 
     /**
+     * Display Command history
      * @param id       the last 100 records of the given command id are being shown
      * @param response the html result is written to that HttpServletResponse
      *                 response
@@ -129,6 +129,7 @@ public class CommandHistoryController {
                 description = "(Last " + numRecords + " records)";
             }
         } catch (Exception e) {
+            log.error("Exception while trying to view the Command history", e);
             return ("redirect:" + HISTORY_FORM_URL + "?error=" + id);
         }
         List<CommandRecord> historyReverse = new ArrayList<>(history);
@@ -141,6 +142,7 @@ public class CommandHistoryController {
     }
 
     /**
+     * View Input form to display Command history
      * @param id    command id
      * @param model Spring MVC Model instance to be filled in before
      *              jsp processes it
