@@ -87,6 +87,7 @@ public class CommandHistoryController {
 
     /**
      * Method responsible of redirecting to the form
+     * @param model supplies attributes used for rendering views
      * @return Redirects to the form
      */
     @RequestMapping(value = HISTORY_URL, method = {RequestMethod.GET})
@@ -98,8 +99,12 @@ public class CommandHistoryController {
     /**
      * Display Command history
      * @param id       the last 100 records of the given command id are being shown
-     * @param response the html result is written to that HttpServletResponse
-     *                 response
+     * @param maxRecords number of records requested
+     * @param lastDays last days to which records must belong to
+     * @param startTime initial date to which requested records must belong to
+     * @param endTime final date to which request records mustbelong to
+     * @param response the html result is written to that HttpServletResponse response
+     * @param model  supplies attributes used for rendering views
      * @return Displays the history of a given command id.
      */
     @RequestMapping(value = HISTORY_URL + "{id}", method = {RequestMethod.GET})
@@ -144,6 +149,13 @@ public class CommandHistoryController {
     /**
      * View Input form to display Command history
      * @param id    command id
+     * @param wrongId returns error if wrongId not null
+     * @param records specifies number of records to request
+     * @param days specifies the number of days that records must belong to
+     * @param startDate initial date that records must belong to
+     * @param endDate final date that records must belong to
+     * @param startTime initial time that records must belong to
+     * @param endTime end time that records must belong to
      * @param model Spring MVC Model instance to be filled in before
      *              jsp processes it
      * @return Displays an input form for a command id, and if a POST was made with
