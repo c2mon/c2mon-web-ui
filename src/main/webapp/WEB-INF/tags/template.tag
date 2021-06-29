@@ -18,6 +18,7 @@
 <c:url var="trendviewer" value="/trendviewer/form" />
 <c:url var="historyviewer" value="/historyviewer/form" />
 <c:url var="alarmhistoryviewer" value="/alarmhistoryviewer/form" />
+<c:url var="commandhistoryviewer" value="/commandhistoryviewer/form" />
 <c:url var="configloader" value="/configloader/progress" />
 <c:url var="confighistory" value="/confighistory/" />
 
@@ -156,6 +157,12 @@
               <a href="${alarmhistoryviewer}">
                 <i class="fa fa-list fa-fw"></i>
                 Alarm History Viewer
+              </a>
+            </li>
+            <li>
+              <a href="${commandhistoryviewer}">
+                <i class="fa fa-list fa-fw"></i>
+                Command History Viewer
               </a>
             </li>
             <li>

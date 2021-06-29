@@ -21,6 +21,7 @@ import java.util.*;
 
 import cern.c2mon.client.ext.history.lifecycle.ServerLifecycleEvent;
 import cern.c2mon.client.ext.history.supervision.ServerSupervisionEvent;
+import cern.c2mon.shared.common.supervision.SupervisionConstants;
 import cern.c2mon.web.ui.statistics.charts.WebChart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +35,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cern.c2mon.shared.client.lifecycle.LifecycleEventType;
 import cern.c2mon.shared.client.statistics.TagStatisticsResponse;
-import cern.c2mon.shared.client.supervision.SupervisionEvent;
-import cern.c2mon.shared.common.supervision.SupervisionConstants.SupervisionStatus;
 import cern.c2mon.web.ui.statistics.charts.BarChart;
 
 /**
@@ -366,12 +365,14 @@ public class StatisticsController {
     for (int i = 0; i < events.size(); i++) {
       ServerSupervisionEvent event = events.get(i);
 
-      if (event.getStatus().equals(SupervisionStatus.DOWN) || event.getStatus().equals(SupervisionStatus.STOPPED)) {
+      if (event.getStatus().equals(SupervisionConstants.SupervisionStatus.DOWN.toString())
+              || event.getStatus().equals(SupervisionConstants.SupervisionStatus.STOPPED.toString())) {
         // find the next STARTUP or RUNNING event
 
         for (int j = i + 1; j < events.size(); j++) {
           ServerSupervisionEvent event2 = events.get(j);
-          if (event2.getStatus().equals(SupervisionStatus.RUNNING) || event2.getStatus().equals(SupervisionStatus.RUNNING_LOCAL)) {
+          if (event2.getStatus().equals(SupervisionConstants.SupervisionStatus.RUNNING.toString())
+                  || event2.getStatus().equals(SupervisionConstants.SupervisionStatus.RUNNING_LOCAL.toString())) {
             downtime += event2.getEventTime().getTime() - event.getEventTime().getTime();
             i = j;
             break;

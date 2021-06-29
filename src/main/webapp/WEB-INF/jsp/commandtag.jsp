@@ -4,6 +4,7 @@
 
 <c:url var="home" value="../" />
 <c:url var="commandviewer" value="../commandviewer/form" />
+<c:url var="history" value="../commandhistoryviewer/${tag.id}" />
 
 <c2mon:template title="${title}">
 
@@ -42,6 +43,17 @@ th {
         <h2>CommandTag: ${tag.name} ( ${tag.id} )</h2>
       </div>
     </div>
+  </div>
+
+  <div class="row">
+      <div class="col-lg-12">
+        <p class="pull-left btn-toolbar">
+          <a href="<c:url value="${history}"/>" class="btn btn-default btn-large">
+            <span class="glyphicon glyphicon-list"></span>
+            View History
+          </a>
+        </p>
+      </div>
   </div>
 
   <div class="row">
