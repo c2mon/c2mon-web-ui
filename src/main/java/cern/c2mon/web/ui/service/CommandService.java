@@ -64,9 +64,9 @@ public class CommandService {
   public CommandTag<Object> getCommandTag(final long commandId) {
     commandManager.clearCommandCache();
     CommandTag<Object> ct = commandManager.getCommandTag(commandId);
-    String result = ct.getName().equals("UNKNOWN") ? "NULL" : "SUCCESS";
+    String result = "UNKNOWN".equals(ct.getName()) ? "NULL" : "SUCCESS";
     log.debug("Command fetch for command #{}: {}", commandId, result);
-    if(result.equals("NULL")){
+    if("NULL".equals(result)){
       return null;
     }
     return ct;
