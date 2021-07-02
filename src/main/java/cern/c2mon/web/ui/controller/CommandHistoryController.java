@@ -47,7 +47,7 @@ public class CommandHistoryController {
     /**
      * Base URL for the history viewer
      */
-    public static final String HISTORY_URL = "/commandhistoryviewer/";
+    public static final String HISTORY_URL = "/commandhistory/";
 
     /** Parameter: MAX RECORDS */
     public static final String MAX_RECORDS_PARAMETER = "RECORDS";
@@ -64,12 +64,12 @@ public class CommandHistoryController {
     /**
      * A URL to the history viewer with input form
      */
-    public static final String HISTORY_FORM_URL = "/commandhistoryviewer/form";
+    public static final String HISTORY_FORM_URL = "/commandhistory/form";
 
     /**
      * Title for the history form page
      */
-    public static final String HISTORY_FORM_TITLE = "Command History Viewer (table)";
+    public static final String HISTORY_FORM_TITLE = "Command History (table)";
 
     /**
      * Instruction for the history form page
@@ -115,7 +115,7 @@ public class CommandHistoryController {
                                     @RequestParam(value = START_DATE_PARAMETER, required = false) final String startTime,
                                     @RequestParam(value = END_DATE_PARAMETER, required = false) final String endTime,
                                     final HttpServletResponse response, final Model model) {
-        log.info("/commandhistoryviewer/{id} " + id);
+        log.info("/commandhistory/{id} " + id);
 
         List<CommandRecord> history = new ArrayList<>();
         String description = null;
@@ -140,6 +140,7 @@ public class CommandHistoryController {
         List<CommandRecord> historyReverse = new ArrayList<>(history);
         Collections.reverse(historyReverse);
 
+        model.addAttribute("commandId", id);
         model.addAttribute("description", description);
         model.addAttribute("history", history);
         model.addAttribute("title", HISTORY_FORM_TITLE);

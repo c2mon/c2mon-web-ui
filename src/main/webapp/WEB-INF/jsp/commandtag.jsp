@@ -4,7 +4,7 @@
 
 <c:url var="home" value="../" />
 <c:url var="commandviewer" value="../commandviewer/form" />
-<c:url var="history" value="../commandhistoryviewer/${tag.id}" />
+<c:url var="history" value="../commandhistory/${tag.id}" />
 
 <c2mon:template title="${title}">
 
