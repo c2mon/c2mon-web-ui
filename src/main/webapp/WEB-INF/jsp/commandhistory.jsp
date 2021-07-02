@@ -8,7 +8,7 @@
 <c:set var="commandId" value="${commandId}" />
 <c:url var="home" value="../" />
 <c:url var="historyviewer" value="../commandhistory/form" />
-<c:url var="commandviewer" value="../commandviewer/${command.id}" />
+<c:url var="commandviewer" value="../commandviewer/${commandId}" />
 <c2mon:template title="${title}">
 
   <style type="text/css">
