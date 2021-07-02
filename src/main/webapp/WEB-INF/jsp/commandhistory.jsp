@@ -5,8 +5,9 @@
 
 <!-- JSP variables -->
 <c:set var="command" value="${history[0]}" />
+<c:set var="commandId" value="${commandId}" />
 <c:url var="home" value="../" />
-<c:url var="historyviewer" value="../commandhistoryviewer/form" />
+<c:url var="historyviewer" value="../commandhistory/form" />
 <c:url var="commandviewer" value="../commandviewer/${command.id}" />
 <c2mon:template title="${title}">
 
@@ -43,7 +44,7 @@
     <div class="col-lg-12">
       <div class="page-header">
         <h2>
-          CommandTag: ${command.name} ( ${command.id} ) <small>${description}</small>
+          CommandTag: ${command.name} ( ${commandId} ) <small>${description}</small>
         </h2>
       </div>
     </div>

@@ -118,7 +118,7 @@ public class CommandController {
 
     CommandTag<?> tag = service.getCommandTag(new Long(id));
     if (tag == null) {
-      return ("redirect:" + "/" + COMMAND_URL + "/errorform/" + id);
+      return ("redirect:" + "/commandviewer/errorform/" + id);
     }
 
     model.addAttribute("title", COMMAND_FORM_TITLE);
