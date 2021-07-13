@@ -57,7 +57,7 @@
     <dependency>
       <groupId>cern.c2mon.client</groupId>
       <artifactId>c2mon-client-core</artifactId>
-      <version>1.10.3-SNAPSHOT</version>
+      <version>1.11.0</version>
     </dependency>
     <dependency>
       <groupId>cern.c2mon.client</groupId>
