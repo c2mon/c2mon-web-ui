@@ -33,7 +33,7 @@
     <c2mon.webhome>/c2mon-web-ui-${project.version}</c2mon.webhome>
     <explodeDir>${project.build.directory}/exploded/</explodeDir>
     <java.version>8</java.version>
-    <com.oracle.version>19.8.0.0</com.oracle.version>
+    <com.oracle.version>19.10.0.0</com.oracle.version>
   </properties>
 
   <scm>
@@ -208,11 +208,11 @@
             <phase>package</phase>
             <configuration>
               <target>
-                <mkdir dir="${explodeDir}" />
-                <gunzip src="${project.build.directory}/${project.build.finalName}.tar.gz" />
-                <untar src="${project.build.directory}/${project.build.finalName}.tar" dest="${explodeDir}" />
+                <mkdir dir="${explodeDir}"/>
+                <gunzip src="${project.build.directory}/${project.build.finalName}.tar.gz"/>
+                <untar src="${project.build.directory}/${project.build.finalName}.tar" dest="${explodeDir}"/>
                 <copy todir="${explodeDir}/${project.build.finalName}/conf" overwrite="true">
-                  <fileset dir="src/dist/docker/conf" />
+                  <fileset dir="src/dist/docker/conf"/>
                 </copy>
               </target>
             </configuration>
