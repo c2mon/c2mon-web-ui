@@ -9,7 +9,7 @@
 
   <groupId>cern.c2mon.web</groupId>
   <artifactId>c2mon-web-ui</artifactId>
-  <version>0.1.24-SNAPSHOT</version>
+  <version>0.1.24</version>
   <packaging>war</packaging>
 
   <distributionManagement>
@@ -40,7 +40,7 @@
     <url>https://gitlab.cern.ch/c2mon/c2mon-web-ui</url>
     <connection>scm:git:ssh://git@gitlab.cern.ch/c2mon/c2mon-web-ui.git</connection>
     <developerConnection>scm:git:ssh://git@gitlab.cern.ch:7999/c2mon/c2mon-web-ui.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>c2mon-web-ui-0.1.24</tag>
   </scm>
 
   <repositories>
