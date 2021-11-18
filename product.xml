@@ -1,12 +1,8 @@
 <products>
-    <product name="c2mon-web-ui" directory="laser-lw/c2mon-web-ui" version="0.0.1">
-        <desc>A C2MON DAQ to process alarm messages coming from LASER-lw sources posting data over HTTP</desc>
+    <product name="c2mon-web-ui" directory="laser-lw/c2mon-web-ui">
         <dependencies>
             <!-- Inherited from DAQ parent -->
             <dep groupId="org.springframework.boot" product="spring-boot-starter-logging"/>
-
-            <!-- LASER model -->
-            <dep groupId="cern.laser-lw" product="laser-lw-base" version="3.8.9"/>
 
             <!-- C2MON dependencies -->
             <dep groupId="cern.c2mon.client" product="c2mon-client-core" version="1.11.0"/>
@@ -46,7 +42,6 @@
             <java-vm-args>-XX:NewRatio=3 -XX:+UseParallelGC -XX:MaxGCPauseMillis=100</java-vm-args>
 
             <property name="logging.config" value="etc/logback.xml"/>
-            <property name="logging.file" value="log/c2mon-web-ui.log"/>
             <property name="c2mon.client.conf.url" value="etc/c2mon-client.properties"/>
 
             <deployment>
@@ -67,11 +62,6 @@
 
         <application name="c2mon-web-ui" prometheusExporterPort="19401">
             <deployment installLocation="/opt/laser-lw2/c2mon-web-ui" />
-
-            <property name="c2mon.daq.name" value="P_DAQ_REST"/>
-            <property name="laserlw.log.suffix" value="DAQ-REST" />
-
-            <property name="management.port" value="19501"/>
         </application>
 
     </product>
