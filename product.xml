@@ -1,5 +1,5 @@
 <products>
-    <product name="c2mon-web-ui" directory="laser-lw/c2mon-web-ui">
+    <product name="c2mon-web-ui" directory="c2mon/web/c2mon-web-ui" version="0.9.0">
         <dependencies>
             <!-- Inherited from DAQ parent -->
             <dep groupId="org.springframework.boot" product="spring-boot-starter-logging"/>
