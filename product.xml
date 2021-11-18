@@ -1,0 +1,78 @@
+<products>
+    <product name="c2mon-web-ui" directory="laser-lw/c2mon-web-ui" version="0.0.1">
+        <desc>A C2MON DAQ to process alarm messages coming from LASER-lw sources posting data over HTTP</desc>
+        <dependencies>
+            <!-- Inherited from DAQ parent -->
+            <dep groupId="org.springframework.boot" product="spring-boot-starter-logging"/>
+
+            <!-- LASER model -->
+            <dep groupId="cern.laser-lw" product="laser-lw-base" version="3.8.9"/>
+
+            <!-- C2MON dependencies -->
+            <dep groupId="cern.c2mon.client" product="c2mon-client-core" version="1.11.0"/>
+            <dep groupId="cern.c2mon.client" product="c2mon-client-ext-history" version="1.11.0"/>
+
+            <!-- 3rd party dependencies -->
+            <dep groupId="org.springframework.boot" product="spring-boot-starter-parent" version="2.1.1.RELEASE"/>
+            <dep groupId="org.springframework.boot" product="spring-boot-starter-security" version="2.1.1.RELEASE"/>
+            <dep groupId="org.springframework.security" product="spring-security-taglibs" version="5.1.2.RELEASE"/>
+            <dep groupId="org.springframework.boot" product="spring-boot-starter-web" version="2.1.1.RELEASE"/>
+            <dep groupId="org.springframework.boot" product="spring-boot-starter-tomcat" version="2.1.1.RELEASE"/>
+            <dep groupId="org.apache.tomcat.embed" product="tomcat-embed-jasper" version="9.0.13"/>
+            <dep groupId="javax.servlet" product="jstl" version="1.2"/>
+            <dep groupId="com.fasterxml.jackson.core" product="jackson-annotations" version="2.9.0"/>
+            <dep groupId="com.fasterxml.jackson.core" product="jackson-core" version="2.9.7"/>
+            <dep groupId="com.fasterxml.jackson.core" product="jackson-databind" version="2.9.7"/>
+            <dep groupId="commons-io" product="commons-io" version="2.7"/>
+            <dep groupId="jfree" product="jfreechart" version="1.0.13"/>
+            <dep groupId="xml-apis" product="xml-apis" version="1.4.01"/>
+            <dep groupId="org.projectlombok" product="lombok" version="1.18.4"/>
+
+            <dep groupId="com.oracle.database.jdbc" product="ojdbc8" version="19.8.0.0"/>
+            <dep groupId="com.oracle.database.nls" product="orai18n" version="19.8.0.0"/>
+
+            <!-- Test dependencies -->
+            <dep groupId="junit" product="junit" version="4.12" scope="test"/>
+            <dep groupId="org.springframework.boot" product="spring-boot-starter-test" version="2.1.1.RELEASE" scope="test"/>
+
+        </dependencies>
+
+        <!--  Common config to all applications-->
+        <application>
+            <main-class name="cern.c2mon.web.ui.Application"/>
+
+            <initial-heap-size>256M</initial-heap-size>
+            <max-heap-size>256M</max-heap-size>
+            <java-vm-args>-XX:NewRatio=3 -XX:+UseParallelGC -XX:MaxGCPauseMillis=100</java-vm-args>
+
+            <property name="logging.config" value="etc/logback.xml"/>
+            <property name="logging.file" value="log/c2mon-web-ui.log"/>
+            <property name="c2mon.client.conf.url" value="etc/c2mon-client.properties"/>
+
+            <deployment>
+                <directory name="log" mask="750"/>
+                <directory name="tmp" mask="750"/>
+                <directory name="etc" mask="400">
+                    <file name="logback.xml" source="/user/copera/laser-lw/.keystore/logback-standard.xml"/>
+                    <file name="c2mon-client.properties" source="/user/copera/laser-lw/.keystore/c2mon-client.properties"/>
+                </directory>
+
+                <backupPolicy keepBackups="5">
+                    <preserve name="log" type="dir"/>
+                    <preserve name="etc" type="dir"/>
+                </backupPolicy>
+            </deployment>
+
+        </application>
+
+        <application name="c2mon-web-ui" prometheusExporterPort="19401">
+            <deployment installLocation="/opt/laser-lw2/c2mon-web-ui" />
+
+            <property name="c2mon.daq.name" value="P_DAQ_REST"/>
+            <property name="laserlw.log.suffix" value="DAQ-REST" />
+
+            <property name="management.port" value="19501"/>
+        </application>
+
+    </product>
+</products>
