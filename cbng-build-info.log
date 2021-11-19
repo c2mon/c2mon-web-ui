@@ -1,0 +1,336 @@
+[QUIET] - = Configuring CBNG for root project 'c2mon-web-ui'
+[INFO] - Could not find DependencyResolver instance among the project properties. Expected property was: resolver
+[QUIET] - CBNG configuration:
+[QUIET] - -------------------
+[QUIET] - CBNG Version:       3.9.5
+[QUIET] - CBNG Core Version:  2.1.6
+[QUIET] - Artifactory URL:    http://artifactory.cern.ch
+[QUIET] - gradleConfigDir:    /opt/mbuttner/accsoft-eclipse-pro/binary/binary.contents.7075-BCh-3115.winlinuxmac_3.9.5/commonbuild-ng-binaries/gradle/cbng-config
+[QUIET] - gradle Version:     5.4.1
+[QUIET] - Java Version:       11.0.2
+[QUIET] - -------------------
+[QUIET] - User of execution:  mbuttner
+[QUIET] - Working directory:  /opt/mbuttner/git/c2mon-web-ui
+[QUIET] - Host of execution:  cwe-513-vol717.cern.ch
+[QUIET] - Start of execution: Fri Nov 19 09:56:16 CET 2021
+[QUIET] - Build ID:           211119-085616@10135@cwe-513-vol717.cern.ch@8DFA111D
+[QUIET] - -------------------
+[QUIET] - Project directory:  /opt/mbuttner/git/c2mon-web-ui
+[QUIET] - Project build ID:   211119-085616@10135@cwe-513-vol717.cern.ch@01B3C5CE
+[INFO] - This is NOT a release server
+[INFO] - === Configuring CBNG project...
+[INFO] - Indexed GAVC Search enabled: true
+[INFO] - Could not get SVN repository from directory /opt/mbuttner/git/c2mon-web-ui. See debug log for stacktrace. Fallback using other clients.
+[INFO] - Could not get SVN repository from directory /opt/mbuttner/git/c2mon-web-ui. See debug log for stacktrace. Fallback using other clients.
+[INFO] - Set maven url in CbngArtifactUploaderPlugin to http://artifactory.cern.ch/beco-development-local
+[INFO] - Could not get SVN repository from directory /opt/mbuttner/git/c2mon-web-ui. See debug log for stacktrace. Fallback using other clients.
+[INFO] - Could not get SVN repository from directory /opt/mbuttner/git/c2mon-web-ui. See debug log for stacktrace. Fallback using other clients.
+[INFO] - Detected standard Maven source set layout
+[WARN] - Test execution is disabled for this project. To turn it back, remove the junit.enabled=false property
+[INFO] - Evaluating root project 'c2mon-web-ui' using build file '/opt/mbuttner/git/c2mon-web-ui/build.gradle'.
+[INFO] - == InitGradle/cbngTracing afterEvaluate BEGIN
+[INFO] - == InitGradle/cbngTracing afterEvaluate END
+[INFO] - == ConfigGradle afterEvaluate BEGIN
+[INFO] - == ConfigGradle afterEvaluate END
+[QUIET] - Source compatibility set to default 1.8
+[QUIET] - Target compatibility set to default 1.8
+[QUIET] - Release flag enabled with version 1.8
+[INFO] - Source compatibility is 1.8
+[INFO] - Target compatibility is 1.8
+[INFO] - == Configuring publication 'cbng' (afterEvaluate) BEGIN
+[INFO] - == Configuring publication 'cbng' (afterEvaluate) END
+[INFO] - == CommonTasksGradle/tasks.withType(Test) afterEvaluate BEGIN
+[INFO] - == CommonTasksGradle/tasks.withType(Test) afterEvaluate END
+[INFO] - All projects evaluated.
+[INFO] - Selected primary task 'devrelease' from project :
+[INFO] - == Resolving :testRuntimeClasspath
+[INFO] - Resolved (testRuntimeClasspath) cern.c2mon.client:c2mon-client-core:CTX to cern.c2mon.client:c2mon-client-core:1.20.0-20211117-112029
+[INFO] - The null version of spring-boot-starter-logging has been forced to PRO
+[INFO] - Resolved (testRuntimeClasspath) org.springframework.boot:spring-boot-starter-logging:<null> to org.springframework.boot:spring-boot-starter-logging:2.2.10.RELEASE
+[INFO] - The null version of spring-boot-starter-security has been forced to PRO
+[INFO] - Resolved (testRuntimeClasspath) org.springframework.boot:spring-boot-starter-security:<null> to org.springframework.boot:spring-boot-starter-security:2.2.10.RELEASE
+[INFO] - The null version of spring-boot-starter-web has been forced to PRO
+[INFO] - Resolved (testRuntimeClasspath) org.springframework.boot:spring-boot-starter-web:<null> to org.springframework.boot:spring-boot-starter-web:2.2.10.RELEASE
+[INFO] - The null version of spring-boot-starter-tomcat has been forced to PRO
+[INFO] - Resolved (testRuntimeClasspath) org.springframework.boot:spring-boot-starter-tomcat:<null> to org.springframework.boot:spring-boot-starter-tomcat:2.2.10.RELEASE
+[INFO] - The null version of jackson-annotations has been forced to PRO
+[INFO] - Resolved (testRuntimeClasspath) com.fasterxml.jackson.core:jackson-annotations:<null> to com.fasterxml.jackson.core:jackson-annotations:2.10.5
+[INFO] - The null version of jackson-core has been forced to PRO
+[INFO] - Resolved (testRuntimeClasspath) com.fasterxml.jackson.core:jackson-core:<null> to com.fasterxml.jackson.core:jackson-core:2.10.5
+[INFO] - The null version of jackson-databind has been forced to PRO
+[INFO] - Resolved (testRuntimeClasspath) com.fasterxml.jackson.core:jackson-databind:<null> to com.fasterxml.jackson.core:jackson-databind:2.10.5
+[INFO] - The null version of jstl has been forced to PRO
+[WARN] - Could not find a PRO alias of product jstl, try to get latest instead
+[INFO] - Resolved (testRuntimeClasspath) javax.servlet:jstl:<null> to javax.servlet:jstl:1.2
+[INFO] - The null version of commons-io has been forced to PRO
+[INFO] - Resolved (testRuntimeClasspath) commons-io:commons-io:<null> to commons-io:commons-io:2.8.0
+[INFO] - The null version of xml-apis has been forced to PRO
+[INFO] - Resolved (testRuntimeClasspath) xml-apis:xml-apis:<null> to xml-apis:xml-apis:1.4.01
+[INFO] - The null version of lombok has been forced to PRO
+[INFO] - Resolved (testRuntimeClasspath) org.projectlombok:lombok:<null> to org.projectlombok:lombok:1.18.16
+[INFO] - The null version of junit has been forced to PRO
+[INFO] - Resolved (testRuntimeClasspath) junit:junit:<null> to junit:junit:4.13.1
+[INFO] - The null version of spring-boot-starter-test has been forced to PRO
+[INFO] - Resolved (testRuntimeClasspath) org.springframework.boot:spring-boot-starter-test:<null> to org.springframework.boot:spring-boot-starter-test:2.2.10.RELEASE
+[QUIET] - Resolved cern.c2mon.client:c2mon-client-core:1.20.0-20211117-112029 -> [cern.c2mon.client:c2mon-client-common:1.20.0-20211117-112029, cern.c2mon.shared:c2mon-shared-client:1.20.0-20211117-112029, cern.c2mon.shared:c2mon-shared-common:1.20.0-20211117-112029, cern.c2mon.shared:c2mon-shared-persistence-manager:1.20.0-20211117-112029, cern.c2mon.shared:c2mon-shared-rule:1.20.0-20211117-112029, cern.c2mon.shared:c2mon-shared-util:1.20.0-20211117-112029, ch.qos.logback:logback-classic:1.2.3, ch.qos.logback:logback-core:1.2.3, com.fasterxml.jackson.core:jackson-annotations:2.10.5, com.fasterxml.jackson.core:jackson-core:2.10.5, com.fasterxml.jackson.core:jackson-databind:2.10.5, com.google.code.gson:gson:2.8.4, com.google.guava:guava:19.0, com.thoughtworks.xstream:xstream:1.4.10, commons-codec:commons-codec:1.11, commons-lang:commons-lang:2.5, commons-logging:commons-logging:1.2, commons-net:commons-net:3.6, io.searchbox:jest:2.0.3, io.searchbox:jest-common:2.0.3, javax.activation:activation:1.1, javax.activation:javax.activation-api:1.2.0, javax.annotation:javax.annotation-api:1.3.2, javax.mail:mail:1.4, javax.servlet:javax.servlet-api:3.1.0, javax.xml.bind:jaxb-api:2.3.1, org.apache.activemq:activemq-broker:5.15.2, org.apache.activemq:activemq-client:5.15.2, org.apache.activemq:activemq-http:5.15.2, org.apache.activemq:activemq-jms-pool:5.15.2, org.apache.activemq:activemq-mqtt:5.15.2, org.apache.activemq:activemq-openwire-legacy:5.15.2, org.apache.activemq:activemq-pool:5.15.2, org.apache.activemq:activemq-spring:5.15.2, org.apache.activemq:activemq-stomp:5.15.2, org.apache.activemq.protobuf:activemq-protobuf:1.1, org.apache.commons:commons-lang3:3.4, org.apache.commons:commons-pool2:2.4.2, org.apache.geronimo.specs:geronimo-j2ee-management_1.1_spec:1.0.1, org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1, org.apache.geronimo.specs:geronimo-jta_1.0.1B_spec:1.0.1, org.apache.httpcomponents:httpasyncclient:4.1.1, org.apache.httpcomponents:httpclient:4.5.10, org.apache.httpcomponents:httpcore:4.4.12, org.apache.httpcomponents:httpcore-nio:4.4.4, org.apache.logging.log4j:log4j-api:2.12.1, org.apache.logging.log4j:log4j-to-slf4j:2.12.1, org.apache.xbean:xbean-spring:4.2, org.eclipse.jetty:jetty-http:9.2.14.v20151106, org.eclipse.jetty:jetty-io:9.2.14.v20151106, org.eclipse.jetty:jetty-server:9.2.14.v20151106, org.eclipse.jetty:jetty-util:9.2.14.v20151106, org.eclipse.jetty.aggregate:jetty-all:9.2.22.v20170606, org.fusesource.hawtbuf:hawtbuf:1.11, org.fusesource.hawtdispatch:hawtdispatch:1.22, org.fusesource.hawtdispatch:hawtdispatch-transport:1.22, org.fusesource.mqtt-client:mqtt-client:1.14, org.projectlombok:lombok:1.18.16, org.simpleframework:simple-xml:2.6.1, org.slf4j:jul-to-slf4j:1.7.30, org.slf4j:slf4j-api:1.7.30, org.springframework:spring-aop:5.2.9.RELEASE, org.springframework:spring-beans:5.2.9.RELEASE, org.springframework:spring-context:5.2.9.RELEASE, org.springframework:spring-core:5.2.9.RELEASE, org.springframework:spring-expression:5.2.9.RELEASE, org.springframework:spring-jcl:5.2.9.RELEASE, org.springframework:spring-jms:5.1.2.RELEASE, org.springframework:spring-messaging:5.1.2.RELEASE, org.springframework:spring-tx:5.1.3.RELEASE, org.springframework.boot:spring-boot:2.2.10.RELEASE, org.springframework.boot:spring-boot-autoconfigure:2.2.10.RELEASE, org.springframework.boot:spring-boot-configuration-processor:2.1.0.RELEASE, org.springframework.boot:spring-boot-starter-logging:2.2.10.RELEASE, stax:stax:1.2.0, stax:stax-api:1.0.1, xerces:xercesImpl:2.11.0, xml-apis:xml-apis:1.4.01, xmlpull:xmlpull:1.1.3.1, xpp3:xpp3:1.1.3.3, xpp3:xpp3_min:1.1.4c]
+[QUIET] - Resolved cern.c2mon.client:c2mon-client-ext-history:1.11.0 -> [antlr:antlr:2.7.7, cern.c2mon.client:c2mon-client-common:1.20.0-20211117-112029, cern.c2mon.client:c2mon-client-core:1.20.0-20211117-112029, cern.c2mon.shared:c2mon-shared-client:1.20.0-20211117-112029, cern.c2mon.shared:c2mon-shared-common:1.20.0-20211117-112029, cern.c2mon.shared:c2mon-shared-persistence-manager:1.20.0-20211117-112029, cern.c2mon.shared:c2mon-shared-rule:1.20.0-20211117-112029, cern.c2mon.shared:c2mon-shared-util:1.20.0-20211117-112029, ch.qos.logback:logback-classic:1.2.3, ch.qos.logback:logback-core:1.2.3, com.fasterxml:classmate:1.3.4, com.fasterxml.jackson.core:jackson-annotations:2.10.5, com.fasterxml.jackson.core:jackson-core:2.10.5, com.fasterxml.jackson.core:jackson-databind:2.10.5, com.google.code.gson:gson:2.8.4, com.google.guava:guava:19.0, com.thoughtworks.xstream:xstream:1.4.10, com.zaxxer:HikariCP:3.2.0, commons-codec:commons-codec:1.11, commons-dbcp:commons-dbcp:1.4, commons-lang:commons-lang:2.5, commons-logging:commons-logging:1.2, commons-net:commons-net:3.6, commons-pool:commons-pool:1.5.4, io.searchbox:jest:2.0.3, io.searchbox:jest-common:2.0.3, jakarta.annotation:jakarta.annotation-api:1.3.5, javax.activation:activation:1.1, javax.activation:javax.activation-api:1.2.0, javax.annotation:javax.annotation-api:1.3.2, javax.mail:mail:1.4, javax.persistence:javax.persistence-api:2.2, javax.servlet:javax.servlet-api:3.1.0, javax.transaction:javax.transaction-api:1.3, javax.xml.bind:jaxb-api:2.3.1, mysql:mysql-connector-java:5.1.38, net.bytebuddy:byte-buddy:1.9.10, org.apache.activemq:activemq-broker:5.15.2, org.apache.activemq:activemq-client:5.15.2, org.apache.activemq:activemq-http:5.15.2, org.apache.activemq:activemq-jms-pool:5.15.2, org.apache.activemq:activemq-mqtt:5.15.2, org.apache.activemq:activemq-openwire-legacy:5.15.2, org.apache.activemq:activemq-pool:5.15.2, org.apache.activemq:activemq-spring:5.15.2, org.apache.activemq:activemq-stomp:5.15.2, org.apache.activemq.protobuf:activemq-protobuf:1.1, org.apache.commons:commons-lang3:3.4, org.apache.commons:commons-pool2:2.4.2, org.apache.geronimo.specs:geronimo-j2ee-management_1.1_spec:1.0.1, org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1, org.apache.geronimo.specs:geronimo-jta_1.0.1B_spec:1.0.1, org.apache.httpcomponents:httpasyncclient:4.1.1, org.apache.httpcomponents:httpclient:4.5.10, org.apache.httpcomponents:httpcore:4.4.12, org.apache.httpcomponents:httpcore-nio:4.4.4, org.apache.logging.log4j:log4j-api:2.12.1, org.apache.logging.log4j:log4j-to-slf4j:2.12.1, org.apache.xbean:xbean-spring:4.2, org.aspectj:aspectjweaver:1.9.2, org.dom4j:dom4j:2.1.1, org.eclipse.jetty:jetty-http:9.2.14.v20151106, org.eclipse.jetty:jetty-io:9.2.14.v20151106, org.eclipse.jetty:jetty-server:9.2.14.v20151106, org.eclipse.jetty:jetty-util:9.2.14.v20151106, org.eclipse.jetty.aggregate:jetty-all:9.2.22.v20170606, org.fusesource.hawtbuf:hawtbuf:1.11, org.fusesource.hawtdispatch:hawtdispatch:1.22, org.fusesource.hawtdispatch:hawtdispatch-transport:1.22, org.fusesource.mqtt-client:mqtt-client:1.14, org.hibernate:hibernate-core:5.3.7.Final, org.hibernate.common:hibernate-commons-annotations:5.0.4.Final, org.hsqldb:hsqldb:2.3.2, org.javassist:javassist:3.23.1-GA, org.jboss:jandex:2.0.5.Final, org.jboss.logging:jboss-logging:3.3.2.Final, org.mybatis:mybatis:3.5.6, org.mybatis:mybatis-spring:2.0.6, org.projectlombok:lombok:1.18.16, org.simpleframework:simple-xml:2.6.1, org.slf4j:jul-to-slf4j:1.7.30, org.slf4j:slf4j-api:1.7.30, org.springframework:spring-aop:5.2.9.RELEASE, org.springframework:spring-aspects:5.1.2.RELEASE, org.springframework:spring-beans:5.2.9.RELEASE, org.springframework:spring-context:5.2.9.RELEASE, org.springframework:spring-core:5.2.9.RELEASE, org.springframework:spring-expression:5.2.9.RELEASE, org.springframework:spring-jcl:5.2.9.RELEASE, org.springframework:spring-jdbc:5.1.3.RELEASE, org.springframework:spring-jms:5.1.2.RELEASE, org.springframework:spring-messaging:5.1.2.RELEASE, org.springframework:spring-orm:5.1.2.RELEASE, org.springframework:spring-tx:5.1.3.RELEASE, org.springframework.boot:spring-boot:2.2.10.RELEASE, org.springframework.boot:spring-boot-autoconfigure:2.2.10.RELEASE, org.springframework.boot:spring-boot-configuration-processor:2.1.0.RELEASE, org.springframework.boot:spring-boot-starter:2.2.10.RELEASE, org.springframework.boot:spring-boot-starter-aop:2.1.0.RELEASE, org.springframework.boot:spring-boot-starter-data-jpa:2.1.0.RELEASE, org.springframework.boot:spring-boot-starter-jdbc:2.1.0.RELEASE, org.springframework.boot:spring-boot-starter-logging:2.2.10.RELEASE, org.springframework.data:spring-data-commons:2.1.2.RELEASE, org.springframework.data:spring-data-jpa:2.1.2.RELEASE, org.yaml:snakeyaml:1.25, stax:stax:1.2.0, stax:stax-api:1.0.1, xerces:xercesImpl:2.11.0, xml-apis:xml-apis:1.4.01, xmlpull:xmlpull:1.1.3.1, xpp3:xpp3:1.1.3.3, xpp3:xpp3_min:1.1.4c]
+[QUIET] - Resolved org.apache.tomcat.embed:tomcat-embed-jasper:9.0.13 -> [org.apache.tomcat:tomcat-annotations-api:9.0.38, org.apache.tomcat.embed:tomcat-embed-core:9.0.38, org.apache.tomcat.embed:tomcat-embed-el:9.0.38, org.eclipse.jdt:ecj:3.13.102]
+[QUIET] - Resolved jfree:jfreechart:1.0.13 -> [jfree:jcommon:1.0.16]
+[QUIET] - Resolved org.springframework.security:spring-security-taglibs:5.1.2.RELEASE -> [org.springframework:spring-aop:5.2.9.RELEASE, org.springframework:spring-beans:5.2.9.RELEASE, org.springframework:spring-context:5.2.9.RELEASE, org.springframework:spring-core:5.2.9.RELEASE, org.springframework:spring-expression:5.2.9.RELEASE, org.springframework:spring-jcl:5.2.9.RELEASE, org.springframework:spring-jdbc:5.1.3.RELEASE, org.springframework:spring-tx:5.1.3.RELEASE, org.springframework:spring-web:5.2.9.RELEASE, org.springframework.security:spring-security-acl:5.1.2.RELEASE, org.springframework.security:spring-security-core:5.2.6.RELEASE, org.springframework.security:spring-security-web:5.2.6.RELEASE]
+[QUIET] - Resolved org.springframework.boot:spring-boot-starter-logging:2.2.10.RELEASE -> [ch.qos.logback:logback-classic:1.2.3, ch.qos.logback:logback-core:1.2.3, org.apache.logging.log4j:log4j-api:2.12.1, org.apache.logging.log4j:log4j-to-slf4j:2.12.1, org.slf4j:jul-to-slf4j:1.7.30, org.slf4j:slf4j-api:1.7.30]
+[QUIET] - Resolved org.springframework.boot:spring-boot-starter-security:2.2.10.RELEASE -> [ch.qos.logback:logback-classic:1.2.3, ch.qos.logback:logback-core:1.2.3, jakarta.annotation:jakarta.annotation-api:1.3.5, org.apache.logging.log4j:log4j-api:2.12.1, org.apache.logging.log4j:log4j-to-slf4j:2.12.1, org.slf4j:jul-to-slf4j:1.7.30, org.slf4j:slf4j-api:1.7.30, org.springframework:spring-aop:5.2.9.RELEASE, org.springframework:spring-beans:5.2.9.RELEASE, org.springframework:spring-context:5.2.9.RELEASE, org.springframework:spring-core:5.2.9.RELEASE, org.springframework:spring-expression:5.2.9.RELEASE, org.springframework:spring-jcl:5.2.9.RELEASE, org.springframework:spring-web:5.2.9.RELEASE, org.springframework.boot:spring-boot:2.2.10.RELEASE, org.springframework.boot:spring-boot-autoconfigure:2.2.10.RELEASE, org.springframework.boot:spring-boot-starter:2.2.10.RELEASE, org.springframework.boot:spring-boot-starter-logging:2.2.10.RELEASE, org.springframework.security:spring-security-config:5.2.6.RELEASE, org.springframework.security:spring-security-core:5.2.6.RELEASE, org.springframework.security:spring-security-web:5.2.6.RELEASE, org.yaml:snakeyaml:1.25]
+[QUIET] - Resolved org.springframework.boot:spring-boot-starter-web:2.2.10.RELEASE -> [ch.qos.logback:logback-classic:1.2.3, ch.qos.logback:logback-core:1.2.3, com.fasterxml:classmate:1.3.4, com.fasterxml.jackson.core:jackson-annotations:2.10.5, com.fasterxml.jackson.core:jackson-core:2.10.5, com.fasterxml.jackson.core:jackson-databind:2.10.5, com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.10.5, com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.5, com.fasterxml.jackson.module:jackson-module-parameter-names:2.10.5, jakarta.annotation:jakarta.annotation-api:1.3.5, jakarta.validation:jakarta.validation-api:2.0.2, org.apache.logging.log4j:log4j-api:2.12.1, org.apache.logging.log4j:log4j-to-slf4j:2.12.1, org.apache.tomcat:tomcat-annotations-api:9.0.38, org.apache.tomcat.embed:tomcat-embed-core:9.0.38, org.apache.tomcat.embed:tomcat-embed-el:9.0.38, org.apache.tomcat.embed:tomcat-embed-websocket:9.0.38, org.hibernate.validator:hibernate-validator:6.0.20.Final, org.jboss.logging:jboss-logging:3.3.2.Final, org.slf4j:jul-to-slf4j:1.7.30, org.slf4j:slf4j-api:1.7.30, org.springframework:spring-aop:5.2.9.RELEASE, org.springframework:spring-beans:5.2.9.RELEASE, org.springframework:spring-context:5.2.9.RELEASE, org.springframework:spring-core:5.2.9.RELEASE, org.springframework:spring-expression:5.2.9.RELEASE, org.springframework:spring-jcl:5.2.9.RELEASE, org.springframework:spring-web:5.2.9.RELEASE, org.springframework:spring-webmvc:5.2.9.RELEASE, org.springframework.boot:spring-boot:2.2.10.RELEASE, org.springframework.boot:spring-boot-autoconfigure:2.2.10.RELEASE, org.springframework.boot:spring-boot-starter:2.2.10.RELEASE, org.springframework.boot:spring-boot-starter-json:2.2.10.RELEASE, org.springframework.boot:spring-boot-starter-logging:2.2.10.RELEASE, org.springframework.boot:spring-boot-starter-tomcat:2.2.10.RELEASE, org.springframework.boot:spring-boot-starter-validation:2.2.10.RELEASE, org.yaml:snakeyaml:1.25]
+[QUIET] - Resolved org.springframework.boot:spring-boot-starter-tomcat:2.2.10.RELEASE -> [jakarta.annotation:jakarta.annotation-api:1.3.5, org.apache.tomcat:tomcat-annotations-api:9.0.38, org.apache.tomcat.embed:tomcat-embed-core:9.0.38, org.apache.tomcat.embed:tomcat-embed-el:9.0.38, org.apache.tomcat.embed:tomcat-embed-websocket:9.0.38]
+[QUIET] - Resolved com.fasterxml.jackson.core:jackson-annotations:2.10.5 -> []
+[QUIET] - Resolved com.fasterxml.jackson.core:jackson-core:2.10.5 -> []
+[QUIET] - Resolved com.fasterxml.jackson.core:jackson-databind:2.10.5 -> [com.fasterxml.jackson.core:jackson-annotations:2.10.5, com.fasterxml.jackson.core:jackson-core:2.10.5]
+[QUIET] - Resolved javax.servlet:jstl:1.2 -> []
+[QUIET] - Resolved commons-io:commons-io:2.8.0 -> []
+[QUIET] - Resolved xml-apis:xml-apis:1.4.01 -> []
+[QUIET] - Resolved org.projectlombok:lombok:1.18.16 -> []
+[QUIET] - Resolved cern.devops:co-bugfix-dependencies:0.1.4 -> []
+[QUIET] - Resolved cern.devops:co-bugfix-enforced-dependencies:0.1.4 -> []
+[QUIET] - Resolved junit:junit:4.13.1 -> [org.hamcrest:hamcrest-core:1.3]
+[QUIET] - Resolved org.springframework.boot:spring-boot-starter-test:2.2.10.RELEASE -> [ch.qos.logback:logback-classic:1.2.3, ch.qos.logback:logback-core:1.2.3, com.jayway.jsonpath:json-path:2.4.0, com.vaadin.external.google:android-json:0.0.20131108.vaadin1, jakarta.activation:jakarta.activation-api:1.2.2, jakarta.annotation:jakarta.annotation-api:1.3.5, jakarta.xml.bind:jakarta.xml.bind-api:2.3.3, junit:junit:4.13.1, net.bytebuddy:byte-buddy:1.9.10, net.bytebuddy:byte-buddy-agent:1.9.10, net.minidev:accessors-smart:1.2, net.minidev:json-smart:2.3, org.apache.logging.log4j:log4j-api:2.12.1, org.apache.logging.log4j:log4j-to-slf4j:2.12.1, org.apiguardian:apiguardian-api:1.1.0, org.assertj:assertj-core:3.13.2, org.hamcrest:hamcrest:2.1, org.hamcrest:hamcrest-core:1.3, org.junit.jupiter:junit-jupiter:5.5.2, org.junit.jupiter:junit-jupiter-api:5.5.2, org.junit.jupiter:junit-jupiter-engine:5.5.2, org.junit.jupiter:junit-jupiter-params:5.5.2, org.junit.platform:junit-platform-commons:1.5.2, org.junit.platform:junit-platform-engine:1.5.2, org.junit.vintage:junit-vintage-engine:5.5.2, org.mockito:mockito-core:3.1.0, org.mockito:mockito-junit-jupiter:3.1.0, org.objenesis:objenesis:2.6, org.opentest4j:opentest4j:1.2.0, org.ow2.asm:asm:5.0.4, org.skyscreamer:jsonassert:1.5.0, org.slf4j:jul-to-slf4j:1.7.30, org.slf4j:slf4j-api:1.7.30, org.springframework:spring-aop:5.2.9.RELEASE, org.springframework:spring-beans:5.2.9.RELEASE, org.springframework:spring-context:5.2.9.RELEASE, org.springframework:spring-core:5.2.9.RELEASE, org.springframework:spring-expression:5.2.9.RELEASE, org.springframework:spring-jcl:5.2.9.RELEASE, org.springframework:spring-test:5.2.9.RELEASE, org.springframework.boot:spring-boot:2.2.10.RELEASE, org.springframework.boot:spring-boot-autoconfigure:2.2.10.RELEASE, org.springframework.boot:spring-boot-starter:2.2.10.RELEASE, org.springframework.boot:spring-boot-starter-logging:2.2.10.RELEASE, org.springframework.boot:spring-boot-test:2.2.10.RELEASE, org.springframework.boot:spring-boot-test-autoconfigure:2.2.10.RELEASE, org.xmlunit:xmlunit-core:2.6.4, org.yaml:snakeyaml:1.25]
+[INFO] - == Resolved :testRuntimeClasspath 
+[INFO] - == Resolving :compileClasspath
+[INFO] - Resolved (compileClasspath) cern.c2mon.client:c2mon-client-core:CTX to cern.c2mon.client:c2mon-client-core:1.20.0-20211117-112029
+[INFO] - Resolved (compileClasspath) org.springframework.boot:spring-boot-starter-logging:<null> to org.springframework.boot:spring-boot-starter-logging:2.2.10.RELEASE
+[INFO] - Resolved (compileClasspath) org.springframework.boot:spring-boot-starter-security:<null> to org.springframework.boot:spring-boot-starter-security:2.2.10.RELEASE
+[INFO] - Resolved (compileClasspath) org.springframework.boot:spring-boot-starter-web:<null> to org.springframework.boot:spring-boot-starter-web:2.2.10.RELEASE
+[INFO] - Resolved (compileClasspath) org.springframework.boot:spring-boot-starter-tomcat:<null> to org.springframework.boot:spring-boot-starter-tomcat:2.2.10.RELEASE
+[INFO] - Resolved (compileClasspath) com.fasterxml.jackson.core:jackson-annotations:<null> to com.fasterxml.jackson.core:jackson-annotations:2.10.5
+[INFO] - Resolved (compileClasspath) com.fasterxml.jackson.core:jackson-core:<null> to com.fasterxml.jackson.core:jackson-core:2.10.5
+[INFO] - Resolved (compileClasspath) com.fasterxml.jackson.core:jackson-databind:<null> to com.fasterxml.jackson.core:jackson-databind:2.10.5
+[INFO] - Resolved (compileClasspath) javax.servlet:jstl:<null> to javax.servlet:jstl:1.2
+[INFO] - Resolved (compileClasspath) commons-io:commons-io:<null> to commons-io:commons-io:2.8.0
+[INFO] - Resolved (compileClasspath) xml-apis:xml-apis:<null> to xml-apis:xml-apis:1.4.01
+[INFO] - Resolved (compileClasspath) org.projectlombok:lombok:<null> to org.projectlombok:lombok:1.18.16
+[INFO] - == Resolved :compileClasspath 
+[INFO] - Resolved (testCompileClasspath) cern.c2mon.client:c2mon-client-core:CTX to cern.c2mon.client:c2mon-client-core:1.20.0-20211117-112029
+[INFO] - Resolved (testCompileClasspath) org.springframework.boot:spring-boot-starter-logging:<null> to org.springframework.boot:spring-boot-starter-logging:2.2.10.RELEASE
+[INFO] - Resolved (testCompileClasspath) org.springframework.boot:spring-boot-starter-security:<null> to org.springframework.boot:spring-boot-starter-security:2.2.10.RELEASE
+[INFO] - Resolved (testCompileClasspath) org.springframework.boot:spring-boot-starter-web:<null> to org.springframework.boot:spring-boot-starter-web:2.2.10.RELEASE
+[INFO] - Resolved (testCompileClasspath) org.springframework.boot:spring-boot-starter-tomcat:<null> to org.springframework.boot:spring-boot-starter-tomcat:2.2.10.RELEASE
+[INFO] - Resolved (testCompileClasspath) com.fasterxml.jackson.core:jackson-annotations:<null> to com.fasterxml.jackson.core:jackson-annotations:2.10.5
+[INFO] - Resolved (testCompileClasspath) com.fasterxml.jackson.core:jackson-core:<null> to com.fasterxml.jackson.core:jackson-core:2.10.5
+[INFO] - Resolved (testCompileClasspath) com.fasterxml.jackson.core:jackson-databind:<null> to com.fasterxml.jackson.core:jackson-databind:2.10.5
+[INFO] - Resolved (testCompileClasspath) javax.servlet:jstl:<null> to javax.servlet:jstl:1.2
+[INFO] - Resolved (testCompileClasspath) commons-io:commons-io:<null> to commons-io:commons-io:2.8.0
+[INFO] - Resolved (testCompileClasspath) xml-apis:xml-apis:<null> to xml-apis:xml-apis:1.4.01
+[INFO] - Resolved (testCompileClasspath) org.projectlombok:lombok:<null> to org.projectlombok:lombok:1.18.16
+[INFO] - Resolved (testCompileClasspath) junit:junit:<null> to junit:junit:4.13.1
+[INFO] - Resolved (testCompileClasspath) org.springframework.boot:spring-boot-starter-test:<null> to org.springframework.boot:spring-boot-starter-test:2.2.10.RELEASE
+[INFO] - Tasks to be executed: [task ':generatePomFileForCbngPublication', task ':artifactChecker', task ':fesaJapcCodegen', task ':compileJava', task ':processResources', task ':classes', task ':jar', task ':javadoc', task ':java2html', task ':javadocJar', task ':sourcesJar', task ':compileTestJava', task ':processTestResources', task ':testClasses', task ':test', task ':vcsTag', task ':publishCbngPublicationToCbngMavenRepository', task ':publish', task ':attachDependencyProperties', task ':postUploadDevToOperation', task ':devrelease', task ':afterPublish']
+[INFO] - :generatePomFileForCbngPublication (Thread[main,5,main]) started.
+[INFO] - Caching disabled for task ':generatePomFileForCbngPublication' because:
+  Build cache is disabled
+[INFO] - Task ':generatePomFileForCbngPublication' is not up-to-date because:
+  Task.upToDateWhen is false.
+[INFO] - == Resolving :runtimeClasspath
+[INFO] - Resolved (runtimeClasspath) cern.c2mon.client:c2mon-client-core:CTX to cern.c2mon.client:c2mon-client-core:1.20.0-20211117-112029
+[INFO] - Resolved (runtimeClasspath) org.springframework.boot:spring-boot-starter-logging:<null> to org.springframework.boot:spring-boot-starter-logging:2.2.10.RELEASE
+[INFO] - Resolved (runtimeClasspath) org.springframework.boot:spring-boot-starter-security:<null> to org.springframework.boot:spring-boot-starter-security:2.2.10.RELEASE
+[INFO] - Resolved (runtimeClasspath) org.springframework.boot:spring-boot-starter-web:<null> to org.springframework.boot:spring-boot-starter-web:2.2.10.RELEASE
+[INFO] - Resolved (runtimeClasspath) org.springframework.boot:spring-boot-starter-tomcat:<null> to org.springframework.boot:spring-boot-starter-tomcat:2.2.10.RELEASE
+[INFO] - Resolved (runtimeClasspath) com.fasterxml.jackson.core:jackson-annotations:<null> to com.fasterxml.jackson.core:jackson-annotations:2.10.5
+[INFO] - Resolved (runtimeClasspath) com.fasterxml.jackson.core:jackson-core:<null> to com.fasterxml.jackson.core:jackson-core:2.10.5
+[INFO] - Resolved (runtimeClasspath) com.fasterxml.jackson.core:jackson-databind:<null> to com.fasterxml.jackson.core:jackson-databind:2.10.5
+[INFO] - Resolved (runtimeClasspath) javax.servlet:jstl:<null> to javax.servlet:jstl:1.2
+[INFO] - Resolved (runtimeClasspath) commons-io:commons-io:<null> to commons-io:commons-io:2.8.0
+[INFO] - Resolved (runtimeClasspath) xml-apis:xml-apis:<null> to xml-apis:xml-apis:1.4.01
+[INFO] - Resolved (runtimeClasspath) org.projectlombok:lombok:<null> to org.projectlombok:lombok:1.18.16
+[INFO] - == Resolved :runtimeClasspath 
+:generatePomFileForCbngPublication
+[INFO] - :generatePomFileForCbngPublication (Thread[main,5,main]) completed. Took 0.675 secs.
+[INFO] - :artifactChecker (Thread[main,5,main]) started.
+[INFO] - Caching disabled for task ':artifactChecker' because:
+  Build cache is disabled
+[INFO] - Task ':artifactChecker' is not up-to-date because:
+  Task has not declared any outputs despite executing actions.
+[INFO] - The configuration needs to be reloaded from: /tmp/ArtifactChecker11374087466197875746.json.tmp
+[INFO] - The configuration has been reloaded from: /tmp/ArtifactChecker11374087466197875746.json.tmp
+:artifactChecker
+[INFO] - :artifactChecker (Thread[main,5,main]) completed. Took 0.155 secs.
+[INFO] - :fesaJapcCodegen (Thread[main,5,main]) started.
+[INFO] - Skipping task ':fesaJapcCodegen' as task onlyIf is false.
+:fesaJapcCodegen SKIPPED
+[INFO] - :fesaJapcCodegen (Thread[main,5,main]) completed. Took 0.003 secs.
+[INFO] - :compileJava (Thread[main,5,main]) started.
+[INFO] - Caching disabled for task ':compileJava' because:
+  Build cache is disabled
+[INFO] - Task ':compileJava' is not up-to-date because:
+  Input property 'classpath' file /tmp/bob_cache_mbuttner/caches/modules-2/files-2.1/org.springframework.security/spring-security-taglibs/5.1.2.RELEASE/ba855907b820e5f27c898d61310a5bfcf5c44141/spring-security-taglibs-5.1.2.RELEASE.jar has been removed.
+  Input property 'classpath' file /tmp/bob_cache_mbuttner/caches/modules-2/files-2.1/cern.c2mon.client/c2mon-client-ext-history/1.11.0/935e7c3489dd9a5af2ffad3ebb2aa67ee7f2ba09/c2mon-client-ext-history-1.11.0.jar has been added.
+  Input property 'classpath' file /tmp/bob_cache_mbuttner/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-jasper/9.0.13/28fad13fb5a66696899596c2a91f9846058cce23/tomcat-embed-jasper-9.0.13.jar has been removed.
+[INFO] - Created classpath snapshot for incremental compilation in 0.302 secs. 704 duplicate classes found in classpath (see all with --debug).
+[INFO] - Class dependency analysis for incremental compilation took 0.793 secs.
+[INFO] - Full recompilation is required because Classpath has been changed. Analysis took 1.108 secs.
+[INFO] - file or directory '/opt/mbuttner/git/c2mon-web-ui/src/generated', not found
+[INFO] - Compiling with JDK Java compiler API.
+:compileJava
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+[INFO] - :compileJava (Thread[main,5,main]) completed. Took 6.331 secs.
+[INFO] - :processResources (Thread[main,5,main]) started.
+[INFO] - Caching disabled for task ':processResources' because:
+  Build cache is disabled
+[INFO] - Skipping task ':processResources' as it is up-to-date.
+:processResources UP-TO-DATE
+[INFO] - :processResources (Thread[main,5,main]) completed. Took 0.078 secs.
+[INFO] - :classes (Thread[main,5,main]) started.
+[INFO] - Skipping task ':classes' as it has no actions.
+:classes
+[INFO] - :classes (Thread[main,5,main]) completed. Took 0.001 secs.
+[INFO] - :jar (Thread[main,5,main]) started.
+[INFO] - Caching disabled for task ':jar' because:
+  Build cache is disabled
+[INFO] - Task ':jar' is not up-to-date because:
+  Additional action for task ':jar': was implemented by the Java lambda 'cern.devops.cbng.plugins.java.extender.JarTaskExtender$$Lambda$219/0x000000010086fc40'. Using Java lambdas is not supported, use an (anonymous) inner class instead.
+:jar
+[INFO] - :jar (Thread[main,5,main]) completed. Took 0.545 secs.
+[INFO] - :javadoc (Thread[main,5,main]) started.
+[INFO] - Caching disabled for task ':javadoc' because:
+  Build cache is disabled
+[INFO] - Task ':javadoc' is not up-to-date because:
+  Additional action for task ':javadoc': was implemented by the Java lambda 'cern.devops.cbng.javadoc.JavadocGradle$$Lambda$312/0x00000001008e0440'. Using Java lambdas is not supported, use an (anonymous) inner class instead.
+[INFO] - file or directory '/opt/mbuttner/git/c2mon-web-ui/src/generated', not found
+[INFO] - Starting process 'command '/opt/mbuttner/accsoft-eclipse-pro/binary/com.sun.java.jdk11.linux.x86_64_1.11.2/bin/javadoc''. Working directory: /opt/mbuttner/git/c2mon-web-ui Command: /opt/mbuttner/accsoft-eclipse-pro/binary/com.sun.java.jdk11.linux.x86_64_1.11.2/bin/javadoc @/opt/mbuttner/git/c2mon-web-ui/build/tmp/javadoc/javadoc.options
+[INFO] - Successfully started process 'command '/opt/mbuttner/accsoft-eclipse-pro/binary/com.sun.java.jdk11.linux.x86_64_1.11.2/bin/javadoc''
+:javadoc
+/opt/mbuttner/git/c2mon-web-ui/src/main/java/cern/c2mon/web/ui/statistics/charts/BarChart.java:65: warning - @param argument "yDatathe" is not a parameter name.
+/opt/mbuttner/git/c2mon-web-ui/src/main/java/cern/c2mon/web/ui/statistics/charts/JFreeBarChart.java:100: warning - @param argument "dataset" is not a parameter name.
+/opt/mbuttner/git/c2mon-web-ui/src/main/java/cern/c2mon/web/ui/statistics/charts/JFreePieChart.java:52: warning - @param argument "reference" is not a parameter name.
+/opt/mbuttner/git/c2mon-web-ui/src/main/java/cern/c2mon/web/ui/statistics/charts/WebChart.java:103: warning - @param argument "reference" is not a parameter name.
+/opt/mbuttner/git/c2mon-web-ui/src/main/java/cern/c2mon/web/ui/controller/ProcessController.java:116: warning - @return tag cannot be used in method with void return type.
+/opt/mbuttner/git/c2mon-web-ui/src/main/java/cern/c2mon/web/ui/controller/TrendViewController.java:242: warning - invalid usage of tag >
+/opt/mbuttner/git/c2mon-web-ui/src/main/java/cern/c2mon/web/ui/controller/TrendViewController.java:283: warning - invalid usage of tag >
+/opt/mbuttner/git/c2mon-web-ui/src/main/java/cern/c2mon/web/ui/service/HistoryService.java:123: warning - invalid usage of tag >
+8 warnings
+[INFO] - :javadoc (Thread[main,5,main]) completed. Took 4.695 secs.
+[INFO] - :java2html (Thread[main,5,main]) started.
+[INFO] - Skipping task ':java2html' as task onlyIf is false.
+:java2html SKIPPED
+[INFO] - :java2html (Thread[main,5,main]) completed. Took 0.0 secs.
+[INFO] - :javadocJar (Thread[main,5,main]) started.
+[INFO] - Caching disabled for task ':javadocJar' because:
+  Build cache is disabled
+[INFO] - Task ':javadocJar' is not up-to-date because:
+  Output property 'archiveFile' file /opt/mbuttner/git/c2mon-web-ui/build/libs/c2mon-web-ui-0.9.0-20211119-095140-javadoc.jar has been removed.
+:javadocJar
+[INFO] - :javadocJar (Thread[main,5,main]) completed. Took 0.256 secs.
+[INFO] - :sourcesJar (Thread[main,5,main]) started.
+[INFO] - Caching disabled for task ':sourcesJar' because:
+  Build cache is disabled
+[INFO] - Task ':sourcesJar' is not up-to-date because:
+  Output property 'archiveFile' file /opt/mbuttner/git/c2mon-web-ui/build/libs/c2mon-web-ui-0.9.0-20211119-095140-sources.jar has been removed.
+[INFO] - file or directory '/opt/mbuttner/git/c2mon-web-ui/src/generated', not found
+:sourcesJar
+[INFO] - :sourcesJar (Thread[main,5,main]) completed. Took 3.498 secs.
+[INFO] - :compileTestJava (Thread[main,5,main]) started.
+[INFO] - Caching disabled for task ':compileTestJava' because:
+  Build cache is disabled
+[INFO] - Task ':compileTestJava' is not up-to-date because:
+  Input property 'classpath' file /tmp/bob_cache_mbuttner/caches/modules-2/files-2.1/org.springframework.security/spring-security-taglibs/5.1.2.RELEASE/ba855907b820e5f27c898d61310a5bfcf5c44141/spring-security-taglibs-5.1.2.RELEASE.jar has been removed.
+  Input property 'classpath' file /tmp/bob_cache_mbuttner/caches/modules-2/files-2.1/cern.c2mon.client/c2mon-client-ext-history/1.11.0/935e7c3489dd9a5af2ffad3ebb2aa67ee7f2ba09/c2mon-client-ext-history-1.11.0.jar has been added.
+  Input property 'classpath' file /tmp/bob_cache_mbuttner/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-jasper/9.0.13/28fad13fb5a66696899596c2a91f9846058cce23/tomcat-embed-jasper-9.0.13.jar has been removed.
+[INFO] - Created classpath snapshot for incremental compilation in 0.097 secs. 862 duplicate classes found in classpath (see all with --debug).
+[INFO] - Class dependency analysis for incremental compilation took 0.109 secs.
+[INFO] - Full recompilation is required because Classpath has been changed. Analysis took 0.213 secs.
+[INFO] - Compiling with JDK Java compiler API.
+:compileTestJava
+[INFO] - :compileTestJava (Thread[main,5,main]) completed. Took 1.87 secs.
+[INFO] - :processTestResources (Thread[main,5,main]) started.
+[INFO] - file or directory '/opt/mbuttner/git/c2mon-web-ui/src/test/resources', not found
+[INFO] - Skipping task ':processTestResources' as it has no source files and no previous output files.
+:processTestResources NO-SOURCE
+[INFO] - :processTestResources (Thread[main,5,main]) completed. Took 0.002 secs.
+[INFO] - :testClasses (Thread[main,5,main]) started.
+[INFO] - Skipping task ':testClasses' as it has no actions.
+:testClasses
+[INFO] - :testClasses (Thread[main,5,main]) completed. Took 0.0 secs.
+[INFO] - :test (Thread[main,5,main]) started.
+[INFO] - Skipping task ':test' as task onlyIf is false.
+:test SKIPPED
+[INFO] - :test (Thread[main,5,main]) completed. Took 0.0 secs.
+[INFO] - :vcsTag (Thread[main,5,main]) started.
+[INFO] - Caching disabled for task ':vcsTag' because:
+  Build cache is disabled
+[INFO] - Task ':vcsTag' is not up-to-date because:
+  Task.upToDateWhen is false.
+:vcsTag
+[INFO] - :vcsTag (Thread[main,5,main]) completed. Took 0.002 secs.
+[INFO] - :publishCbngPublicationToCbngMavenRepository (Thread[main,5,main]) started.
+[INFO] - Caching disabled for task ':publishCbngPublicationToCbngMavenRepository' because:
+  Build cache is disabled
+[INFO] - Task ':publishCbngPublicationToCbngMavenRepository' is not up-to-date because:
+  Task has not declared any outputs despite executing actions.
+[INFO] - Publishing to repository 'cbngMaven' (http://artifactory.cern.ch/beco-development-local)
+[INFO] - Deploying to http://artifactory.cern.ch/beco-development-local
+[INFO] - Uploading: cern/c2mon/web/c2mon-web-ui/0.9.0-20211119-095616/c2mon-web-ui-0.9.0-20211119-095616.jar to repository remote at http://artifactory.cern.ch/beco-development-local/
+[INFO] - Uploading: cern/c2mon/web/c2mon-web-ui/0.9.0-20211119-095616/c2mon-web-ui-0.9.0-20211119-095616.pom to repository remote at http://artifactory.cern.ch/beco-development-local/
+[INFO] - Uploading: cern/c2mon/web/c2mon-web-ui/0.9.0-20211119-095616/c2mon-web-ui-0.9.0-20211119-095616-javadoc.jar to repository remote at http://artifactory.cern.ch/beco-development-local/
+[INFO] - Uploading: cern/c2mon/web/c2mon-web-ui/0.9.0-20211119-095616/c2mon-web-ui-0.9.0-20211119-095616-sources.jar to repository remote at http://artifactory.cern.ch/beco-development-local/
+[INFO] - Downloading: cern/c2mon/web/c2mon-web-ui/maven-metadata.xml from repository remote at http://artifactory.cern.ch/beco-development-local/
+[INFO] - Uploading: cern/c2mon/web/c2mon-web-ui/maven-metadata.xml to repository remote at http://artifactory.cern.ch/beco-development-local/
+:publishCbngPublicationToCbngMavenRepository
+[INFO] - :publishCbngPublicationToCbngMavenRepository (Thread[main,5,main]) completed. Took 2.472 secs.
+[INFO] - :publish (Thread[main,5,main]) started.
+[INFO] - Skipping task ':publish' as it has no actions.
+:publish
+[INFO] - :publish (Thread[main,5,main]) completed. Took 0.0 secs.
+[INFO] - :attachDependencyProperties (Thread[main,5,main]) started.
+[INFO] - Caching disabled for task ':attachDependencyProperties' because:
+  Build cache is disabled
+[INFO] - Task ':attachDependencyProperties' is not up-to-date because:
+  Task has not declared any outputs despite executing actions.
+:attachDependencyProperties
+[INFO] - :attachDependencyProperties (Thread[main,5,main]) completed. Took 0.629 secs.
+[INFO] - :postUploadDevToOperation (Thread[main,5,main]) started.
+[INFO] - Skipping task ':postUploadDevToOperation' as task onlyIf is false.
+:postUploadDevToOperation SKIPPED
+[INFO] - :postUploadDevToOperation (Thread[main,5,main]) completed. Took 0.0 secs.
+[INFO] - :devrelease (Thread[main,5,main]) started.
+[INFO] - Caching disabled for task ':devrelease' because:
+  Build cache is disabled
+[INFO] - Task ':devrelease' is not up-to-date because:
+  Task has not declared any outputs despite executing actions.
+:devrelease
+[INFO] - :devrelease (Thread[main,5,main]) completed. Took 0.008 secs.
+[INFO] - :afterPublish (Thread[main,5,main]) started.
+[INFO] - Caching disabled for task ':afterPublish' because:
+  Build cache is disabled
+[INFO] - Task ':afterPublish' is not up-to-date because:
+  Task has not declared any outputs despite executing actions.
+:afterPublish
+[QUIET] - Publishing has finished for root project 'c2mon-web-ui'
+[INFO] - :afterPublish (Thread[main,5,main]) completed. Took 0.001 secs.
+
+
+---------------------------------------------------------
+Summary of warnings and errors
+---------------------------------------------------------
+
+ - [WARN] - Test execution is disabled for this project. To turn it back, remove the junit.enabled=false property
+ - [WARN] - Could not find a PRO alias of product jstl, try to get latest instead
+ - Note: Some input files use or override a deprecated API.
+ - Note: Recompile with -Xlint:deprecation for details.
+ - Note: Some input files use unchecked or unsafe operations.
+ - Note: Recompile with -Xlint:unchecked for details.
+
+
+---------------------------------------------------------
+Hints for c2mon-web-ui
+---------------------------------------------------------
+
+:devrelease
+
+ - Artifacts for c2mon-web-ui: http://artifactory.cern.ch/webapp/#/artifacts/browse/tree/General/beco-development-local/cern/c2mon/web/c2mon-web-ui/0.9.0-20211119-095616
+
+---------------------------------------------------------
+
+
+BUILD SUCCESSFUL
+
