@@ -25,11 +25,6 @@
 
   <properties>
     <image.base>openjdk:11-jdk-slim</image.base>
-    <gitlab>gitlab-registry.cern.ch/c2mon</gitlab>
-    <gitlab-repo>${project.artifactId}</gitlab-repo>
-    <dockerhub-repo>cern/${project.artifactId}</dockerhub-repo>
-    <dockerhub>registry.hub.docker.com</dockerhub>
-    <image.name>${project.artifactId}</image.name>
     <c2mon.webhome>/c2mon-web-ui-${project.version}</c2mon.webhome>
     <explodeDir>${project.build.directory}/exploded/</explodeDir>
     <java.version>8</java.version>
@@ -213,21 +208,8 @@
       <plugin>
         <groupId>com.google.cloud.tools</groupId>
         <artifactId>jib-maven-plugin</artifactId>
-        <version>2.4.0</version>
+        <version>3.1.4</version>
         <executions>
-          <execution>
-            <phase>deploy</phase>
-            <id>build-dockerhub</id>
-            <goals>
-              <goal>build</goal>
-            </goals>
-            <configuration>
-              <skip>true</skip>
-              <to>
-                <image>${dockerhub}/${dockerhub-repo}</image>
-              </to>
-            </configuration>
-          </execution>
           <execution>
             <phase>deploy</phase>
             <id>build-gitlab</id>
@@ -237,7 +219,7 @@
             <configuration>
               <allowInsecureRegistries>false</allowInsecureRegistries>
               <to>
-                <image>${gitlab}/${gitlab-repo}</image>
+                <image>gitlab-registry.cern.ch/c2mon/${project.artifactId}</image>
               </to>
             </configuration>
           </execution>
@@ -247,7 +229,7 @@
             <image>${image.base}</image>
           </from>
           <to>
-            <image>${image.name}</image>
+            <image>${project.artifactId}</image>
             <tags>
               <tag>${project.version}</tag>
               <tag>latest</tag>
