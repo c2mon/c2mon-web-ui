@@ -28,6 +28,7 @@
     <c2mon.webhome>/c2mon-web-ui-${project.version}</c2mon.webhome>
     <explodeDir>${project.build.directory}/exploded/</explodeDir>
     <java.version>8</java.version>
+     <com.oracle.version>19.8.0.0</com.oracle.version>
   </properties>
 
   <scm>
