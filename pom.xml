@@ -282,7 +282,7 @@
     <profile>
       <id>gitlab-ci</id>
       <activation>
-         <property><name>${env.CI}</name><value>true</value></property>
+         <property><name>env.CI</name><value>true</value></property>
       </activation>
       <build>
         <plugins>
