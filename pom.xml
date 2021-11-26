@@ -229,20 +229,15 @@
             <goals>
               <goal>build</goal>
             </goals>
-            <configuration>
-              <allowInsecureRegistries>false</allowInsecureRegistries>
-              <to>
-                <image>gitlab-registry.cern.ch/c2mon/${project.artifactId}</image>
-              </to>
-            </configuration>
           </execution>
         </executions>
         <configuration>
+          <allowInsecureRegistries>false</allowInsecureRegistries>
           <from>
             <image>${image.base}</image>
           </from>
           <to>
-            <image>${project.artifactId}</image>
+            <image>gitlab-registry.cern.ch/c2mon/${project.artifactId}</image>
             <tags>
               <tag>${project.version}</tag>
               <tag>latest</tag>
@@ -289,10 +284,22 @@
       <activation>
          <property><name>${env.CI}</name><value>true</value></property>
       </activation>
-      <properties>
-        <jib.to.auth.username>${env.CI_REGISTRY_USER}</jib.to.auth.username>
-        <jib.to.auth.password>${env.CI_REGISTRY_PASSWORD}</jib.to.auth.password>
-      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.google.cloud.tools</groupId>
+            <artifactId>jib-maven-plugin</artifactId>
+            <configuration>
+              <to>
+                <auth>
+                   <username>${env.CI_REGISTRY_USER}</username>
+                   <password>${env.CI_REGISTRY_PASSWORD}</password>
+                </auth>
+              </to>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
 </project>
