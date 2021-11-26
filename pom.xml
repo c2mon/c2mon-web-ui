@@ -281,4 +281,17 @@
 
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>gitlab-ci</id>
+      <activation>
+         <property><name>${env.CI}</name><value>true</value></property>
+      </activation>
+      <properties>
+        <jib.to.auth.username>${env.CI_REGISTRY_USER}</jib.to.auth.username>
+        <jib.to.auth.password>${env.CI_REGISTRY_PASSWORD}</jib.to.auth.password>
+      </properties>
+    </profile>
+  </profiles>
 </project>
