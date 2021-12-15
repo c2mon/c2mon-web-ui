@@ -23,3 +23,5 @@ hs_err_pid*
 
 activemq-data/
 /bin/
+/cbng-build.log
+/cbng-build-info.log
