@@ -4,7 +4,7 @@
             <dep groupId="cern.c2mon.client" product="c2mon-client-core" version="CTX"/>
 
 		<!--  PROBLEM 1. : this was not yet released as CBNG, can not be found as CTX -->
-            <dep groupId="cern.c2mon.client" product="c2mon-client-ext-history" version="CTX"/>
+            <dep groupId="cern.c2mon.client" product="c2mon-client-ext-history" version="1.11.0"/>
 
 		<!--  PROBLEM 2.: these deps are probably not part of the usual BE-CSS stuff, and therefore require explicit
 			version numbers to be found -->            
@@ -29,6 +29,11 @@
             <dep groupId="xml-apis" product="xml-apis" />
             <dep groupId="org.projectlombok" product="lombok" />
             <dep groupId="org.hsqldb" product="hsqldb" version="2.3.4"/>
+
+            <exclusions>
+                <dep groupId="javax.servlet" artifactId="javax.servlet-api" />
+                <dep groupId="org.eclipse.jetty" artifactId="jetty-server" />
+            </exclusions>
 
             <!-- Test dependencies -->
             <dep groupId="junit" product="junit" scope="test"/>
