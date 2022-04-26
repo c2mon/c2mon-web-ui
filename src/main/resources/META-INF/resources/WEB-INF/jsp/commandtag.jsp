@@ -4,7 +4,8 @@
 
 <c:url var="home" value="../" />
 <c:url var="commandviewer" value="../commandviewer/form" />
-<c:url var="history" value="../commandhistory/${tag.id}" />
+<c:url var="history" value="../../commandhistory/${tag.id}" />
+<c:url var="xmlviewer" value="${tag.id}/xml" />
 
 <c2mon:template title="${title}">
 
@@ -51,6 +52,10 @@ th {
           <a href="<c:url value="${history}"/>" class="btn btn-default btn-large">
             <span class="glyphicon glyphicon-list"></span>
             View History
+          </a>
+          <a href="<c:url value="${xmlviewer}"/>" class="btn btn-default btn-large">
+            <span class="glyphicon glyphicon-list"></span>
+            View XML
           </a>
         </p>
       </div>

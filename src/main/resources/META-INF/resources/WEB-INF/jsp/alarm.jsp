@@ -5,8 +5,8 @@
 
 <!-- JSP variables -->
 <c:url var="home" value="../" />
-<c:url var="alarmviewer" value="../alarmviewer/form" />
-<c:url var="history" value="../alarmhistoryviewer/${alarm.id}" />
+<c:url var="alarmviewer" value="../../alarmviewer/form" />
+<c:url var="history" value="../../alarmhistoryviewer/${alarm.id}" />
 
 <script type="text/javascript" src="<c:url value="/js/sort-table.js"/>"></script>
 
@@ -80,7 +80,7 @@
           <tr>
             <th>DataTag</th>
             <td>
-              <a href="<c:url value="/tagviewer/${alarm.tagId}"/>">${alarm.tagId}</a>
+              <a href="<c:url value="/tagviewer/id/${alarm.tagId}"/>">${alarm.tagId}</a>
             </td>
           </tr>
           <tr>
@@ -122,27 +122,7 @@
           </tr>
           <tr>
             <th>Metadata</th>
-            <td>
-              <table id="alarmMetadata" class="table table-striped table-bordered">
-                <tr>
-                  <th onclick="sortTable('alarmMetadata', 0)">Key</th>
-                  <th onclick="sortTable('alarmMetadata', 1)">Value</th>
-                </tr>
-                <tbody>
-                  <c:forEach var="entry" items="${alarm.metadata}">
-                    <tr>
-                      <td>
-                        <c:out value="${entry.key}"/>
-                      </td>
-
-                      <td>
-                        <c:out value="${entry.value}"/>
-                      </td>
-                    </tr>
-                  </c:forEach>
-                </tbody>  
-              </table>
-            </td>
+            <td>${alarm.metadata}</td>
           </tr>
         </tbody>
       </table>

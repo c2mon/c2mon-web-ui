@@ -16,33 +16,26 @@
  *****************************************************************************/
 package cern.c2mon.web.ui.controller;
 
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-
 import cern.c2mon.shared.client.configuration.ConfigConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.support.PagedListHolder;
-//import org.springframework.security.acls.model.NotFoundException;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import cern.c2mon.shared.client.configuration.ConfigurationElementReport;
 import cern.c2mon.shared.client.configuration.ConfigurationReport;
 import cern.c2mon.shared.client.request.ClientRequestProgressReport;
 import cern.c2mon.shared.util.json.GsonFactory;
 import cern.c2mon.web.ui.service.ConfigLoaderService;
 import cern.c2mon.web.ui.util.FormUtility;
-
 import com.google.gson.Gson;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A controller for the ConfigLoader
@@ -209,13 +202,13 @@ public class ConfigLoaderController {
     logger.debug("/configloader/errorform " + id);
 
     if (id == null) {
-      model.addAllAttributes(FormUtility.getFormModel(CONFIG_LOADER_FORM_TITLE, CONFIG_LOADER_FORM_INSTR, CONFIG_LOADER_FORM_URL, null, null));
+      model.addAllAttributes(FormUtility.getFormModel(CONFIG_LOADER_FORM_TITLE, CONFIG_LOADER_FORM_INSTR, CONFIG_LOADER_FORM_URL, null, null, null));
     } else {
       return ("redirect:" + CONFIG_LOADER_URL + id);
     }
 
     model.addAttribute("err", errorId);
-    return "genericErrorForm";
+    return "form/genericErrorForm";
   }
 
   /**
@@ -230,7 +223,7 @@ public class ConfigLoaderController {
     logger.debug("/configloader/form/{id} " + id);
     model.addAllAttributes(FormUtility.getFormModel(CONFIG_LOADER_FORM_TITLE, CONFIG_LOADER_FORM_INSTR, CONFIG_LOADER_FORM_URL, id, CONFIG_LOADER_URL + id));
 
-    return "genericForm";
+    return "form/genericForm";
   }
 
   /**
@@ -250,7 +243,7 @@ public class ConfigLoaderController {
       model.addAllAttributes(FormUtility.getFormModel(CONFIG_LOADER_FORM_TITLE, CONFIG_LOADER_FORM_INSTR, CONFIG_LOADER_FORM_URL, null, null));
     else
       return ("redirect:" + CONFIG_LOADER_URL + id);
-    return "genericForm";
+    return "form/genericForm";
   }
 
   /**

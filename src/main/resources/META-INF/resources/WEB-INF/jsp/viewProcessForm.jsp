@@ -18,14 +18,14 @@
 
       <c:url var="submitUrl" value="${formSubmitUrl}" />
 
-      <form class="well form-inline" action="${submitUrl}" method="post">
+      <form class="well form-inline" action="${submitUrl}" method="post" onsubmit="this.submit.disabled = true;">
 
         <select name="id" class="form-control">
           <c:forEach items="${processNames}" var="processName">
             <option>${processName}</option>
           </c:forEach>
         </select>
-        <input class="btn btn-large btn-primary" type="submit" value="Submit">
+        <input class="btn btn-large btn-primary" type="submit" value="Submit" name="submit">
       </form>
 
     </div>

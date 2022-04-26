@@ -8,7 +8,9 @@
 <c:set var="alarmflag" value="false" />
 <c:url var="home" value="../" />
 <c:url var="historyviewer" value="../historyviewer/form" />
-<c:url var="tagviewer" value="../tagviewer/${tag.id}" />
+<c:url var="xmlviewer" value="./xml/${tag.id}" />
+<c:url var="csvviewer" value="./csv/${tag.id}" />
+<c:url var="tagviewer" value="../tagviewer/id/${tag.id}" />
 <c:url var="trend" value="/trendviewer/${tag.id}" />
 <c:forEach var="tagitem" items="${history}">
   <c:if test="${not empty tagitem.alarms}">
@@ -67,6 +69,14 @@
         <a href="${trend}" class="btn btn-default btn-large">
           <span class="glyphicon glyphicon-stats"></span>
           View Trend
+        </a>
+        <a href="${xmlviewer}" class="btn btn-default btn-large">
+          <span class="glyphicon glyphicon-stats"></span>
+          View XML
+        </a>
+        <a href="${csvviewer}" class="btn btn-default btn-large">
+          <span class="glyphicon glyphicon-stats"></span>
+          View CSV
         </a>
       </p>
 

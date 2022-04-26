@@ -32,7 +32,7 @@
 
       <c:url var="submitUrl" value="${formSubmitUrl}" />
 
-      <form:form id="configLoaderForm" name="configLoaderForm" class="well form-inline" action="${submitUrl}" method="post">
+      <form:form id="configLoaderForm" name="configLoaderForm" class="well form-inline" action="${submitUrl}" method="post" onsubmit="this.submitButton.disabled = true;">
 
         <div class="input-group">
           <div class="input-group-addon">Config ID</div>

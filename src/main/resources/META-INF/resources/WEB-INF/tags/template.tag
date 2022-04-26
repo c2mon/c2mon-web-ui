@@ -12,6 +12,7 @@
 <c:url var="login" value="/login" />
 <c:url var="logout" value="/j_spring_security_logout" />
 <c:url var="tagviewer" value="/tagviewer/form" />
+<c:url var="equipmentviewer" value="/equipmentviewer/form" />
 <c:url var="alarmviewer" value="/alarmviewer/form" />
 <c:url var="commandviewer" value="/commandviewer/form" />
 <c:url var="processviewer" value="/process/form" />
@@ -121,6 +122,12 @@
               <a href="${tagviewer}">
                 <i class="fa fa-tags fa-fw"></i>
                 Tag Viewer
+              </a>
+            </li>
+            <li>
+              <a href="${equipmentviewer}">
+                <i class="fa fa-laptop fa-fw"></i>
+                Equipment Viewer
               </a>
             </li>
             <li>

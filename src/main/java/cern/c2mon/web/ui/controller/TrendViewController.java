@@ -16,15 +16,16 @@
  *****************************************************************************/
 package cern.c2mon.web.ui.controller;
 
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-
+import cern.c2mon.client.common.tag.Tag;
+import cern.c2mon.client.ext.history.common.HistoryTagValueUpdate;
+import cern.c2mon.client.ext.history.common.exception.HistoryProviderException;
+import cern.c2mon.client.ext.history.common.exception.LoadingParameterException;
+import cern.c2mon.shared.client.alarm.AlarmValue;
+import cern.c2mon.web.ui.service.HistoryService;
+import cern.c2mon.web.ui.service.TagIdException;
+import cern.c2mon.web.ui.service.TagService;
+import cern.c2mon.web.ui.util.FormUtility;
+import cern.c2mon.web.ui.util.InvalidPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,16 +37,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import cern.c2mon.client.common.tag.Tag;
-import cern.c2mon.client.ext.history.common.HistoryTagValueUpdate;
-import cern.c2mon.client.ext.history.common.exception.HistoryProviderException;
-import cern.c2mon.client.ext.history.common.exception.LoadingParameterException;
-import cern.c2mon.shared.client.alarm.AlarmValue;
-import cern.c2mon.web.ui.service.HistoryService;
-import cern.c2mon.web.ui.service.TagIdException;
-import cern.c2mon.web.ui.service.TagService;
-import cern.c2mon.web.ui.util.FormUtility;
-import cern.c2mon.web.ui.util.InvalidPoint;
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 /**
  * A controller for the Online Trend Viewer
@@ -138,7 +137,7 @@ public class TrendViewController {
    */
   @RequestMapping(value = TREND_VIEW_URL + "{id}" + LAST_RECORDS_URL + "{lastRecords}", method = { RequestMethod.GET })
   public final String viewTrendLastRecords(@PathVariable(value = "id") final String id, @PathVariable(value = "lastRecords") final int lastRecords, Model model)
-      throws IOException {
+          throws IOException {
 
     logger.info(TREND_VIEW_URL + "{id} " + id + LAST_RECORDS_URL + "{lastRecords} ");
 
@@ -210,7 +209,7 @@ public class TrendViewController {
    * @throws TagIdException In case the specified TagId does not exist.
    */
   public final Model getLastRecordsModel(Model model, final String id, final int records) throws HistoryProviderException, LoadingParameterException,
-      TagIdException {
+          TagIdException {
 
     final List<HistoryTagValueUpdate> historyValues = historyService.requestHistoryData(id, records);
 
@@ -253,7 +252,7 @@ public class TrendViewController {
    *           expected format
    */
   public final Model getStartEndDateModel(Model model, final String id, final String start, final String end) throws HistoryProviderException,
-      LoadingParameterException, ParseException {
+          LoadingParameterException, ParseException {
 
     final List<HistoryTagValueUpdate> historyValues = historyService.requestHistoryData(id, stringToTimestamp(start), stringToTimestamp(end));
 
@@ -293,10 +292,10 @@ public class TrendViewController {
    */
   @RequestMapping(value = TREND_VIEW_URL + "{id}", method = { RequestMethod.GET })
   public final String viewTrend(@PathVariable(value = "id") final String id,
-      @RequestParam(value = MAX_RECORDS_PARAMETER, required = false) final String maxRecords,
-      @RequestParam(value = LAST_DAYS_PARAMETER, required = false) final String lastDays,
-      @RequestParam(value = START_DATE_PARAMETER, required = false) final String start,
-      @RequestParam(value = END_DATE_PARAMETER, required = false) final String end, Model model) {
+                                @RequestParam(value = MAX_RECORDS_PARAMETER, required = false) final String maxRecords,
+                                @RequestParam(value = LAST_DAYS_PARAMETER, required = false) final String lastDays,
+                                @RequestParam(value = START_DATE_PARAMETER, required = false) final String start,
+                                @RequestParam(value = END_DATE_PARAMETER, required = false) final String end, Model model) {
 
     try {
       if (start != null && end != null) {
@@ -347,14 +346,14 @@ public class TrendViewController {
    */
   @RequestMapping(value = TREND_VIEW_FORM_URL, method = { RequestMethod.GET, RequestMethod.POST })
   public final String viewTrendFormPost(@RequestParam(value = "id", required = false) final String id,
-      @RequestParam(value = "error", required = false) final String wrongId, @RequestParam(value = "records", required = false) final String records,
-      @RequestParam(value = "days", required = false) final String days, @RequestParam(value = "start", required = false) final String startDate,
-      @RequestParam(value = "end", required = false) final String endDate, @RequestParam(value = "startTime", required = false) final String startTime,
-      @RequestParam(value = "endTime", required = false) final String endTime, final Model model) {
+                                        @RequestParam(value = "error", required = false) final String wrongId, @RequestParam(value = "records", required = false) final String records,
+                                        @RequestParam(value = "days", required = false) final String days, @RequestParam(value = "start", required = false) final String startDate,
+                                        @RequestParam(value = "end", required = false) final String endDate, @RequestParam(value = "startTime", required = false) final String startTime,
+                                        @RequestParam(value = "endTime", required = false) final String endTime, final Model model) {
 
     logger.info(TREND_VIEW_FORM_URL + id);
     if (id == null) {
-      model.addAllAttributes(FormUtility.getFormModel(TREND_FORM_TITLE, INSTRUCTION, TREND_VIEW_FORM_URL, null, null));
+      model.addAllAttributes(FormUtility.getFormModel(TREND_FORM_TITLE, INSTRUCTION, TREND_VIEW_FORM_URL, null, null, null));
 
       if (wrongId != null) {
         model.addAttribute("error", wrongId);
@@ -380,7 +379,7 @@ public class TrendViewController {
       return ("redirect:" + TREND_VIEW_URL + id + "?" + LAST_DAYS_PARAMETER + "=" + days);
     } else if (startDate != null) {
       return ("redirect:" + TREND_VIEW_URL + id + "?" + START_DATE_PARAMETER + "=" + startDate + "-" + startTime + "&" + END_DATE_PARAMETER + "=" + endDate
-          + "-" + endTime);
+              + "-" + endTime);
     } else if (records != null) {
       return ("redirect:" + TREND_VIEW_URL + id + "?" + MAX_RECORDS_PARAMETER + "=" + records);
     }

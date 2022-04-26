@@ -44,7 +44,7 @@
       <div id="tab-content" class="tab-content">
 
         <div class="tab-pane fade in active" id="records">
-          <form class="well form-inline" action="" method="post">
+          <form class="well form-inline" action="" method="post" onsubmit="this.submit.disabled = true;">
             <div class="input-group">
               <div class="input-group-addon">Id</div>
               <input class="form-control" type="text" name="id" value="${formTagValue}" />
@@ -53,12 +53,12 @@
               <div class="input-group-addon">Records</div>
               <input class="form-control" type="text" name="records" value="100" />
             </div>
-            <input class="btn btn-large btn-primary" type="submit" value="Submit">
+            <input class="btn btn-large btn-primary" type="submit" value="Submit" name="submit">
           </form>
         </div>
 
         <div class="tab-pane fade" id="days">
-          <form class="well form-inline" action="" method="post">
+          <form class="well form-inline" action="" method="post" onsubmit="this.submit.disabled = true;">
             <div class="input-group">
               <div class="input-group-addon">Id</div>
               <input class="form-control" type="text" name="id" value="${formTagValue}" />
@@ -98,12 +98,12 @@
                 <option>30</option>
               </select>
             </div>
-            <input class="btn btn-large btn-primary" type="submit" value="Submit">
+            <input class="btn btn-large btn-primary" type="submit" value="Submit" name="submit">
           </form>
         </div>
 
         <div class="tab-pane fade" id="date">
-          <form class="well form-inline" action="" method="post">
+          <form class="well form-inline" action="" method="post" onsubmit="this.submit.disabled = true;">
             <div class="input-group col-xs-2">
               <span class="input-group-addon">Id</span>
               <input class="form-control" type="text" name="id" value="${formTagValue}" />
@@ -129,7 +129,7 @@
               <input type="text" class="form-control" name="endTime" value="${defaultToTime}" />
             </div>
 
-            <input class="btn btn-large btn-primary" type="submit" value="Submit">
+            <input class="btn btn-large btn-primary" type="submit" value="Submit" name="submit">
           </form>
         </div>
       </div>

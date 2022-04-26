@@ -6,7 +6,7 @@
 <!-- JSP variables -->
 <c:url var="home" value="../" />
 <c:url var="processviewer" value="../../form" />
-<c:url var="tagviewer" value="../../../tagviewer" />
+<c:url var="tagviewer" value="../../../tagviewer/id" />
 
 <c2mon:template title="${title}">
 

@@ -16,16 +16,19 @@
  *****************************************************************************/
 package cern.c2mon.web.ui.controller;
 
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.util.*;
-
-import javax.servlet.http.HttpServletResponse;
-
+import cern.c2mon.client.common.tag.Tag;
+import cern.c2mon.client.ext.history.alarm.AlarmLog;
+import cern.c2mon.client.ext.history.alarm.repo.AlarmHistoryService;
+import cern.c2mon.client.ext.history.common.HistoryTagValueUpdate;
+import cern.c2mon.client.ext.history.common.exception.HistoryProviderException;
+import cern.c2mon.client.ext.history.common.exception.LoadingParameterException;
+import cern.c2mon.client.ext.history.updates.HistoryTagValueUpdateImpl;
+import cern.c2mon.shared.client.alarm.AlarmValue;
+import cern.c2mon.shared.client.alarm.AlarmValueImpl;
+import cern.c2mon.web.ui.service.HistoryAlarmService;
+import cern.c2mon.web.ui.service.HistoryService;
+import cern.c2mon.web.ui.service.TagService;
+import cern.c2mon.web.ui.util.FormUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,19 +40,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import cern.c2mon.client.common.tag.Tag;
-import cern.c2mon.client.ext.history.alarm.Alarm;
-import cern.c2mon.client.ext.history.alarm.AlarmHistoryService;
-import cern.c2mon.client.ext.history.common.HistoryTagValueUpdate;
-import cern.c2mon.client.ext.history.common.exception.HistoryProviderException;
-import cern.c2mon.client.ext.history.common.exception.LoadingParameterException;
-import cern.c2mon.client.ext.history.updates.HistoryTagValueUpdateImpl;
-import cern.c2mon.shared.client.alarm.AlarmValue;
-import cern.c2mon.shared.client.alarm.AlarmValueImpl;
-import cern.c2mon.web.ui.service.HistoryAlarmService;
-import cern.c2mon.web.ui.service.HistoryService;
-import cern.c2mon.web.ui.service.TagService;
-import cern.c2mon.web.ui.util.FormUtility;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.*;
 
 import static cern.c2mon.client.ext.history.util.LocalDateTimeConverter.convertToLocalDateTime;
 import static cern.c2mon.client.ext.history.util.LocalDateTimeConverter.convertToTimestamp;
@@ -210,10 +208,10 @@ public class HistoryController {
                               @RequestParam(value = START_DATE_PARAMETER, required = false) final String startTime,
                               @RequestParam(value = END_DATE_PARAMETER, required = false) final String endTime, final Model model) throws ParseException {
 
-    logger.info(HISTORY_XML_URL + id);
+    logger.info(HISTORY_XML_URL + "/" + id);
     try {
 
-      if (id == null) {
+      if (id != null) {
         model.addAttribute("xml", service.getHistoryXml(id, HISTORY_RECORDS_TO_ASK_FOR));
       } else if (lastDays != null) {
         final String xml = service.getHistoryXmlForLastDays(id, Integer.parseInt(lastDays));
@@ -236,6 +234,38 @@ public class HistoryController {
     return "raw/xml";
   }
 
+  @RequestMapping(value = HISTORY_CSV_URL + "/{id}", method = {RequestMethod.GET})
+  public final String viewCsv(@PathVariable final String id, @RequestParam(value = MAX_RECORDS_PARAMETER, required = false) final String maxRecords,
+                              @RequestParam(value = LAST_DAYS_PARAMETER, required = false) final String lastDays,
+                              @RequestParam(value = START_DATE_PARAMETER, required = false) final String startTime,
+                              @RequestParam(value = END_DATE_PARAMETER, required = false) final String endTime, final Model model) throws ParseException {
+
+    logger.info(HISTORY_CSV_URL + "/" + id);
+    try {
+
+      if (id != null) {
+        model.addAttribute("csv", service.getHistoryCSVText(id, HISTORY_RECORDS_TO_ASK_FOR));
+
+      } else if (lastDays != null) {
+        model.addAttribute("csv", service.getHistoryCSVTextForLastDays(id, Integer.parseInt(lastDays)));
+      }
+      if (startTime != null && endTime != null) {
+        final String xml = service.getHistoryCSVText(id, startTime, endTime);
+
+      } else if (maxRecords != null) {
+        model.addAttribute("csv", service.getHistoryCSVText(id, Integer.parseInt(maxRecords)));
+      }
+
+    } catch (HistoryProviderException e) {
+      logger.error(e.getMessage());
+      return ("redirect:" + "/historyviewer/errorform/" + id);
+    } catch (LoadingParameterException e) {
+      logger.error(e.getMessage());
+      return ("redirect:" + "/historyviewer/errorform/" + id);
+    }
+    return "raw/csv";
+  }
+
   /**
    * @param id    tag id
    * @param model Spring MVC Model instance to be filled in before jsp processes
@@ -254,7 +284,7 @@ public class HistoryController {
     logger.info(HISTORY_URL + "form" + id);
 
     if (id == null) {
-      model.addAllAttributes(FormUtility.getFormModel(HISTORY_FORM_TITLE, HISTORY_FORM_INSTR, HISTORY_FORM_URL, null, null));
+      model.addAllAttributes(FormUtility.getFormModel(HISTORY_FORM_TITLE, HISTORY_FORM_INSTR, HISTORY_FORM_URL, null, null, null));
 
       if (wrongId != null) {
         model.addAttribute("error", wrongId);
@@ -289,7 +319,7 @@ public class HistoryController {
    * @param tagValueUpdates The history of the tag
    */
   private void setAlarmsForHistory(Long tagId, List<HistoryTagValueUpdate> tagValueUpdates) {
-    Map<Timestamp, Alarm> timeToAlarmValue = new HashMap<>();
+    Map<Timestamp, AlarmLog> timeToAlarmValue = new HashMap<>();
     Tag clientTag = tagService.getTag(tagId);
 
     if (clientTag.getAlarms() != null) {
@@ -299,7 +329,7 @@ public class HistoryController {
         // get the range of the history of the sorted list
         LocalDateTime end = convertToLocalDateTime(tagValueUpdates.get(0).getSourceTimestamp() != null ? tagValueUpdates.get(0).getSourceTimestamp() : tagValueUpdates.get(0).getServerTimestamp());
         LocalDateTime start = convertToLocalDateTime(tagValueUpdates.get(tagValueUpdates.size() - 1).getSourceTimestamp() != null ? tagValueUpdates.get(tagValueUpdates.size() - 1).getSourceTimestamp() : tagValueUpdates.get(tagValueUpdates.size() - 1).getServerTimestamp());
-        List<Alarm> alarmHistory = alarmService.requestAlarmHistoryBySourceTimestamp(alarms.get(0).getId(), start, end);
+        List<AlarmLog> alarmHistory = alarmService.requestAlarmHistoryBySourceTimestamp(alarms.get(0).getId(), start, end);
 
         alarmHistory.forEach(alarm -> timeToAlarmValue.put(convertToTimestamp(alarm.getSourceTime()!= null ? alarm.getSourceTime():alarm.getTimestamp()), alarm));
       }
@@ -311,17 +341,18 @@ public class HistoryController {
           Timestamp sourceTime = tagValueUpdate.getSourceTimestamp();
 
           if (timeToAlarmValue.containsKey(sourceTime)) {
-            Alarm alarm = timeToAlarmValue.get(sourceTime != null ? sourceTime: currentTime);
+            AlarmLog alarm = timeToAlarmValue.get(sourceTime != null ? sourceTime: currentTime);
             AlarmValueImpl alarmValue = new AlarmValueImpl(
-                alarm.getId(),
-                alarm.getFaultCode(),
-                alarm.getFaultMember(),
-                alarm.getFaultFamily(),
-                alarm.getInfo(),
-                alarm.getTagId(),
-                currentTime,
-                sourceTime,
-                alarm.isActive());
+                    alarm.getId(),
+                    alarm.getFaultCode(),
+                    alarm.getFaultMember(),
+                    alarm.getFaultFamily(),
+                    alarm.getInfo(),
+                    alarm.getTagId(),
+                    currentTime,
+                    sourceTime,
+                    alarm.isActive(),
+                    alarm.getOscillating());
             tagValue.getAlarms().add(alarmValue);
           }
         }

@@ -175,7 +175,7 @@ public class CommandHistoryController {
         log.info(HISTORY_URL + "form" + id);
 
         if (id == null) {
-            model.addAllAttributes(FormUtility.getFormModel(HISTORY_FORM_TITLE, HISTORY_FORM_INSTR, HISTORY_FORM_URL, null,
+            model.addAllAttributes(FormUtility.getFormModel(HISTORY_FORM_TITLE, HISTORY_FORM_INSTR, HISTORY_FORM_URL, null, null,
                     null));
 
             if (wrongId != null) {

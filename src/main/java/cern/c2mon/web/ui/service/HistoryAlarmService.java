@@ -16,17 +16,16 @@
  *****************************************************************************/
 package cern.c2mon.web.ui.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
+import cern.c2mon.client.ext.history.alarm.AlarmLog;
+import cern.c2mon.client.ext.history.alarm.repo.AlarmHistoryService;
+import cern.c2mon.client.ext.history.common.exception.HistoryProviderException;
+import cern.c2mon.client.ext.history.common.exception.LoadingParameterException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import cern.c2mon.client.ext.history.alarm.Alarm;
-import cern.c2mon.client.ext.history.alarm.AlarmHistoryService;
-import cern.c2mon.client.ext.history.common.exception.HistoryProviderException;
-import cern.c2mon.client.ext.history.common.exception.LoadingParameterException;
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * HistoryService providing the XML representation for the history of a given
@@ -46,7 +45,7 @@ public class HistoryAlarmService {
    * @param localEndTime The end time expressed in the local time zone
    * @return history as a List of Alarm
    */
-  public final List<Alarm> requestAlarmHistory(final Long alarmId, final LocalDateTime localStartTime, final LocalDateTime localEndTime) {
+  public final List<AlarmLog> requestAlarmHistory(final Long alarmId, final LocalDateTime localStartTime, final LocalDateTime localEndTime) {
     return alarmHistoryService.findAllDistinctByIdAndTimestampBetweenOrderByTimestampDesc(alarmId, localStartTime, localEndTime);
   }
 
@@ -59,7 +58,7 @@ public class HistoryAlarmService {
    * @throws HistoryProviderException  in case a HistoryProvider cannot be created
    * @throws LoadingParameterException in case of an invalid configurations
    */
-  public final List<Alarm> requestAlarmHistoryForLastDays(final Long alarmId, final int numberOfDays) {
+  public final List<AlarmLog> requestAlarmHistoryForLastDays(final Long alarmId, final int numberOfDays) {
     LocalDateTime now = LocalDateTime.now();
     return alarmHistoryService.findAllDistinctByIdAndTimestampBetweenOrderByTimestampDesc(alarmId, now.minusDays(numberOfDays), now);
   }
@@ -69,7 +68,7 @@ public class HistoryAlarmService {
    * @param numRecords number of records to be retrieved
    * @return The last N alarm records for the given alarm id
    */
-  public final List<Alarm> requestAlarmHistory(final Long alarmId, final int numRecords) {
+  public final List<AlarmLog> requestAlarmHistory(final Long alarmId, final int numRecords) {
     return alarmHistoryService.findAllDistinctByIdOrderByTimestampDesc(alarmId, PageRequest.of(0, numRecords)).getContent();
   }
 
@@ -81,7 +80,7 @@ public class HistoryAlarmService {
    * @param localEndTime The end time expressed in the local time zone
    * @return history as a List of Alarm
    */
-  public final List<Alarm> requestAlarmHistoryBySourceTimestamp(final Long alarmId, final LocalDateTime localStartTime, final LocalDateTime localEndTime) {
+  public final List<AlarmLog> requestAlarmHistoryBySourceTimestamp(final Long alarmId, final LocalDateTime localStartTime, final LocalDateTime localEndTime) {
     return alarmHistoryService.findAllDistinctByIdAndSourceTimeBetweenOrderBySourceTimeDesc(alarmId, localStartTime, localEndTime);
   }
 
@@ -94,7 +93,7 @@ public class HistoryAlarmService {
    * @throws HistoryProviderException  in case a HistoryProvider cannot be created
    * @throws LoadingParameterException in case of an invalid configurations
    */
-  public final List<Alarm> requestAlarmHistoryBySourceTimestamForLastDays(final Long alarmId, final int numberOfDays) {
+  public final List<AlarmLog> requestAlarmHistoryBySourceTimestamForLastDays(final Long alarmId, final int numberOfDays) {
     LocalDateTime now = LocalDateTime.now();
     return alarmHistoryService.findAllDistinctByIdAndSourceTimeBetweenOrderBySourceTimeDesc(alarmId, now.minusDays(numberOfDays), now);
   }
@@ -104,7 +103,7 @@ public class HistoryAlarmService {
    * @param numRecords number of records to be retrieved
    * @return The last N alarm records for the given alarm id
    */
-  public final List<Alarm> requestAlarmHistoryBySourceTimestamp(final Long alarmId, final int numRecords) {
+  public final List<AlarmLog> requestAlarmHistoryBySourceTimestamp(final Long alarmId, final int numRecords) {
     return alarmHistoryService.findAllDistinctByIdOrderBySourceTimeDesc(alarmId, PageRequest.of(0, numRecords)).getContent();
   }
 }

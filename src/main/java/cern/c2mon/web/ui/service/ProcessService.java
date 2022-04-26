@@ -16,20 +16,22 @@
  *****************************************************************************/
 package cern.c2mon.web.ui.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cern.c2mon.client.core.service.ConfigurationService;
+import cern.c2mon.client.ext.history.process.Process;
+import cern.c2mon.client.ext.history.process.ProcessSearchService;
+import cern.c2mon.shared.client.process.ProcessNameResponse;
+import cern.c2mon.shared.common.process.ProcessConfiguration;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cern.c2mon.client.core.service.ConfigurationService;
-import cern.c2mon.shared.client.process.ProcessNameResponse;
-import cern.c2mon.shared.common.process.ProcessConfiguration;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Optional;
 
 /**
  * ProcessService providing the XML representation for a given process.
@@ -48,6 +50,8 @@ public class ProcessService {
   @Autowired
   private ConfigurationService configurationService;
 
+  @Autowired
+  private ProcessSearchService processSearchService;
 
   /**
    * Gets the XML representation of the process
@@ -106,8 +110,13 @@ public class ProcessService {
     String xml = configurationService.getProcessXml(processName);
 
     logger.debug("getXml fetch for process " + processName + ": "
-        + (xml == null ? "NULL" : "SUCCESS"));
+            + (xml == null ? "NULL" : "SUCCESS"));
 
     return xml;
+  }
+
+  public Process getProcessById(Long processId){
+    Optional<Process> process = processSearchService.findById(processId);
+    return process.isPresent() ? process.get() : null;
   }
 }

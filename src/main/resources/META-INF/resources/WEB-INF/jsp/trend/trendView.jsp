@@ -125,7 +125,7 @@
                       <a href="../historyviewer/${id}?${queryParameters}">View as Table &raquo;</a>
                     </li>
                     <li>
-                      <a href="../tagviewer/${id}">View Tag &raquo;</a>
+                      <a href="../tagviewer/id/${id}">View Tag &raquo;</a>
                     </li>
 
                     <!-- Only show the HelpAlarm button if the property is defined. -->

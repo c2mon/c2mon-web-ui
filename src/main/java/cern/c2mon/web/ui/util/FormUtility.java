@@ -32,12 +32,25 @@ public final class FormUtility {
    * @param formTagValue previous value of a tag (datatag, alarm, command) entered in the form, that should be displayed in the form
    * @return a map of values ready to be used in the MVC model
    */
-  public static Map<String, String> getFormModel(final String title, final String instruction, final String formSubmitUrl, final String formTagValue, final String tagDataUrl) {
+
+
+  public static Map<String, String> getFormModel(final String title, final String instruction, final String formSubmitUrl, final String formTagValue, final String formTagPlaceHolder, final String tagDataUrl) {
     Map<String, String> model = new HashMap<String, String>();
     model.put("title", title);
     model.put("instruction", instruction);
     model.put("formSubmitUrl", formSubmitUrl);
     model.put("formTagValue", formTagValue);
+    model.put("formTagPlaceHolder", formTagPlaceHolder);
+    model.put("tagDataUrl", tagDataUrl);
+    return model;
+  }
+
+  public static Map<String, String> getFormModel(final String title, final String formSubmitUrl, final String formTagValue, final String formTagPlaceHolder, final String tagDataUrl) {
+    Map<String, String> model = new HashMap<String, String>();
+    model.put("title", title);
+    model.put("formSubmitUrl", formSubmitUrl);
+    model.put("formTagValue", formTagValue);
+    model.put("formTagPlaceHolder", formTagPlaceHolder);
     model.put("tagDataUrl", tagDataUrl);
     return model;
   }
@@ -45,19 +58,19 @@ public final class FormUtility {
   public static String getHeader(String basePath) {
 
     String header = "<!DOCTYPE html>"
-    + "<html lang=\"en\">"
-    + "<head>"
-    + "<meta charset=\"utf-8\">"
-    + "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">"
-    + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
-    + "  <title>Configuration viewer</title>"
-    + "  <link rel=\"stylesheet\" type=\"text/css\" href=\"" + basePath + "/css/bootstrap/bootstrap.css\"></link>"
-    + "  <link rel=\"stylesheet\" type=\"text/css\" href=\"" + basePath + "/css/common.css\"></link>"
-    + "  <script type=\"text/javascript\" src=\"" + basePath + "/js/jquery/jquery.js\"></script>"
-    + "  <script type=\"text/javascript\" src=\"" + basePath + "/js/bootstrap/bootstrap.js\"></script>"
-    + "</head>"
-    + "<body>"
-    + "<div class=\"container-fluid\">";
+            + "<html lang=\"en\">"
+            + "<head>"
+            + "<meta charset=\"utf-8\">"
+            + "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">"
+            + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
+            + "  <title>Configuration viewer</title>"
+            + "  <link rel=\"stylesheet\" type=\"text/css\" href=\"" + basePath + "/css/bootstrap/bootstrap.css\"></link>"
+            + "  <link rel=\"stylesheet\" type=\"text/css\" href=\"" + basePath + "/css/common.css\"></link>"
+            + "  <script type=\"text/javascript\" src=\"" + basePath + "/js/jquery/jquery.js\"></script>"
+            + "  <script type=\"text/javascript\" src=\"" + basePath + "/js/bootstrap/bootstrap.js\"></script>"
+            + "</head>"
+            + "<body>"
+            + "<div class=\"container-fluid\">";
 
     return header;
   }

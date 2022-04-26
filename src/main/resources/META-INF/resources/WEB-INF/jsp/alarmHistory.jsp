@@ -7,7 +7,8 @@
 <c:set var="alarm" value="${history[0]}" />
 <c:url var="home" value="../" />
 <c:url var="historyviewer" value="../alarmhistoryviewer/form" />
-<c:url var="tagviewer" value="../tagviewer/${alarm.tagId}" />
+<c:url var="csvviewer" value="./csv/${alarm.id}" />
+<c:url var="tagviewer" value="../tagviewer/id/${alarm.tagId}" />
 <c:url var="taghistory" value="../historyviewer/${alarm.tagId}" />
 <c:url var="alarmviewer" value="../alarmviewer/${alarm.id}" />
 
@@ -66,6 +67,10 @@
         <a onclick="viewTagHistory()" class="btn btn-default btn-large">
           <span class="glyphicon glyphicon-tags"></span>
           &nbsp;View Tag History
+        </a>
+        <a href="${csvviewer}" class="btn btn-default btn-large">
+          <span class="glyphicon glyphicon-stats"></span>
+          &nbsp;View CSV
         </a>
       </p>
     </div>

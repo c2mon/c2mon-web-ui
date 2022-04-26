@@ -91,7 +91,7 @@
                 </c:choose>
               </td>
               <td>
-                <a href="${tagviewer}/${tag.id}" class="view-tag btn btn-default btn-sm">
+                <a href="${tagviewer}/id/${tag.id}" class="view-tag btn btn-default btn-sm">
                   <i class="fa fa-external-link"></i>
                   View Tag
                 </a>

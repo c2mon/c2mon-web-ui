@@ -82,7 +82,7 @@ public class HistoryService {
    * thrown by the underlying service gateway.
    */
   public final String getHistoryXml(final String dataTagId, final int numberOfRecords)
-      throws HistoryProviderException, LoadingParameterException  {
+          throws HistoryProviderException, LoadingParameterException  {
 
     final List<HistoryTagValueUpdate> historyValues = requestHistoryData(dataTagId, numberOfRecords);
     final String description = "(Last " + numberOfRecords + " records)";
@@ -104,10 +104,10 @@ public class HistoryService {
    * thrown by the underlying service gateway.
    */
   public final String getHistoryXmlForLastDays(final String dataTagId, final int numberOfDays)
-      throws HistoryProviderException, LoadingParameterException  {
+          throws HistoryProviderException, LoadingParameterException  {
 
     final List<HistoryTagValueUpdate> historyValues = requestHistoryDataForLastDays(dataTagId,
-        numberOfDays);
+            numberOfDays);
     final String description = "(Last " + numberOfDays + " days)";
     final String trendURL = "?" + TrendViewController.LAST_DAYS_PARAMETER + "=" + numberOfDays;
     return toXml(historyValues, dataTagId, description, trendURL);
@@ -129,15 +129,15 @@ public class HistoryService {
    * thrown by the underlying service gateway.
    */
   public final String getHistoryXml(final String dataTagId,
-      final Timestamp startTime,
-      final Timestamp endTime)
-      throws HistoryProviderException, LoadingParameterException  {
+                                    final Timestamp startTime,
+                                    final Timestamp endTime)
+          throws HistoryProviderException, LoadingParameterException  {
 
     final List<HistoryTagValueUpdate> historyValues = requestHistoryData(dataTagId, startTime, endTime);
 
     final String description = " (From " + startTime + " to " + endTime + ")";
     final String trendURL = "?" + TrendViewController.START_DATE_PARAMETER + "=" + startTime
-        + "&amp;" + TrendViewController.END_DATE_PARAMETER + "=" + endTime;
+            + "&amp;" + TrendViewController.END_DATE_PARAMETER + "=" + endTime;
     return toXml(historyValues, dataTagId, description, trendURL);
   }
 
@@ -150,18 +150,18 @@ public class HistoryService {
    *
    */
   public final String getHistoryXml(final String dataTagId,
-      final String startTime,
-      final String endTime)
-      throws HistoryProviderException, LoadingParameterException, ParseException  {
+                                    final String startTime,
+                                    final String endTime)
+          throws HistoryProviderException, LoadingParameterException, ParseException  {
 
     final List<HistoryTagValueUpdate> historyValues =
-        requestHistoryData(dataTagId,
-            stringToTimestamp(startTime),
-            stringToTimestamp(endTime));
+            requestHistoryData(dataTagId,
+                    stringToTimestamp(startTime),
+                    stringToTimestamp(endTime));
 
     final String description = " (From " + startTime + " to " + endTime + ")";
     final String trendURL = "?" + TrendViewController.START_DATE_PARAMETER + "=" + startTime
-        + "&amp;" + TrendViewController.END_DATE_PARAMETER + "=" + endTime;
+            + "&amp;" + TrendViewController.END_DATE_PARAMETER + "=" + endTime;
     return toXml(historyValues, dataTagId, description, trendURL);
   }
 
@@ -173,7 +173,7 @@ public class HistoryService {
    * thrown by the underlying service gateway.
    */
   public final String getHistoryCSV(final List<HistoryTagValueUpdate> historyValues,
-      final boolean isBooleanData) {
+                                    final boolean isBooleanData) {
 
     return toCSV(historyValues, isBooleanData);
   }
@@ -191,11 +191,40 @@ public class HistoryService {
    * thrown by the underlying service gateway.
    */
   public final String getHistoryCSV(final String dataTagId, final int numberOfRecords)
-      throws HistoryProviderException, LoadingParameterException  {
+          throws HistoryProviderException, LoadingParameterException  {
 
     final List<HistoryTagValueUpdate> historyValues = requestHistoryData(dataTagId, numberOfRecords);
     final boolean isBooleanData = isBooleanData(historyValues);
     return toCSV(historyValues, isBooleanData);
+  }
+
+  public final String getHistoryCSVText(final String dataTagId, final int numberOfRecords)
+          throws HistoryProviderException, LoadingParameterException  {
+
+    final List<HistoryTagValueUpdate> historyValues = requestHistoryData(dataTagId, numberOfRecords);
+    final boolean isBooleanData = isBooleanData(historyValues);
+    return toCSVText(historyValues, isBooleanData);
+  }
+
+  public final String getHistoryCSVTextForLastDays(final String dataTagId, final int numberOfDays)
+          throws HistoryProviderException, LoadingParameterException  {
+    final List<HistoryTagValueUpdate> historyValues = requestHistoryDataForLastDays(dataTagId,
+            numberOfDays);
+    final boolean isBooleanData = isBooleanData(historyValues);
+    return toCSVText(historyValues, isBooleanData);
+  }
+
+  public final String getHistoryCSVText(final String dataTagId,
+                                        final String startTime,
+                                        final String endTime)
+          throws HistoryProviderException, LoadingParameterException, ParseException  {
+
+    final List<HistoryTagValueUpdate> historyValues =
+            requestHistoryData(dataTagId,
+                    stringToTimestamp(startTime),
+                    stringToTimestamp(endTime));
+    final boolean isBooleanData = isBooleanData(historyValues);
+    return toCSVText(historyValues, isBooleanData);
   }
 
   /**
@@ -208,8 +237,8 @@ public class HistoryService {
    * @return history as a List of HistoryTagValueUpdates
    */
   public final List<HistoryTagValueUpdate> requestHistoryData(final String dataTagId,
-      final int numberOfRecords)
-      throws HistoryProviderException, LoadingParameterException {
+                                                              final int numberOfRecords)
+          throws HistoryProviderException, LoadingParameterException {
 
     // other values that can be used //
     Integer numberOfDays;
@@ -224,7 +253,7 @@ public class HistoryService {
     Collection<Long> dataTagIds = new ArrayList<>();
     dataTagIds.add(id);
     final HistoryLoadingManager loadingManager = historyManager
-        .createHistoryLoadingManager(getHistoryProvider(), dataTagIds);
+            .createHistoryLoadingManager(getHistoryProvider(), dataTagIds);
 
     final HistoryLoadingConfiguration configuration = new HistoryLoadingConfiguration();
     configuration.setLoadInitialValues(true);
@@ -255,15 +284,15 @@ public class HistoryService {
    * @return history as a List of HistoryTagValueUpdates
    */
   public final List<HistoryTagValueUpdate> requestHistoryData(final String dataTagId
-      , final Timestamp startTime
-      , final Timestamp endTime)
-      throws HistoryProviderException, LoadingParameterException {
+          , final Timestamp startTime
+          , final Timestamp endTime)
+          throws HistoryProviderException, LoadingParameterException {
 
     final long id = Long.parseLong(dataTagId);
     Collection<Long> dataTagIds = new ArrayList<>();
     dataTagIds.add(id);
     final HistoryLoadingManager loadingManager = historyManager
-        .createHistoryLoadingManager(getHistoryProvider(), dataTagIds);
+            .createHistoryLoadingManager(getHistoryProvider(), dataTagIds);
 
     final HistoryLoadingConfiguration configuration = new HistoryLoadingConfiguration();
     configuration.setLoadInitialValues(true);
@@ -297,14 +326,14 @@ public class HistoryService {
    * @return history as a List of HistoryTagValueUpdates
    */
   public final List<HistoryTagValueUpdate> requestHistoryDataForLastDays(final String dataTagId,
-      final int numberOfDays)
-      throws HistoryProviderException, LoadingParameterException {
+                                                                         final int numberOfDays)
+          throws HistoryProviderException, LoadingParameterException {
 
     final long id = Long.parseLong(dataTagId);
     Collection<Long> dataTagIds = new ArrayList<>();
     dataTagIds.add(id);
     final HistoryLoadingManager loadingManager = historyManager
-        .createHistoryLoadingManager(getHistoryProvider(), dataTagIds);
+            .createHistoryLoadingManager(getHistoryProvider(), dataTagIds);
 
     final HistoryLoadingConfiguration configuration = new HistoryLoadingConfiguration();
     configuration.setLoadInitialValues(true);
@@ -337,7 +366,7 @@ public class HistoryService {
    * @param trendURL a trend view showing the same historyValues
    */
   public final String toXml(final List<HistoryTagValueUpdate> historyValues, final String id
-      , final String historyDescription, final String trendURL) {
+          , final String historyDescription, final String trendURL) {
 
     // example: <history id="15685" historyDescription="Last 100 records" >
     StringBuffer historyXml = new StringBuffer();
@@ -397,8 +426,8 @@ public class HistoryService {
       }
 
       historyCSV.append(
-          formatToDygraphCompatibleDate(q.getServerTimestamp())
-          + "," + value + "," + q.getValueDescription());
+              formatToDygraphCompatibleDate(q.getServerTimestamp())
+                      + "," + value + "," + q.getValueDescription());
 
       historyCSV.append("," + q.getDataTagQuality().getDescription().replace('\n', ' '));
 
@@ -407,6 +436,41 @@ public class HistoryService {
       if (i != size - 1) {
         historyCSV.append(" + ");
       }
+      historyCSV.append("\n");
+    }
+    return historyCSV.toString();
+  }
+
+  public final String toCSVText(final List<HistoryTagValueUpdate> historyValues, final boolean isBooleanData) {
+
+    StringBuffer historyCSV = new StringBuffer();
+
+    String header = "Server Timestamp,Tag Value,Value Description,Data Tag Quality Description\n";
+    historyCSV.append(header);
+
+    final int size = historyValues.size();
+    for (int i = 0; i < size; i++) {
+
+      final HistoryTagValueUpdate h = historyValues.get(i);
+      HistoryTagValueUpdateImpl q = (HistoryTagValueUpdateImpl) h;
+      double value;
+
+      try {
+        if (isBooleanData) {
+          value = getChartCompatibleBooleanValue(q.getValue());
+        } else {
+          value = (new Double(q.getValue().toString())).doubleValue();
+        }
+      } catch (final Exception e) {
+        value = 0;
+      }
+
+      historyCSV.append(
+              formatToDygraphCompatibleDate(q.getServerTimestamp())
+                      + "," + value + "," + q.getValueDescription());
+
+      historyCSV.append("," + q.getDataTagQuality().getDescription().replace('\n', ' '));
+
       historyCSV.append("\n");
     }
     return historyCSV.toString();
@@ -511,7 +575,7 @@ public class HistoryService {
     catch (HistoryProviderException e) {
       logger.error("Can't load any history because a HistoryProvider cannot be created.", e);
       throw new HistoryProviderException("Cannot retrieve the data from the Short term log " +
-          "because no history provider is accessible.");
+              "because no history provider is accessible.");
     }
 
     return provider;
