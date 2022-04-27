@@ -4,7 +4,7 @@
             <dep groupId="cern.c2mon.client" product="c2mon-client-core" version="CTX"/>
 
 		<!--  PROBLEM 1. : this was not yet released as CBNG, can not be found as CTX -->
-            <dep groupId="cern.c2mon.client" product="c2mon-client-ext-history" version="1.11.0"/>
+            <dep groupId="cern.c2mon.client" product="c2mon-client-ext-history" version="CTX"/>
 
 		<!--  PROBLEM 2.: these deps are probably not part of the usual BE-CSS stuff, and therefore require explicit
 			version numbers to be found -->            
