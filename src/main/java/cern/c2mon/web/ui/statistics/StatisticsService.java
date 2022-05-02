@@ -20,19 +20,24 @@ import cern.c2mon.client.ext.history.lifecycle.ServerLifecycleEvent;
 import cern.c2mon.client.ext.history.lifecycle.ServerLifecycleEventRepository;
 import cern.c2mon.client.ext.history.supervision.ServerSupervisionEvent;
 import cern.c2mon.client.ext.history.supervision.SupervisionEventRepository;
-import cern.c2mon.shared.client.supervision.SupervisionEvent;
 import cern.c2mon.shared.client.statistics.TagStatisticsResponse;
+import cern.c2mon.shared.client.supervision.SupervisionEvent;
 import cern.c2mon.web.ui.service.ProcessService;
 import cern.c2mon.web.ui.statistics.charts.WebChart;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * This class acts as a service to provide statistics about the C2MON server and
@@ -108,11 +113,10 @@ public class StatisticsService {
     Long id = processService.getProcessConfiguration(name).getProcessID();
 
     // Generate dates for the first and last days of the given year.
-    DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-    Date from = format.parse(String.valueOf(year) + "-01-01");
-    Date to = format.parse(String.valueOf(year) + "-12-31");
+    LocalDateTime from = LocalDateTime.of(year, Month.JANUARY, 1, 00, 00);
+    LocalDateTime to = LocalDateTime.of(year, Month.DECEMBER, 31, 23, 59);
     // Retrieve a list (ServerSupervisionEvent), find by id and date, order by date.
-    List<ServerSupervisionEvent> serverSupervisionEvents = supervisionEventRepository.findByIdAndEventTimeBetween(id,from,to);
+    List<ServerSupervisionEvent> serverSupervisionEvents = supervisionEventRepository.findAllDistinctByIdAndEventTimeBetween(id,from,to);
     Collections.sort(serverSupervisionEvents, (o1,o2) -> o1.getEventTime().compareTo(o2.getEventTime()));
     return serverSupervisionEvents;
   }

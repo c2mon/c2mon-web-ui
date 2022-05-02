@@ -17,11 +17,13 @@
 package cern.c2mon.web.ui.controller;
 
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -36,6 +38,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import cern.c2mon.shared.common.process.EquipmentConfiguration;
 import cern.c2mon.shared.common.process.ProcessConfiguration;
 import cern.c2mon.web.ui.service.ProcessService;
 import cern.c2mon.web.ui.service.TagIdException;
@@ -87,6 +90,12 @@ public class ProcessController {
 
     ProcessConfiguration process = service.getProcessConfiguration(processName);
     process.setProcessName(processName);
+
+    //Sort equipments by id
+    Map<Long, EquipmentConfiguration> equipmentConfigurations = new TreeMap<>(process.getEquipmentConfigurations());
+    Field field = ProcessConfiguration.class.getDeclaredField("equipmentConfigurations");
+    field.setAccessible(true);
+    field.set(process, equipmentConfigurations);
 
     model.addAttribute("title", PROCESS_FORM_TITLE);
     model.addAttribute("process", process);

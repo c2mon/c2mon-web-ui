@@ -2,6 +2,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@attribute name="header" fragment="true"%>
 <%@attribute name="footer" fragment="true"%>
 <%@attribute name="title" required="true"%>
@@ -19,6 +21,7 @@
 <c:url var="trendviewer" value="/trendviewer/form" />
 <c:url var="historyviewer" value="/historyviewer/form" />
 <c:url var="alarmhistoryviewer" value="/alarmhistoryviewer/form" />
+<c:url var="supervisionhistoryviewer" value="/supervisionhistoryviewer/form" />
 <c:url var="commandhistory" value="/commandhistory/form" />
 <c:url var="configloader" value="/configloader/progress" />
 <c:url var="confighistory" value="/confighistory/" />
@@ -164,6 +167,12 @@
               <a href="${alarmhistoryviewer}">
                 <i class="fa fa-list fa-fw"></i>
                 Alarm History Viewer
+              </a>
+            </li>
+            <li>
+              <a href="${supervisionhistoryviewer}">
+                <i class="fa fa-list fa-fw"></i>
+                Supervision History Viewer
               </a>
             </li>
             <li>

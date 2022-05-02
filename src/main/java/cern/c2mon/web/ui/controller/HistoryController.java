@@ -22,13 +22,32 @@ import cern.c2mon.client.ext.history.alarm.repo.AlarmHistoryService;
 import cern.c2mon.client.ext.history.common.HistoryTagValueUpdate;
 import cern.c2mon.client.ext.history.common.exception.HistoryProviderException;
 import cern.c2mon.client.ext.history.common.exception.LoadingParameterException;
+import cern.c2mon.client.ext.history.data.DataTagRecord;
+import cern.c2mon.client.ext.history.supervision.ServerSupervisionEvent;
 import cern.c2mon.client.ext.history.updates.HistoryTagValueUpdateImpl;
 import cern.c2mon.shared.client.alarm.AlarmValue;
 import cern.c2mon.shared.client.alarm.AlarmValueImpl;
+import cern.c2mon.web.ui.service.DataTagService;
 import cern.c2mon.web.ui.service.HistoryAlarmService;
 import cern.c2mon.web.ui.service.HistoryService;
+import cern.c2mon.web.ui.service.SupervisionService;
 import cern.c2mon.web.ui.service.TagService;
 import cern.c2mon.web.ui.util.FormUtility;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,16 +58,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.util.*;
-
 import static cern.c2mon.client.ext.history.util.LocalDateTimeConverter.convertToLocalDateTime;
 import static cern.c2mon.client.ext.history.util.LocalDateTimeConverter.convertToTimestamp;
 
@@ -134,6 +143,12 @@ public class HistoryController {
   @Autowired
   private HistoryAlarmService alarmService;
 
+  @Autowired
+  private DataTagService dataTagService;
+
+  @Autowired
+  private SupervisionService supervisionService;
+
   /**
    * HistoryController logger
    */
@@ -163,6 +178,22 @@ public class HistoryController {
 
     logger.info("/historyviewer/{id} " + id);
 
+    DataTagRecord tag = dataTagService.getDataTagById(Long.parseLong(id));
+
+    if(tag == null){
+      return ("redirect:" + HISTORY_FORM_URL + "?error=" + id);
+    }
+
+    model.addAttribute("tag", tag);
+
+    if(tag.isControlTag()){
+      return findControlTagHistoryRecords(id, maxRecords, lastDays, startTime, endTime, model);
+    }else {
+      return findTagHistoryRecords(id, maxRecords, lastDays, startTime, endTime, model);
+    }
+  }
+
+  private final String findTagHistoryRecords(String id, String maxRecords, String lastDays, String startTime, String endTime, Model model){
     List<HistoryTagValueUpdate> history = new ArrayList<>();
     String description = null;
 
@@ -196,6 +227,40 @@ public class HistoryController {
     return "history";
   }
 
+  private final String findControlTagHistoryRecords(String id, String maxRecords, String lastDays, String startTime, String endTime, Model model){
+    List<ServerSupervisionEvent> history = new ArrayList<>();
+    String description = null;
+
+    try {
+      if (startTime != null && endTime != null) {
+        history = supervisionService.requestControlHistoryData(Long.parseLong(id), HistoryService.stringToLocalDateTime(startTime), HistoryService.stringToLocalDateTime(endTime));
+        description = " (From " + startTime + " to " + endTime + ")";
+      } else if (lastDays != null) {
+        history = supervisionService.requestControlHistoryDataForLastDays(Long.parseLong(id), Integer.parseInt(lastDays));
+        description = "(Last " + lastDays + " days)";
+      } else if (maxRecords != null) {
+        history = supervisionService.requestControlHistoryData(Long.parseLong(id), Integer.parseInt(maxRecords));
+        description = "(Last " + maxRecords + " records)";
+      } else if (id != null) {
+        int numRecords = maxRecords != null ? Integer.parseInt(maxRecords) : HISTORY_RECORDS_TO_ASK_FOR;
+        history = supervisionService.requestControlHistoryData(Long.parseLong(id), numRecords);
+        description = "(Last " + HISTORY_RECORDS_TO_ASK_FOR + " records)";
+      }
+    } catch (Exception e) {
+      return ("redirect:" + HISTORY_FORM_URL + "?error=" + id);
+    }
+    Collections.reverse(history);
+
+    model.addAttribute("description", description);
+    model.addAttribute("history", history);
+    model.addAttribute("title", HISTORY_FORM_TITLE);
+    List <AlarmValue> alarmValues = (List<AlarmValue>) tagService.getTag(Long.valueOf(id)).getAlarms();
+    if (alarmValues != null && !alarmValues.isEmpty()) {
+      model.addAttribute("help_url", helpUrl.replaceAll("\\{id\\}", alarmValues.get(0).getId().toString()));
+    }
+    return "controltaghistory";
+  }
+
   /**
    * @param id    tag id
    * @param model Spring MVC Model instance to be filled in before jsp processes
@@ -206,9 +271,24 @@ public class HistoryController {
   public final String viewXml(@PathVariable final String id, @RequestParam(value = MAX_RECORDS_PARAMETER, required = false) final String maxRecords,
                               @RequestParam(value = LAST_DAYS_PARAMETER, required = false) final String lastDays,
                               @RequestParam(value = START_DATE_PARAMETER, required = false) final String startTime,
-                              @RequestParam(value = END_DATE_PARAMETER, required = false) final String endTime, final Model model) throws ParseException {
+                              @RequestParam(value = END_DATE_PARAMETER, required = false) final String endTime, final Model model) {
 
     logger.info(HISTORY_XML_URL + "/" + id);
+
+    DataTagRecord tag = dataTagService.getDataTagById(Long.parseLong(id));
+
+    if(tag == null){
+      return ("redirect:" + HISTORY_FORM_URL + "?error=" + id);
+    }
+
+    if(tag.isControlTag()){
+      return "";
+    }else {
+      return viewTagXml(id, maxRecords, lastDays, startTime, endTime, model);
+    }
+  }
+
+  private final String viewTagXml(String id, String maxRecords, String lastDays, String startTime, String endTime, Model model){
     try {
 
       if (id != null) {
@@ -227,6 +307,9 @@ public class HistoryController {
     } catch (HistoryProviderException e) {
       logger.error(e.getMessage());
       return ("redirect:" + "/historyviewer/errorform/" + id);
+    } catch (ParseException e) {
+      logger.error(e.getMessage());
+      return ("redirect:" + "/historyviewer/errorform/" + id);
     } catch (LoadingParameterException e) {
       logger.error(e.getMessage());
       return ("redirect:" + "/historyviewer/errorform/" + id);
@@ -238,9 +321,23 @@ public class HistoryController {
   public final String viewCsv(@PathVariable final String id, @RequestParam(value = MAX_RECORDS_PARAMETER, required = false) final String maxRecords,
                               @RequestParam(value = LAST_DAYS_PARAMETER, required = false) final String lastDays,
                               @RequestParam(value = START_DATE_PARAMETER, required = false) final String startTime,
-                              @RequestParam(value = END_DATE_PARAMETER, required = false) final String endTime, final Model model) throws ParseException {
+                              @RequestParam(value = END_DATE_PARAMETER, required = false) final String endTime, final Model model) {
 
     logger.info(HISTORY_CSV_URL + "/" + id);
+    DataTagRecord tag = dataTagService.getDataTagById(Long.parseLong(id));
+
+    if(tag == null){
+      return ("redirect:" + HISTORY_FORM_URL + "?error=" + id);
+    }
+
+    if(tag.isControlTag()){
+      return "";
+    }else {
+      return viewTagCsv(id, maxRecords, lastDays, startTime, endTime, model);
+    }
+  }
+
+  private final String viewTagCsv(String id, String maxRecords, String lastDays, String startTime, String endTime, Model model){
     try {
 
       if (id != null) {
@@ -250,13 +347,16 @@ public class HistoryController {
         model.addAttribute("csv", service.getHistoryCSVTextForLastDays(id, Integer.parseInt(lastDays)));
       }
       if (startTime != null && endTime != null) {
-        final String xml = service.getHistoryCSVText(id, startTime, endTime);
+        model.addAttribute("csv", service.getHistoryCSVText(id, startTime, endTime));
 
       } else if (maxRecords != null) {
         model.addAttribute("csv", service.getHistoryCSVText(id, Integer.parseInt(maxRecords)));
       }
 
     } catch (HistoryProviderException e) {
+      logger.error(e.getMessage());
+      return ("redirect:" + "/historyviewer/errorform/" + id);
+    } catch (ParseException e) {
       logger.error(e.getMessage());
       return ("redirect:" + "/historyviewer/errorform/" + id);
     } catch (LoadingParameterException e) {

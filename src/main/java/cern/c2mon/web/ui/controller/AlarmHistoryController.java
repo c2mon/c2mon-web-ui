@@ -17,17 +17,12 @@
 package cern.c2mon.web.ui.controller;
 
 import cern.c2mon.client.ext.history.alarm.AlarmLog;
+import cern.c2mon.client.ext.history.alarm.AlarmRecord;
+import cern.c2mon.web.ui.service.AlarmSearchService;
 import cern.c2mon.web.ui.service.HistoryAlarmService;
 import cern.c2mon.web.ui.service.HistoryService;
 import cern.c2mon.web.ui.util.FormUtility;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -37,6 +32,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * A controller for the alarm history viewer.
@@ -88,6 +92,9 @@ public class AlarmHistoryController {
   @Autowired
   private HistoryAlarmService historyService;
 
+  @Autowired
+  private AlarmSearchService alarmService;
+
   /**
    * @return Redirects to the form
    */
@@ -113,6 +120,12 @@ public class AlarmHistoryController {
                                   final HttpServletResponse response, final Model model) throws IOException {
     log.info("/alarmhistoryviewer/{id} " + id);
 
+    Optional<AlarmRecord> alarm = alarmService.findAlarmById(Long.parseLong(id));
+
+    if(!alarm.isPresent()){
+      return ("redirect:" + HISTORY_FORM_URL + "?error=" + id);
+    }
+
     List<AlarmLog> history = new ArrayList<>();
     String description = null;
 
@@ -135,6 +148,7 @@ public class AlarmHistoryController {
     List<AlarmLog> historyReverse = new ArrayList<>(history);
     Collections.reverse(historyReverse);
 
+    model.addAttribute("alarm", alarm.get());
     model.addAttribute("description", description);
     model.addAttribute("history", history);
     model.addAttribute("title", HISTORY_FORM_TITLE);
@@ -170,7 +184,7 @@ public class AlarmHistoryController {
     Collections.reverse(historyReverse);
 
     StringBuilder csv = new StringBuilder();
-    String header = "Timestamp,Source Timestamp,Status,Info";
+    String header = "Timestamp,Source Timestamp,Status,Info\n";
     csv.append(header);
 
     for(AlarmLog alarmLog : history){

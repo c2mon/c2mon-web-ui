@@ -51,16 +51,18 @@ th {
 
   <div class="row">
     <div class="col-lg-12">
-      <p class="pull-left btn-toolbar">
-        <a href="${history}" class="btn btn-default btn-large">
-          <span class="glyphicon glyphicon-list"></span>
-          View History
-        </a>
-        <a href="${trend}" class="btn btn-default btn-large">
-          <span class="glyphicon glyphicon-stats"></span>
-          View Trend
-        </a>
-      </p>
+      <c:if test="${!tag.aliveTagFlag}">
+          <p class="pull-left btn-toolbar">
+            <a href="${history}" class="btn btn-default btn-large">
+              <span class="glyphicon glyphicon-list"></span>
+              View History
+            </a>
+            <a href="${trend}" class="btn btn-default btn-large">
+              <span class="glyphicon glyphicon-stats"></span>
+              View Trend
+            </a>
+          </p>
+      </c:if>
 
       <!-- Only show the HelpAlarm button if the property is defined. -->
       <c:if test="${fn:length(help_url) > 0}">
@@ -91,8 +93,22 @@ th {
             <td>${tag.description}</td>
           </tr>
           <tr>
-            <th>Tag Value</th>
-            <td>${tag.value}</td>
+              <c:choose>
+                <c:when test="${tag.getType().isArray()}">
+                    <th>Tag Values</th>
+                       <td>
+                       [
+                        <c:forEach items="${tag.value}" var="value">
+                                ${value}
+                        </c:forEach>
+                       ]
+                      </td>
+                </c:when>
+                <c:otherwise>
+                  <th>Tag Value</th>
+                  <td>${tag.value}</td>
+                </c:otherwise>
+              </c:choose>
           </tr>
           <c:if test="${tag.unit != null}">
           <tr>
@@ -139,7 +155,7 @@ th {
           </tr>
           <tr>
             <th>Data Type</th>
-            <td>${tag.value['class'].name}</td>
+            <td>${tag.type}</td>
           </tr>
           <tr>
             <th>Metadata</th>
@@ -436,7 +452,11 @@ th {
           </tr>
           <tr>
             <th>Process Names</th>
-            <td>${tagConfig.processNames}</td>
+            <td>
+            <c:forEach var="processName" items="${tagConfig.processNames}">
+              <a href="<c:url value="/process/${processName}"/>"> ${processName} </a>
+            </c:forEach>
+            </td>
           </tr>
           <tr>
             <th>Alarms</th>

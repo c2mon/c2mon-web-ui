@@ -7,6 +7,7 @@
 <c:url var="home" value="../" />
 <c:url var="processviewer" value="../process/form" />
 <c:url var="tagviewer" value="../tagviewer/id" />
+<c:url var="history" value="/supervisionhistoryviewer/${process.processID}" />
 <c:url var="xml" value="../process/xml" />
 
 <c2mon:template title="${title}">
@@ -59,6 +60,17 @@ th {
       </div>
 
       <div class="row">
+          <div class="col-lg-12">
+            <p class="pull-left btn-toolbar">
+              <a href="${history}" class="btn btn-default btn-large">
+                <span class="glyphicon glyphicon-list"></span>
+                View History
+              </a>
+            </p>
+          </div>
+        </div>
+
+      <div class="row">
         <div class="col-lg-12">
 
           <div class="panel panel-default">
@@ -84,6 +96,12 @@ th {
                 <tr>
                   <th>Process ID</th>
                   <td>${process.processID}</td>
+                </tr>
+                <tr>
+                  <th>Status Tag ID</th>
+                  <td>
+                    <a href="${tagviewer}/${process.stateTagID}">${process.stateTagID}</a>
+                  </td>
                 </tr>
                 <tr>
                   <th>Alive Tag ID</th>
@@ -190,6 +208,12 @@ th {
                                 <tr>
                                   <th>CommFault Tag Value</th>
                                   <td>${equipment.commFaultTagValue}</td>
+                                </tr>
+                                <tr>
+                                  <th>State Tag ID</th>
+                                  <td>
+                                    <a href="${tagviewer}/${equipment.stateTagId}">${equipment.stateTagId}</a>
+                                  </td>
                                 </tr>
                                 <tr>
                                   <th>Alive Tag ID</th>

@@ -14,17 +14,20 @@
             <div class="page-header">
                 <h1>${title}</h1>
             </div>
+
             <div class="alert alert-danger">
                 <strong> ${err} </strong>
             </div>
-            <ul id="tabs" class="nav nav-tabs">
-                <li>
-                    <a href="#id" data-toggle="tab">Search by ID</a>
-                </li>
-                <li>
-                    <a href="#name" data-toggle="tab">Search by Name</a>
-                </li>
+
+            <ul id="tabs" class="nav nav-tabs" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#id" role="tab" data-toggle="tab" aria-controls="id">Search by ID</a>
+              </li>
+              <li role="presentation">
+                <a href="#name" role="tab" data-toggle="tab" aria-controls="name">Search by Name</a>
+              </li>
             </ul>
+
             <div id="tab-content" class="tab-content">
                 <div class="tab-pane fade in active" id="id">
                     <form class="well form-inline" action="" method="post" onsubmit="this.submit.disabled = true;">
@@ -60,4 +63,20 @@ function numOnly(id) {
     // Replace other characters that are not in regex pattern
     element.value = element.value.replace(regex, "");
 }
+
+ // Tab click handler
+  $('#tabs a').click(function(e) {
+    e.preventDefault();
+    $(this).tab('show');
+  });
+
+  // Store the currently selected tab in the hash value
+  $("ul.nav-tabs > li > a").on("shown.bs.tab", function(e) {
+    var id = $(e.target).attr("href").substr(1);
+    window.location.hash = id;
+  });
+
+  // on load of the page: switch to the currently selected tab
+  var hash = window.location.hash;
+  $('#tabs a[href="' + hash + '"]').tab('show');
 </script>

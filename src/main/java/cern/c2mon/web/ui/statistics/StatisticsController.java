@@ -16,13 +16,25 @@
  ******************************************************************************/
 package cern.c2mon.web.ui.statistics;
 
-import java.text.ParseException;
-import java.util.*;
-
 import cern.c2mon.client.ext.history.lifecycle.ServerLifecycleEvent;
 import cern.c2mon.client.ext.history.supervision.ServerSupervisionEvent;
+import cern.c2mon.shared.client.lifecycle.LifecycleEventType;
+import cern.c2mon.shared.client.statistics.TagStatisticsResponse;
 import cern.c2mon.shared.common.supervision.SupervisionConstants;
+import cern.c2mon.web.ui.statistics.charts.BarChart;
 import cern.c2mon.web.ui.statistics.charts.WebChart;
+
+import java.text.ParseException;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +44,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import cern.c2mon.shared.client.lifecycle.LifecycleEventType;
-import cern.c2mon.shared.client.statistics.TagStatisticsResponse;
-import cern.c2mon.web.ui.statistics.charts.BarChart;
 
 /**
  * This class serves as an entry point to retrieve various statistics from the
@@ -321,7 +329,7 @@ public class StatisticsController {
     }
 
     for (ServerSupervisionEvent event : all) {
-      monthlyEvents.get(event.getEventTime().getMonth()).add(event);
+      monthlyEvents.get(event.getEventTime().getMonth().getValue()).add(event);
     }
 
     List<Double> monthlyUptimes = new ArrayList<>(12);
@@ -356,7 +364,7 @@ public class StatisticsController {
       }
     }
 
-    Date oldest = events.get(0).getEventTime();
+    Date oldest = Date.from(events.get(0).getEventTime().atZone(ZoneId.systemDefault()).toInstant());
 
     Calendar calendar = new GregorianCalendar(oldest.getYear(), month, 1);
     double totalTime = calendar.getActualMaximum(Calendar.DAY_OF_MONTH) * 60 * 60 * 24 * 100;
@@ -373,7 +381,8 @@ public class StatisticsController {
           ServerSupervisionEvent event2 = events.get(j);
           if (event2.getStatus().equals(SupervisionConstants.SupervisionStatus.RUNNING.toString())
                   || event2.getStatus().equals(SupervisionConstants.SupervisionStatus.RUNNING_LOCAL.toString())) {
-            downtime += event2.getEventTime().getTime() - event.getEventTime().getTime();
+            downtime += Date.from(event2.getEventTime().atZone(ZoneId.systemDefault()).toInstant()).getTime() - Date.from(event.getEventTime().atZone(ZoneId.systemDefault()).toInstant()).getTime();
+
             i = j;
             break;
           }

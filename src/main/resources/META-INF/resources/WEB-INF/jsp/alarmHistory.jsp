@@ -4,7 +4,6 @@
 <%@ taglib prefix="c2mon" tagdir="/WEB-INF/tags"%>
 
 <!-- JSP variables -->
-<c:set var="alarm" value="${history[0]}" />
 <c:url var="home" value="../" />
 <c:url var="historyviewer" value="../alarmhistoryviewer/form" />
 <c:url var="csvviewer" value="./csv/${alarm.id}" />

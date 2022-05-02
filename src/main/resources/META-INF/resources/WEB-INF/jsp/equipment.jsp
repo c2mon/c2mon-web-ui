@@ -6,6 +6,7 @@
 <!-- JSP variables -->
 <c:url var="home" value="../" />
 <c:url var="processviewer" value="../../form" />
+<c:url var="history" value="/supervisionhistoryviewer/${equipment.id}" />
 <c:url var="tagviewer" value="../../../tagviewer/id" />
 
 <c2mon:template title="${title}">
@@ -54,6 +55,17 @@ th {
           </div>
         </div>
       </div>
+
+      <div class="row">
+          <div class="col-lg-12">
+            <p class="pull-left btn-toolbar">
+              <a href="${history}" class="btn btn-default btn-large">
+                <span class="glyphicon glyphicon-list"></span>
+                View History
+              </a>
+            </p>
+          </div>
+       </div>
 
       <div class="row">
         <div class="col-lg-12">
@@ -108,6 +120,12 @@ th {
                 <tr>
                   <th>CommFault Tag Value</th>
                   <td>${equipment.commFaultTagValue}</td>
+                </tr>
+                <tr>
+                  <th>Status Tag ID</th>
+                  <td>
+                    <a href="${tagviewer}/${equipment.stateTagId}">${equipment.stateTagId}</a>
+                  </td>
                 </tr>
                 <tr>
                   <th>Alive Tag ID</th>

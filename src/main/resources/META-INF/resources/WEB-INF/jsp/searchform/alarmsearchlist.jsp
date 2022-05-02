@@ -59,7 +59,7 @@
               <td>${alarm.faultMember}</td>
               <td>${alarm.faultCode}</td>
               <td>
-                <a href="../id/${alarm.id}" class="view-tag btn btn-default btn-sm">
+                <a href="/c2mon-web-ui/alarmviewer/id/${alarm.id}" class="view-tag btn btn-default btn-sm">
                   <i class="fa fa-external-link"></i>
                   View Alarm
                 </a>
