@@ -25,6 +25,10 @@
 <c:url var="commandhistory" value="/commandhistory/form" />
 <c:url var="configloader" value="/configloader/progress" />
 <c:url var="confighistory" value="/confighistory/" />
+<c:url var="alarmdefinitions" value="/laseralarmdefinitions/form" />
+<c:url var="alarmevents" value="/laseralarmevents/form" />
+<c:url var="alarmstate" value="/laseralarmstate/form" />
+<spring:eval expression="@environment.getActiveProfiles()" var="activeProfiles"></spring:eval>
 
 
 <!DOCTYPE html>
@@ -193,6 +197,33 @@
                 Configuration History
               </a>
             </li>
+
+            <c:if test="${fn:length(activeProfiles) > 0 && activeProfiles[0] == 'enableLaser'}">
+                <li class="li-laser">
+                    <a style="pointer-events: none; display: inline-block;" href="#">
+                        <i class="fa fa-fw">LASER</i>
+                    </a>
+                </li>
+                <li>
+                  <a href="${alarmdefinitions}">
+                    <i class="fa fa-tasks fa-fw"></i>
+                    Alarm Definitions
+                  </a>
+                </li>
+                <li>
+                  <a href="${alarmevents}">
+                    <i class="fa fa-tasks fa-fw"></i>
+                    Alarm Events
+                  </a>
+                </li>
+                <li>
+                  <a href="${alarmstate}">
+                    <i class="fa fa-tasks fa-fw"></i>
+                    Alarm State
+                  </a>
+                </li>
+            </c:if>
+
           </ul>
         </div>
         <!-- /.sidebar-collapse -->

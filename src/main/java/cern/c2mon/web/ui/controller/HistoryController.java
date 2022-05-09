@@ -187,7 +187,7 @@ public class HistoryController {
     model.addAttribute("tag", tag);
 
     if(tag.isControlTag()){
-      return findControlTagHistoryRecords(id, maxRecords, lastDays, startTime, endTime, model);
+      return "";
     }else {
       return findTagHistoryRecords(id, maxRecords, lastDays, startTime, endTime, model);
     }
@@ -225,40 +225,6 @@ public class HistoryController {
       model.addAttribute("help_url", helpUrl.replaceAll("\\{id\\}", alarmValues.get(0).getId().toString()));
     }
     return "history";
-  }
-
-  private final String findControlTagHistoryRecords(String id, String maxRecords, String lastDays, String startTime, String endTime, Model model){
-    List<ServerSupervisionEvent> history = new ArrayList<>();
-    String description = null;
-
-    try {
-      if (startTime != null && endTime != null) {
-        history = supervisionService.requestControlHistoryData(Long.parseLong(id), HistoryService.stringToLocalDateTime(startTime), HistoryService.stringToLocalDateTime(endTime));
-        description = " (From " + startTime + " to " + endTime + ")";
-      } else if (lastDays != null) {
-        history = supervisionService.requestControlHistoryDataForLastDays(Long.parseLong(id), Integer.parseInt(lastDays));
-        description = "(Last " + lastDays + " days)";
-      } else if (maxRecords != null) {
-        history = supervisionService.requestControlHistoryData(Long.parseLong(id), Integer.parseInt(maxRecords));
-        description = "(Last " + maxRecords + " records)";
-      } else if (id != null) {
-        int numRecords = maxRecords != null ? Integer.parseInt(maxRecords) : HISTORY_RECORDS_TO_ASK_FOR;
-        history = supervisionService.requestControlHistoryData(Long.parseLong(id), numRecords);
-        description = "(Last " + HISTORY_RECORDS_TO_ASK_FOR + " records)";
-      }
-    } catch (Exception e) {
-      return ("redirect:" + HISTORY_FORM_URL + "?error=" + id);
-    }
-    Collections.reverse(history);
-
-    model.addAttribute("description", description);
-    model.addAttribute("history", history);
-    model.addAttribute("title", HISTORY_FORM_TITLE);
-    List <AlarmValue> alarmValues = (List<AlarmValue>) tagService.getTag(Long.valueOf(id)).getAlarms();
-    if (alarmValues != null && !alarmValues.isEmpty()) {
-      model.addAttribute("help_url", helpUrl.replaceAll("\\{id\\}", alarmValues.get(0).getId().toString()));
-    }
-    return "controltaghistory";
   }
 
   /**
