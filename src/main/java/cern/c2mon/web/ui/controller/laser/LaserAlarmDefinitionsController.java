@@ -1,11 +1,11 @@
 package cern.c2mon.web.ui.controller.laser;
 
-import cern.c2mon.client.ext.history.laser.LaserAlarmUserConfig;
+import cern.c2mon.client.ext.history.laser.LaserAlarmDefinition;
 import cern.c2mon.client.ext.history.laser.LaserUserConfig;
 import cern.c2mon.web.ui.service.laser.LaserAlarmDefinitionService;
 import cern.c2mon.web.ui.service.laser.LaserUserConfigService;
 
-import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +30,10 @@ public class LaserAlarmDefinitionsController {
 
     public static final String LASER_ALARM_DEFINITION_TITLE = "Alarm Definitions";
 
+    public static final String TEXT_SEARCH_PARAMETER = "TEXT";
+
+    public static final String PRIORITY_PARAMETER = "PRIORITY";
+
     @Autowired
     private LaserUserConfigService laserUserConfigService;
 
@@ -38,37 +42,79 @@ public class LaserAlarmDefinitionsController {
 
     @RequestMapping(value = LASER_ALARM_DEFINITION_URL + "/{configName}", method = { RequestMethod.GET })
     public String viewAlarmDefinition(@PathVariable(value = "configName") final String configName,
-                                      final HttpServletResponse response,
-                                      final Model model){
+                                      @RequestParam(value = TEXT_SEARCH_PARAMETER, required = false) final String textSearch,
+                                      @RequestParam(value = PRIORITY_PARAMETER, required = false) final List<Integer> priority,
+                                      Model model) {
 
-        Optional<LaserUserConfig> laserUserConfig = laserUserConfigService.findAlUserConfigurationByName(configName);
-        if(!laserUserConfig.isPresent()){
+        Optional<LaserUserConfig> laserUserConfig = laserUserConfigService.findUserConfiguration(configName);
+
+        if((!laserUserConfig.isPresent()) || priority == null){
             return ("redirect:" + LASER_ALARM_DEFINITION_FORM_URL + "?error=" + configName);
         }
 
-        List<LaserAlarmUserConfig> alarmDefinitions = laserAlarmDefinitionService.findAllAlarmDefinitionsByConfigId(laserUserConfig.get().getConfigId());
+        List<LaserAlarmDefinition> alarmDefinitions = getAlarmDefinitions(laserUserConfig.get(), configName, textSearch, priority);
 
         model.addAttribute("title", LASER_ALARM_DEFINITION_TITLE);
-        model.addAttribute("csvviewer", "./csv/" + configName);
+        model.addAttribute("csvviewer", csvViewerUrl(configName, textSearch, priority));
         model.addAttribute("configName", configName);
         model.addAttribute("alarmdefinitions", alarmDefinitions);
         return "laser/alarmdefinition";
     }
 
-    @RequestMapping(value = LASER_ALARM_DEFINITION_CSV_URL + "/{id}", method = { RequestMethod.GET })
-    public String viewCsv(@PathVariable final String id, final HttpServletResponse response, Model model) {
-        Optional<LaserUserConfig> laserUserConfig = laserUserConfigService.findAlUserConfigurationByName(id);
-        if(!laserUserConfig.isPresent()){
-            return ("redirect:" + LASER_ALARM_DEFINITION_FORM_URL + "?error=" + id);
+    private final String csvViewerUrl(String configName, String textSearch, List<Integer> priority){
+        String csvViewer = "./csv/" + configName;
+
+        if (priority != null) {
+            csvViewer += "?";
+            for (Integer p : priority) {
+                csvViewer += PRIORITY_PARAMETER + "=" + p + "&";
+            }
         }
 
-        List<LaserAlarmUserConfig> alarmDefinitions = laserAlarmDefinitionService.findAllAlarmDefinitionsByConfigId(laserUserConfig.get().getConfigId());
+        if (textSearch != null && !textSearch.isEmpty()) {
+            if(priority == null){
+                csvViewer += "?";
+            }
+            csvViewer += TEXT_SEARCH_PARAMETER + "=" + textSearch;
+        }
+
+        return csvViewer;
+    }
+
+    private final List<LaserAlarmDefinition> getAlarmDefinitions(final LaserUserConfig laserUserConfig, final String configName,
+                                                                 final String textSearch, final List<Integer> priority){
+        List<LaserAlarmDefinition> alarmDefinitions = new ArrayList<>();
+        if (configName != null) {
+            if(textSearch != null) {
+                alarmDefinitions = laserAlarmDefinitionService.findAllAlarmDefinitionsByConfigIdAndPriorityAndTextSearch(
+                        laserUserConfig.getConfigId(), priority, textSearch);
+            }else{
+                alarmDefinitions = laserAlarmDefinitionService.findAllAlarmDefinitionsByConfigIdAndPriority(
+                        laserUserConfig.getConfigId(), priority);
+            }
+        }
+        return alarmDefinitions;
+    }
+
+    @RequestMapping(value = LASER_ALARM_DEFINITION_CSV_URL + "/{configName}", method = { RequestMethod.GET })
+    public String viewCsv(@PathVariable(value = "configName") final String configName,
+                          @RequestParam(value = TEXT_SEARCH_PARAMETER, required = false) final String textSearch,
+                          @RequestParam(value = PRIORITY_PARAMETER, required = false) final List<Integer> priority,
+                          Model model) {
+
+        Optional<LaserUserConfig> laserUserConfig = laserUserConfigService.findUserConfiguration(configName);
+
+        if((!laserUserConfig.isPresent()) || priority == null){
+            return ("redirect:" + LASER_ALARM_DEFINITION_FORM_URL + "?error=" + configName);
+        }
+
+        List<LaserAlarmDefinition> alarmDefinitions = getAlarmDefinitions(laserUserConfig.get(), configName, textSearch, priority);
 
         StringBuilder csv = new StringBuilder();
         String header = "Last Updated,Alarm Id,Alarm Name,System Name,Priority,Enabled,Problem Description\n";
         csv.append(header);
 
-        for(LaserAlarmUserConfig alarmUserConfig : alarmDefinitions){
+        for(LaserAlarmDefinition alarmUserConfig : alarmDefinitions){
             csv.append(alarmUserConfig.getLastUpdated() + "," +
                     alarmUserConfig.getAlarmId() + "," +
                     alarmUserConfig.getFaultFamily() + ":" + alarmUserConfig.getFaultMember() + ":" + alarmUserConfig.getFaultCode()+ "," +
@@ -93,8 +139,13 @@ public class LaserAlarmDefinitionsController {
 
     @RequestMapping(value = LASER_ALARM_DEFINITION_FORM_URL, method = { RequestMethod.GET, RequestMethod.POST })
     public String viewUserConfigFormPost(@RequestParam(value = "id", required = false) final String id,
-                                      @RequestParam(value = "error", required = false) final String wrongId,
-                                      final Model model) {
+                                         @RequestParam(value = "error", required = false) final String wrongId,
+                                         @RequestParam(value = "textSearch", required = false) final String textSearch,
+                                         @RequestParam(value = "priority", required = false) final List<Integer> priority,
+                                         final Model model) {
+
+        StringBuilder redirect = new StringBuilder();
+        redirect.append("redirect:" + LASER_ALARM_DEFINITION_URL);
 
         if (id == null) {
             List<LaserUserConfig> laserUserConfigs = laserUserConfigService.findAllUserConfigurations();
@@ -105,8 +156,24 @@ public class LaserAlarmDefinitionsController {
                 model.addAttribute("error", wrongId);
             }
 
-        } else {
-            return ("redirect:" + LASER_ALARM_DEFINITION_URL + id);
+        }else {
+            redirect.append(id);
+
+            if (priority != null) {
+                redirect.append("?");
+                for (Integer p : priority) {
+                    redirect.append(PRIORITY_PARAMETER + "=" + p + "&");
+                }
+            }
+
+            if (textSearch != null && !textSearch.isEmpty()) {
+                if(priority == null){
+                    redirect.append("?");
+                }
+                redirect.append(TEXT_SEARCH_PARAMETER + "=" + textSearch);
+            }
+
+            return redirect.toString();
         }
 
         return "laser/alarmdefinitionsform";

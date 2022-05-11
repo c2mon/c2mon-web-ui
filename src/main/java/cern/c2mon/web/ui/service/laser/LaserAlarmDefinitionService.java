@@ -1,9 +1,8 @@
 package cern.c2mon.web.ui.service.laser;
 
-import cern.c2mon.client.ext.history.laser.LaserAlarmUserConfig;
-import cern.c2mon.client.ext.history.laser.repo.LaserAlarmUserConfigRepoService;
+import cern.c2mon.client.ext.history.laser.LaserAlarmDefinition;
+import cern.c2mon.client.ext.history.laser.repo.LaserAlarmDefinitionRepoService;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,24 +14,16 @@ import org.springframework.stereotype.Service;
 public class LaserAlarmDefinitionService {
 
     @Autowired
-    private LaserAlarmUserConfigRepoService laserAlarmUserConfigRepoService;
+    private LaserAlarmDefinitionRepoService laserAlarmDefinitionService;
 
-    public final List<LaserAlarmUserConfig> findAllAlarmDefinitionsByConfigId(Long configId) {
-        return laserAlarmUserConfigRepoService.findByConfigId(configId);
-    }
-
-    public final List<LaserAlarmUserConfig> findAllAlarmDefinitionsByConfigIdAndPriorityAndTextSearchBetweenDates(Long configId,
-                                                                                          LocalDateTime startDateTime,
-                                                                                          LocalDateTime endDateTime,
+    public final List<LaserAlarmDefinition> findAllAlarmDefinitionsByConfigIdAndPriorityAndTextSearch(Long configId,
                                                                                           List<Integer> priorities,
                                                                                           String textSearch) {
-        return laserAlarmUserConfigRepoService.findAllByConfigIdAndPriorityAndTextBetweenDates(configId, startDateTime, endDateTime, textSearch, priorities);
+        return laserAlarmDefinitionService.findAllByConfigIdAndPriorityAndText(configId, textSearch, priorities);
     }
 
-    public final List<LaserAlarmUserConfig> findAllAlarmDefinitionsByConfigIdAndPriorityBetweenDates(Long configId,
-                                                                                          LocalDateTime startDateTime,
-                                                                                          LocalDateTime endDateTime,
+    public final List<LaserAlarmDefinition> findAllAlarmDefinitionsByConfigIdAndPriority(Long configId,
                                                                                           List<Integer> priorities) {
-        return laserAlarmUserConfigRepoService.findAllByConfigIdAndPriorityBetweenDates(configId, startDateTime, endDateTime, priorities);
+        return laserAlarmDefinitionService.findAllByConfigIdAndPriority(configId, priorities);
     }
 }

@@ -24,7 +24,7 @@
             <dep groupId="com.fasterxml.jackson.core" product="jackson-core" />
             <dep groupId="com.fasterxml.jackson.core" product="jackson-databind" />
 
-            <dep groupId="javax.servlet" product="jstl" />
+            <dep groupId="javax.servlet" product="jstl" version="1.2" />
             <dep groupId="commons-io" product="commons-io" />
             <dep groupId="xml-apis" product="xml-apis" />
             <dep groupId="org.projectlombok" product="lombok" />

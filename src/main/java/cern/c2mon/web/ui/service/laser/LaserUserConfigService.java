@@ -17,11 +17,15 @@ public class LaserUserConfigService {
     @Autowired
     private LaserUserConfigRepoService laserUserConfigRepoService;
 
-    public final Optional<LaserUserConfig> findAlUserConfigurationByName(String configName) {
-        return laserUserConfigRepoService.findByConfigName(configName);
+    public final List<LaserUserConfig> findAllUserConfigurationByName(String configName) {
+        return laserUserConfigRepoService.findAllByConfigName(configName);
     }
 
     public final List<LaserUserConfig> findAllUserConfigurations() {
         return laserUserConfigRepoService.findAll();
+    }
+
+    public final Optional<LaserUserConfig> findUserConfiguration(String configName) {
+        return laserUserConfigRepoService.findByConfigName(configName);
     }
 }

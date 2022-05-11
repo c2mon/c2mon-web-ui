@@ -2,7 +2,7 @@ package cern.c2mon.web.ui.controller.laser;
 
 import cern.c2mon.client.ext.history.laser.LaserAlarmLogUserConfig;
 import cern.c2mon.client.ext.history.laser.LaserUserConfig;
-import cern.c2mon.web.ui.service.laser.LaserAlarmStateService;
+import cern.c2mon.web.ui.service.laser.LaserAlarmEventService;
 import cern.c2mon.web.ui.service.laser.LaserUserConfigService;
 
 import java.text.DateFormat;
@@ -45,7 +45,7 @@ public class LaserAlarmStateController {
     private LaserUserConfigService laserUserConfigService;
 
     @Autowired
-    private LaserAlarmStateService laserAlarmStateService;
+    private LaserAlarmEventService laserAlarmEventService;
 
     @RequestMapping(value = LASER_ALARM_STATE_URL + "/{configName}", method = { RequestMethod.GET })
     public String viewActiveAlarms(@PathVariable(value = "configName") final String configName,
@@ -54,8 +54,9 @@ public class LaserAlarmStateController {
                                    @RequestParam(value = PRIORITY_PARAMETER, required = false) final List<Integer> priority,
                                    Model model) {
 
-        Optional<LaserUserConfig> laserUserConfig = laserUserConfigService.findAlUserConfigurationByName(configName);
-        if(!laserUserConfig.isPresent() || priority == null){
+        Optional<LaserUserConfig> laserUserConfig = laserUserConfigService.findUserConfiguration(configName);
+
+        if((!laserUserConfig.isPresent()) || priority == null){
             return ("redirect:" + LASER_ALARM_STATE_FORM_URL + "?error=" + configName);
         }
 
@@ -88,10 +89,10 @@ public class LaserAlarmStateController {
         List<LaserAlarmLogUserConfig> activeAlarms = new ArrayList<>();
         if (configName != null && time != null) {
             if(textSearch != null) {
-                activeAlarms = laserAlarmStateService.findActiveAlarmsByConfigIdAndPriorityAndTextAtGivenTime(
+                activeAlarms = laserAlarmEventService.findActiveAlarmsByConfigIdAndPriorityAndTextAtGivenTime(
                         laserUserConfig.getConfigId(), time, priority, textSearch);
             }else{
-                activeAlarms = laserAlarmStateService.findActiveAlarmsByConfigIdAndPriorityAtGivenTime(
+                activeAlarms = laserAlarmEventService.findActiveAlarmsByConfigIdAndPriorityAtGivenTime(
                         laserUserConfig.getConfigId(), time, priority);
             }
         }
@@ -105,8 +106,9 @@ public class LaserAlarmStateController {
                                      @RequestParam(value = PRIORITY_PARAMETER, required = false) final List<Integer> priority,
                                      Model model) {
 
-        Optional<LaserUserConfig> laserUserConfig = laserUserConfigService.findAlUserConfigurationByName(configName);
-        if(!laserUserConfig.isPresent() || priority == null){
+        Optional<LaserUserConfig> laserUserConfig = laserUserConfigService.findUserConfiguration(configName);
+
+        if((!laserUserConfig.isPresent()) || priority == null){
             return ("redirect:" + LASER_ALARM_STATE_FORM_URL + "?error=" + configName);
         }
 

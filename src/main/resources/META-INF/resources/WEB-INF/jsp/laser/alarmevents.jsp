@@ -40,7 +40,7 @@
     <div class="col-lg-12">
       <div class="page-header">
         <h2>
-          Alarm definitions for user configuration: ${configName} <small>${description}</small>
+          Alarm events for user configuration: ${configName} <small>${description}</small>
         </h2>
       </div>
     </div>
@@ -62,12 +62,13 @@
       <table class="table table-striped table-bordered">
         <thead>
         <tr>
-          <th width="100">Last Updated</th>
+          <th width="100">Server Time</th>
           <th width="100">Alarm Id</th>
           <th width="200">Alarm Name</th>
           <th width="100">System Name</th>
           <th width="100">Priority</th>
           <th width="100">Enabled</th>
+          <th width="100">Oscillating</th>
           <th width="250">Problem Description</th>
         </tr>
         </thead>
@@ -77,7 +78,7 @@
           <tr>
             <td>
               <script type="text/javascript">
-                document.write('${item.lastUpdated}'.replace("T", " "));
+                document.write('${item.serverTime}'.replace("T", " "));
               </script>
             </td>
             <td>${item.alarmId}</td>
@@ -98,6 +99,15 @@
                 </c:otherwise>
               </c:choose>
             </td>
+            <td>
+              <c:choose>
+                <c:when test="${item.oscillating == true}">
+                  <span class="label label-danger">
+                  <i class="fa fa-bell"></i> OSCILLATING
+                  </span>
+                </c:when>
+              </c:choose>
+            </td>
             <td>${item.problemDescription}</td>
           </tr>
         </c:forEach>
@@ -110,7 +120,7 @@
     $(document).ready(function() {
         $("#goback").click(function() {
             oldUrl = document.referrer;
-            if(oldUrl.includes("c2mon-web-ui/laseralarmdefinitions")) {
+            if(oldUrl.includes("c2mon-web-ui/laseralarmevents")) {
                history.go(-1);
             }else{
                location.href = "${alarmdefinitionviewer}"

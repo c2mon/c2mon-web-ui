@@ -1,5 +1,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="c2mon" tagdir="/WEB-INF/tags"%>
+<%
+    response.setHeader("Cache-Control", "max-age=604800");
+%>
 
 <c2mon:template title="${title}">
 
@@ -21,11 +24,17 @@
 
       <c:url var="submitUrl" value="${formSubmitUrl}" />
 
+      <c:if test="${error != null}">
+        <div class="alert alert-danger">
+          User configuration with name <strong>${error}</strong> could not be found.
+        </div>
+      </c:if>
+
         <div>
-          <form class="well form-inline" action="" method="post" onsubmit="this.submit.disabled = true;">
+          <form class="well form-inline" action="" method="post">
              <div class="input-group" style="padding: 6px">
                 <div class="input-group-addon">User Configurations</div>
-                <select name="id" class="form-control">
+                <select id="id" name="id" class="form-control">
                   <c:forEach items="${laseruserconfigs}" var="userConfig">
                     <option>${userConfig.configName}</option>
                   </c:forEach>

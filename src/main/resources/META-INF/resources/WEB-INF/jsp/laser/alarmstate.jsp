@@ -28,7 +28,7 @@
           <span class="divider"></span>
         </li>
         <li>
-          <a href="<c:url value="${alarmstateviewer}"/>">${title}</a>
+          <a id="goback" href="#">${title}</a>
           <span class="divider"></span>
         </li>
         <li>${configName}</li>
@@ -111,3 +111,15 @@
     </div>
   </div>
 </c2mon:template>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#goback").click(function() {
+            oldUrl = document.referrer;
+            if(oldUrl.includes("c2mon-web-ui/laseralarmstate")) {
+              history.go(-1);
+            }else{
+              location.href = "${alarmstateviewer}"
+            }
+        });
+    });
+</script>
