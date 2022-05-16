@@ -26,7 +26,7 @@
 
       <c:if test="${error != null}">
         <div class="alert alert-danger">
-          User configuration with name <strong>${error}</strong> could not be found.
+          User configuration <strong>${error}</strong> could not be found.
         </div>
       </c:if>
 
@@ -95,4 +95,13 @@
   </div>
   <!--/row-->
 </c2mon:template>
+<script type="text/javascript">
+var mySelect = document.getElementById('id');
 
+for(var i, j = 0; i = mySelect.options[j]; j++) {
+    if(i.text == '${configName}') {
+        mySelect.selectedIndex = j;
+        break;
+    }
+}
+</script>

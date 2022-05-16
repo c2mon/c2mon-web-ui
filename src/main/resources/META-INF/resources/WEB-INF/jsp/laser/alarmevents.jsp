@@ -62,39 +62,34 @@
       <table class="table table-striped table-bordered">
         <thead>
         <tr>
-          <th width="100">Server Time</th>
-          <th width="100">Alarm Id</th>
-          <th width="200">Alarm Name</th>
-          <th width="100">System Name</th>
-          <th width="100">Priority</th>
-          <th width="100">Enabled</th>
-          <th width="100">Oscillating</th>
-          <th width="250">Problem Description</th>
+          <th class="col-md-2">Time</th>
+          <th class="col-md-1">Alarm Id</th>
+          <th class="col-md-4">Alarm Name</th>
+          <th class="col-md-1">Active</th>
+          <th class="col-md-1">Oscillating</th>
+          <th class="col-md-1"></th>
         </tr>
         </thead>
 
         <tbody>
         <c:forEach var="item" items="${alarmdefinitions}">
-          <tr>
             <td>
               <script type="text/javascript">
                 document.write('${item.serverTime}'.replace("T", " "));
               </script>
             </td>
-            <td>${item.alarmId}</td>
+            <td>${item.id}</td>
             <td>${item.faultFamily} : ${item.faultMember} : ${item.faultCode}</td>
-            <td>${item.systemName}</td>
-            <td>${item.priority}</td>
             <td>
               <c:choose>
-                <c:when test="${item.enabled == true}">
-                  <span class="label label-success">
-                  <i class="fa fa-bell"></i> ENABLED
+                <c:when test="${item.active == true}">
+                  <span class="label label-danger">
+                  <i class="fa fa-bell"></i> ACTIVE
                   </span>
                 </c:when>
                 <c:otherwise>
-                  <span class="label label-danger">
-                  <i class="fa fa-bell"></i> DISABLED
+                  <span class="label label-success">
+                  <i class="fa fa-bell"></i> TERMINATED
                   </span>
                 </c:otherwise>
               </c:choose>
@@ -108,7 +103,12 @@
                 </c:when>
               </c:choose>
             </td>
-            <td>${item.problemDescription}</td>
+            <td>
+                <a href="/c2mon-web-ui/alarmviewer/id/${item.id}" class="view-tag btn btn-default btn-sm">
+                  <i class="fa fa-external-link"></i>
+                  View Alarm
+                </a>
+            </td>
           </tr>
         </c:forEach>
         </tbody>

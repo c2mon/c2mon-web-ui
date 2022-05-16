@@ -149,29 +149,73 @@ public class LaserAlarmEventsController {
                                          @RequestParam(value = "priority", required = false) final List<Integer> priority,
                                          final Model model) {
 
-        StringBuilder redirect = new StringBuilder();
-        redirect.append("redirect:" + LASER_ALARM_EVENT_URL);
+        if (id == null) {
+            List<LaserUserConfig> laserUserConfigs = laserUserConfigService.findAllUserConfigurations();
+            model.addAttribute("laseruserconfigs", laserUserConfigs);
+            model.addAttribute("formSubmitUrl", LASER_ALARM_EVENT_FORM_URL);
+        }
+        return handleForm(id, wrongId, startDate, endDate, startTime, endTime, textSearch, priority, model);
+    }
+
+    @RequestMapping(value = LASER_ALARM_EVENT_FORM_URL + "/{configIdOrName}", method = { RequestMethod.GET, RequestMethod.POST })
+    public String viewUserConfigWithForm(@PathVariable(value = "configIdOrName") final String configIdOrName,
+                                         @RequestParam(value = "id", required = false) final String id,
+                                         @RequestParam(value = "error", required = false) final String wrongId,
+                                         @RequestParam(value = "start", required = false) final String startDate,
+                                         @RequestParam(value = "end", required = false) final String endDate,
+                                         @RequestParam(value = "startTime", required = false) final String startTime,
+                                         @RequestParam(value = "endTime", required = false) final String endTime,
+                                         @RequestParam(value = "textSearch", required = false) final String textSearch,
+                                         @RequestParam(value = "priority", required = false) final List<Integer> priority,
+                                         final Model model) {
 
         if (id == null) {
             List<LaserUserConfig> laserUserConfigs = laserUserConfigService.findAllUserConfigurations();
             model.addAttribute("laseruserconfigs", laserUserConfigs);
             model.addAttribute("formSubmitUrl", LASER_ALARM_EVENT_FORM_URL);
 
-            if (wrongId != null) {
-                model.addAttribute("error", wrongId);
+            if(LaserUtil.isNumeric(configIdOrName)){
+                Optional<LaserUserConfig> laserUserConfig = LaserUtil.findConfigById(laserUserConfigs, Long.parseLong(configIdOrName));
+                if(laserUserConfig.isPresent()){
+                    model.addAttribute("configName", laserUserConfig.get().getConfigName());
+                }else{
+                    model.addAttribute("error", configIdOrName);
+                }
+            }else{
+                if(LaserUtil.containsConfigName(laserUserConfigs, configIdOrName)){
+                    model.addAttribute("configName", configIdOrName);
+                }else{
+                    model.addAttribute("error", configIdOrName);
+                }
             }
+        }
 
-            // let's pre-fill the date boxes with the current date
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        return handleForm(id, wrongId, startDate, endDate, startTime, endTime, textSearch, priority, model);
+    }
 
-            Date currentDate = new Date();
-            model.addAttribute("defaultToDate", dateFormat.format(currentDate));
-            model.addAttribute("defaultToTime", timeFormat.format(currentDate));
+    private String handleForm(String id, String wrongId, String startDate, String endDate, String startTime,
+                              String endTime, String textSearch, List<Integer> priority, Model model) {
 
-            Date oneHourBeforeDate = new Date(currentDate.getTime() - 3600 * 1000);
-            model.addAttribute("defaultFromDate", dateFormat.format(oneHourBeforeDate));
-            model.addAttribute("defaultFromTime", timeFormat.format(oneHourBeforeDate));
+        StringBuilder redirect = new StringBuilder();
+        redirect.append("redirect:" + LASER_ALARM_EVENT_URL);
+
+        if (id == null) {
+
+         if (wrongId != null) {
+             model.addAttribute("error", wrongId);
+         }
+
+         // let's pre-fill the date boxes with the current date
+         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+         DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+
+         Date currentDate = new Date();
+         model.addAttribute("defaultToDate", dateFormat.format(currentDate));
+         model.addAttribute("defaultToTime", timeFormat.format(currentDate));
+
+         Date oneHourBeforeDate = new Date(currentDate.getTime() - 3600 * 1000);
+         model.addAttribute("defaultFromDate", dateFormat.format(oneHourBeforeDate));
+         model.addAttribute("defaultFromTime", timeFormat.format(oneHourBeforeDate));
 
         }else {
             redirect.append(id);

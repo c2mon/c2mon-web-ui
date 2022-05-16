@@ -62,13 +62,14 @@
       <table class="table table-striped table-bordered">
         <thead>
         <tr>
-          <th width="100">Last Updated</th>
-          <th width="100">Alarm Id</th>
-          <th width="200">Alarm Name</th>
-          <th width="100">System Name</th>
-          <th width="100">Priority</th>
-          <th width="100">Enabled</th>
-          <th width="250">Problem Description</th>
+          <th class="col-md-1">Last Updated</th>
+          <th class="col-md-1">Alarm Id</th>
+          <th class="col-md-4">Alarm Name</th>
+          <th class="col-md-1">System Name</th>
+          <th class="col-md-1">Priority</th>
+          <th class="col-md-1">Enabled</th>
+          <th class="col-md-4">Problem Description</th>
+          <th class="col-md-1"></th>
         </tr>
         </thead>
 
@@ -99,6 +100,12 @@
               </c:choose>
             </td>
             <td>${item.problemDescription}</td>
+            <td>
+                <a href="/c2mon-web-ui/alarmviewer/id/${item.alarmId}" class="view-tag btn btn-default btn-sm">
+                  <i class="fa fa-external-link"></i>
+                  View Alarm
+                </a>
+            </td>
           </tr>
         </c:forEach>
         </tbody>

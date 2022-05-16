@@ -142,13 +142,54 @@ public class LaserAlarmStateController {
                                          @RequestParam(value = "priority", required = false) final List<Integer> priority,
                                          final Model model) {
 
-        StringBuilder redirect = new StringBuilder();
-        redirect.append("redirect:" + LASER_ALARM_STATE_URL);
+        if (id == null) {
+            List<LaserUserConfig> laserUserConfigs = laserUserConfigService.findAllUserConfigurations();
+            model.addAttribute("laseruserconfigs", laserUserConfigs);
+            model.addAttribute("formSubmitUrl", LASER_ALARM_STATE_FORM_URL);
+        }
+
+        return handleForm(id, wrongId, date, time, textSearch, priority, model);
+    }
+
+    @RequestMapping(value = LASER_ALARM_STATE_FORM_URL + "/{configIdOrName}", method = { RequestMethod.GET, RequestMethod.POST })
+    public String viewUserConfigWithForm(@PathVariable(value = "configIdOrName") final String configIdOrName,
+                                         @RequestParam(value = "id", required = false) final String id,
+                                         @RequestParam(value = "error", required = false) final String wrongId,
+                                         @RequestParam(value = "date", required = false) final String date,
+                                         @RequestParam(value = "time", required = false) final String time,
+                                         @RequestParam(value = "textSearch", required = false) final String textSearch,
+                                         @RequestParam(value = "priority", required = false) final List<Integer> priority,
+                                         final Model model) {
 
         if (id == null) {
             List<LaserUserConfig> laserUserConfigs = laserUserConfigService.findAllUserConfigurations();
             model.addAttribute("laseruserconfigs", laserUserConfigs);
             model.addAttribute("formSubmitUrl", LASER_ALARM_STATE_FORM_URL);
+
+            if(LaserUtil.isNumeric(configIdOrName)){
+                Optional<LaserUserConfig> laserUserConfig = LaserUtil.findConfigById(laserUserConfigs, Long.parseLong(configIdOrName));
+                if(laserUserConfig.isPresent()){
+                    model.addAttribute("configName", laserUserConfig.get().getConfigName());
+                }else{
+                    model.addAttribute("error", configIdOrName);
+                }
+            }else{
+                if(LaserUtil.containsConfigName(laserUserConfigs, configIdOrName)){
+                    model.addAttribute("configName", configIdOrName);
+                }else{
+                    model.addAttribute("error", configIdOrName);
+                }
+            }
+        }
+
+        return handleForm(id, wrongId, date, time, textSearch, priority, model);
+    }
+
+    private String handleForm(String id, String wrongId, String date, String time, String textSearch, List<Integer> priority, Model model){
+        StringBuilder redirect = new StringBuilder();
+        redirect.append("redirect:" + LASER_ALARM_STATE_URL);
+
+        if (id == null) {
 
             if (wrongId != null) {
                 model.addAttribute("error", wrongId);

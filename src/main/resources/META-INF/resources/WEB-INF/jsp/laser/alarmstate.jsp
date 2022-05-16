@@ -62,11 +62,12 @@
       <table class="table table-striped table-bordered">
         <thead>
         <tr>
-          <th width="100">Time</th>
-          <th width="100">Alarm Id</th>
-          <th width="200">Alarm Name</th>
-          <th width="100">Active</th>
-          <th width="100">Oscillating</th>
+          <th class="col-md-2">Time</th>
+          <th class="col-md-1">Alarm Id</th>
+          <th class="col-md-4">Alarm Name</th>
+          <th class="col-md-1">Active</th>
+          <th class="col-md-1">Oscillating</th>
+          <th class="col-md-1"></th>
         </tr>
         </thead>
 
@@ -103,6 +104,12 @@
                   </span>
                 </c:when>
               </c:choose>
+            </td>
+            <td>
+                <a href="/c2mon-web-ui/alarmviewer/id/${item.id}" class="view-tag btn btn-default btn-sm">
+                <i class="fa fa-external-link"></i>
+                  View Alarm
+                </a>
             </td>
           </tr>
         </c:forEach>
