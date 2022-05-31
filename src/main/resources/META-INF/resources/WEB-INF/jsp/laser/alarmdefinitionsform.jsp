@@ -67,12 +67,26 @@
   <!--/row-->
 </c2mon:template>
 <script type="text/javascript">
-var mySelect = document.getElementById('id');
 
-for(var i, j = 0; i = mySelect.options[j]; j++) {
-    if(i.text == '${configName}') {
-        mySelect.selectedIndex = j;
-        break;
+var content = localStorage.getItem("user_config")
+
+var optionToSelect = null
+
+if(${configName != null}){
+     optionToSelect = '${configName}'
+}else
+    if(content != null){
+        optionToSelect = content
+    }
+
+if(optionToSelect != null){
+    var mySelect = document.getElementById('id');
+
+    for(var i, j = 0; i = mySelect.options[j]; j++) {
+        if(i.text == optionToSelect) {
+            mySelect.selectedIndex = j;
+            break;
+        }
     }
 }
 </script>

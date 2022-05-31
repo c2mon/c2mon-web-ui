@@ -14,6 +14,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,6 +44,10 @@ public class LaserAlarmEventsController {
 
     private static final String DATE_FORMAT = "yyyy-MM-dd-HH:mm";
 
+    public static final String PAGE_NUMBER_PARAMETER = "PAGENO";
+
+    private static final Integer PAGE_SIZE = 20;
+
     @Autowired
     private LaserUserConfigService laserUserConfigService;
 
@@ -55,6 +60,7 @@ public class LaserAlarmEventsController {
                                                                     @RequestParam(value = END_DATE_PARAMETER, required = false) final String endTime,
                                                                     @RequestParam(value = TEXT_SEARCH_PARAMETER, required = false) final String textSearch,
                                                                     @RequestParam(value = PRIORITY_PARAMETER, required = false) final List<Integer> priority,
+                                                                    @RequestParam(value = PAGE_NUMBER_PARAMETER, required = false) final Integer pageNo,
                                                                     Model model) {
 
         Optional<LaserUserConfig> laserUserConfig = laserUserConfigService.findUserConfiguration(configName);
@@ -63,14 +69,27 @@ public class LaserAlarmEventsController {
             return ("redirect:" + LASER_ALARM_EVENT_FORM_URL + "?error=" + configName);
         }
 
-        List<LaserAlarmLogUserConfig> alarmEvents = getAlarmDefinitions(laserUserConfig.get(), configName, startTime, endTime, textSearch, priority);
+        int pageNumber = pageNo == null ? 1 : pageNo;
+
+        Page<LaserAlarmLogUserConfig> alarmEvents = null;
+        if (configName != null && startTime != null && endTime != null) {
+            if(textSearch != null) {
+                alarmEvents = laserAlarmEventService.findAllAlarmsByConfigIdAndPriorityAndTextBetweenDates(
+                        laserUserConfig.get().getConfigId(), startTime, endTime, priority, textSearch, PAGE_SIZE, pageNumber);
+            }else{
+                alarmEvents = laserAlarmEventService.findAllAlarmsByConfigIdAndPriorityBetweenDates(
+                        laserUserConfig.get().getConfigId(), startTime, endTime, priority, PAGE_SIZE, pageNumber);
+            }
+        }
         String description = " (From " + startTime + " to " + endTime + ")";
 
         model.addAttribute("title", LASER_ALARM_EVENT_TITLE);
         model.addAttribute("configName", configName);
         model.addAttribute("csvviewer", csvViewerUrl(configName, startTime, endTime, textSearch, priority));
         model.addAttribute("description", description);
-        model.addAttribute("alarmdefinitions", alarmEvents);
+        model.addAttribute("alarmdefinitions", alarmEvents == null ? new ArrayList<>() : alarmEvents.getContent());
+        model.addAttribute("totalPages", alarmEvents.getTotalPages());
+        model.addAttribute("pageNumber", pageNumber);
         return "laser/alarmevents";
     }
 
@@ -87,21 +106,6 @@ public class LaserAlarmEventsController {
         return csvViewer;
     }
 
-    private final List<LaserAlarmLogUserConfig> getAlarmDefinitions(final LaserUserConfig laserUserConfig, final String configName,
-                                                                 final String startTime, final String endTime,
-                                                                 final String textSearch, final List<Integer> priority){
-        List<LaserAlarmLogUserConfig> alarmEvents = new ArrayList<>();
-        if (configName != null && startTime != null && endTime != null) {
-            if(textSearch != null) {
-                alarmEvents = laserAlarmEventService.findAllAlarmsByConfigIdAndPriorityAndTextBetweenDates(
-                        laserUserConfig.getConfigId(), startTime, endTime, priority, textSearch);
-            }else{
-                alarmEvents = laserAlarmEventService.findAllAlarmsByConfigIdAndPriorityBetweenDates(
-                        laserUserConfig.getConfigId(), startTime, endTime, priority);
-            }
-        }
-        return alarmEvents;
-    }
 
     @RequestMapping(value = LASER_ALARM_EVENT_CSV_URL + "/{configName}", method = { RequestMethod.GET })
     public final String viewAlarmDefinitionsByConfigNameBetweenDateCsv(@PathVariable(value = "configName") final String configName,
@@ -117,7 +121,16 @@ public class LaserAlarmEventsController {
             return ("redirect:" + LASER_ALARM_EVENT_FORM_URL + "?error=" + configName);
         }
 
-        List<LaserAlarmLogUserConfig> alarmEvents = getAlarmDefinitions(laserUserConfig.get(), configName, startTime, endTime, textSearch, priority);
+        List<LaserAlarmLogUserConfig> alarmEvents = new ArrayList<>();
+        if (configName != null && startTime != null && endTime != null) {
+            if(textSearch != null) {
+                alarmEvents = laserAlarmEventService.findAllAlarmsByConfigIdAndPriorityAndTextBetweenDates(
+                        laserUserConfig.get().getConfigId(), startTime, endTime, priority, textSearch);
+            }else{
+                alarmEvents = laserAlarmEventService.findAllAlarmsByConfigIdAndPriorityBetweenDates(
+                        laserUserConfig.get().getConfigId(), startTime, endTime, priority);
+            }
+        }
 
         StringBuilder csv = new StringBuilder();
         String header = "Timestamp,Alarm Id,Alarm Name,Priority,Active,Oscillating,Problem Description\n";

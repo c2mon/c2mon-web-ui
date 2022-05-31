@@ -18,6 +18,24 @@
       color: #000000;
       background: #D9EDF7 !important;
     }
+
+    .pagination {
+      display: inline-block;
+    }
+
+    .pagination a {
+      color: black;
+      float: left;
+      padding: 8px 16px;
+      text-decoration: none;
+    }
+
+    .pagination a.active {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .pagination a:hover:not(.active) {background-color: #ddd;}
   </style>
 
   <div class="row">
@@ -113,6 +131,13 @@
         </c:forEach>
         </tbody>
       </table>
+      <div class="pagination">
+        <a id="pageback" href="#" onclick="replacePageNo(${pageNumber - 1})">&laquo;</a>
+             <c:forEach var = "i" begin = "${pageNumber}" end = "${pageNumber + 10 <= totalPages ? pageNumber + 10 : pageNumber + (totalPages - pageNumber)}">
+                <a id = "page${i}" href="#" onclick="replacePageNo(${i})">${i}</a>
+             </c:forEach>
+        <a id="pageforward" href="#" onclick="replacePageNo(${pageNumber + 1})">&raquo;</a>
+      </div>
     </div>
   </div>
 </c2mon:template>
@@ -127,4 +152,44 @@
             }
         });
     });
+
+    <!-- Hide/Show next/previous page controls -->
+
+    if(${pageNumber <= 1}){
+        var pageBack = document.getElementById('pageback');
+        pageBack.style.display = "none";
+    }
+
+    if(${pageNumber} >= ${totalPages}){
+        var pageForward = document.getElementById('pageforward');
+        pageForward.style.display = "none";
+    }
+
+    <!-- Add focus to current page number -->
+    var currPage = document.getElementById('page' + ${pageNumber});
+
+    if(currPage != null){
+        currPage.focus();
+    }
+
+    <!-- Change page on click -->
+    function replacePageNo(paramValue){
+       var url = window.location.href;
+       var paramName = "PAGENO";
+
+       if (paramValue == null) {
+           paramValue = '';
+       }
+
+       var pattern = new RegExp('\\b('+paramName+'=).*?(&|#|$)');
+       if (url.search(pattern)>=0) {
+           url = url.replace(pattern,'$1' + paramValue + '$2');
+       }else{
+           url = url.replace(/[?#]$/,'');
+           url = url + (url.indexOf('?')>0 ? '&' : '?') + paramName + '=' + paramValue;
+       }
+       location.href = url;
+    }
+
+    localStorage.setItem("user_config", '${configName}')
 </script>

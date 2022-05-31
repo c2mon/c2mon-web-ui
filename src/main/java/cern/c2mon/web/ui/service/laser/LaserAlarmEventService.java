@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Profile("enableLaser")
@@ -16,32 +18,51 @@ public class LaserAlarmEventService {
     @Autowired
     private LaserAlarmEventRepoService laserAlarmEventRepoService;
 
-
-    public final List<LaserAlarmLogUserConfig> findAllAlarmsByConfigIdAndPriorityAndTextBetweenDates(Long configId,
-                                                                                                       String startTime,
-                                                                                                       String endTime,
-                                                                                                       List<Integer> priorities,
-                                                                                                       String textSearch) {
-        return laserAlarmEventRepoService.findAllAlarmsByConfigIdAndPriorityAndTextBetweenDates(configId, startTime, endTime, textSearch, priorities);
+    public final List<LaserAlarmLogUserConfig> findAllAlarmsByConfigIdAndPriorityAndTextBetweenDates(
+            Long configId, String startTime, String endTime, List<Integer> priorities, String textSearch) {
+        return laserAlarmEventRepoService.findAllAlarmsByConfigIdAndPriorityAndTextBetweenDates(
+                configId, startTime, endTime, textSearch, priorities);
     }
 
-    public final List<LaserAlarmLogUserConfig> findAllAlarmsByConfigIdAndPriorityBetweenDates(Long configId,
-                                                                                                 String startTime,
-                                                                                                 String endTime,
-                                                                                                 List<Integer> priorities) {
-        return laserAlarmEventRepoService.findAllAlarmsByConfigIdAndPriorityBetweenDates(configId, startTime, endTime, priorities);
+    public final List<LaserAlarmLogUserConfig> findAllAlarmsByConfigIdAndPriorityBetweenDates(
+            Long configId, String startTime, String endTime, List<Integer> priorities) {
+        return laserAlarmEventRepoService.findAllAlarmsByConfigIdAndPriorityBetweenDates(
+                configId, startTime, endTime, priorities);
     }
 
-    public final List<LaserAlarmLogUserConfig> findActiveAlarmsByConfigIdAndPriorityAndTextAtGivenTime(Long configId,
-                                                                                                       String time,
-                                                                                                       List<Integer> priorities,
-                                                                                                       String textSearch) {
-        return laserAlarmEventRepoService.findAllActiveAlarmsByConfigIdAndPriorityAndTextAtGivenTime(configId, time, textSearch, priorities);
+    public final List<LaserAlarmLogUserConfig> findActiveAlarmsByConfigIdAndPriorityAndTextAtGivenTime(
+            Long configId, String time, List<Integer> priorities, String textSearch) {
+        return laserAlarmEventRepoService.findAllActiveAlarmsByConfigIdAndPriorityAndTextAtGivenTime(
+                configId, time, textSearch, priorities);
     }
 
-    public final List<LaserAlarmLogUserConfig> findActiveAlarmsByConfigIdAndPriorityAtGivenTime(Long configId,
-                                                                                                String time,
-                                                                                                List<Integer> priorities) {
-        return laserAlarmEventRepoService.findAllActiveAlarmsByConfigIdAndPriorityAtGivenTime(configId, time, priorities);
+    public final List<LaserAlarmLogUserConfig> findActiveAlarmsByConfigIdAndPriorityAtGivenTime(
+            Long configId, String time, List<Integer> priorities) {
+        return laserAlarmEventRepoService.findAllActiveAlarmsByConfigIdAndPriorityAtGivenTime(
+                configId, time, priorities);
+    }
+
+    public final Page<LaserAlarmLogUserConfig> findAllAlarmsByConfigIdAndPriorityAndTextBetweenDates(
+            Long configId, String startTime, String endTime, List<Integer> priorities, String textSearch, Integer pageSize, Integer pageNumber) {
+        return laserAlarmEventRepoService.findAllAlarmsByConfigIdAndPriorityAndTextBetweenDates(
+                configId, startTime, endTime, textSearch, priorities, PageRequest.of(pageNumber, pageSize));
+    }
+
+    public final Page<LaserAlarmLogUserConfig> findAllAlarmsByConfigIdAndPriorityBetweenDates(
+            Long configId, String startTime, String endTime, List<Integer> priorities, Integer pageSize, Integer pageNumber) {
+        return laserAlarmEventRepoService.findAllAlarmsByConfigIdAndPriorityBetweenDates(
+                configId, startTime, endTime, priorities, PageRequest.of(pageNumber, pageSize));
+    }
+
+    public final Page<LaserAlarmLogUserConfig> findActiveAlarmsByConfigIdAndPriorityAndTextAtGivenTime(
+            Long configId, String time, List<Integer> priorities, String textSearch, Integer pageSize, Integer pageNumber) {
+        return laserAlarmEventRepoService.findAllActiveAlarmsByConfigIdAndPriorityAndTextAtGivenTime(
+                configId, time, textSearch, priorities, PageRequest.of(pageNumber, pageSize));
+    }
+
+    public final Page<LaserAlarmLogUserConfig> findActiveAlarmsByConfigIdAndPriorityAtGivenTime(
+            Long configId, String time, List<Integer> priorities, Integer pageSize, Integer pageNumber) {
+        return laserAlarmEventRepoService.findAllActiveAlarmsByConfigIdAndPriorityAtGivenTime(
+                configId, time, priorities, PageRequest.of(pageNumber, pageSize));
     }
 }
