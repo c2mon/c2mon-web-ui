@@ -142,7 +142,7 @@
     $(document).ready(function() {
         $("#goback").click(function() {
             oldUrl = document.referrer;
-            if(oldUrl.includes("c2mon-web-ui/laseralarmdefinitions")) {
+            if(oldUrl.includes("c2mon-web-ui/laseralarmdefinitions/form")) {
                history.go(-1);
             }else{
                location.href = "${alarmdefinitionviewer}"

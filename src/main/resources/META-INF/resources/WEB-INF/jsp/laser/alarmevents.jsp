@@ -145,7 +145,7 @@
     $(document).ready(function() {
         $("#goback").click(function() {
             oldUrl = document.referrer;
-            if(oldUrl.includes("c2mon-web-ui/laseralarmevents")) {
+            if(oldUrl.includes("c2mon-web-ui/laseralarmevents/form")) {
                history.go(-1);
             }else{
                location.href = "${alarmdefinitionviewer}"

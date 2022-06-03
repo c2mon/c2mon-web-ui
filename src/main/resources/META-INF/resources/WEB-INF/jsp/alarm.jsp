@@ -7,6 +7,10 @@
 <c:url var="home" value="../" />
 <c:url var="alarmviewer" value="../../alarmviewer/form" />
 <c:url var="history" value="../../alarmhistoryviewer/${alarm.id}" />
+<c:url var="laserhistory" value="../../alarmlog/${alarm.id}" />
+
+<spring:eval expression="@environment.getActiveProfiles()" var="activeProfiles"></spring:eval>
+
 
 <script type="text/javascript" src="<c:url value="/js/sort-table.js"/>"></script>
 
@@ -47,10 +51,20 @@
   <div class="row">
     <div class="col-lg-12">
       <p class="pull-left btn-toolbar">
-        <a href="<c:url value="${history}"/>" class="btn btn-default btn-large">
-          <span class="glyphicon glyphicon-list"></span>
-          View History
-        </a>
+        <c:choose>
+          <c:when test="${fn:length(activeProfiles) > 0 && activeProfiles[0] == 'enableLaser'}">
+            <a href="<c:url value="${history}"/>" class="btn btn-default btn-large">
+              <span class="glyphicon glyphicon-list"></span>
+              View History
+            </a>
+          </c:when>
+          <c:otherwise>
+            <a href="<c:url value="${laserhistory}"/>" class="btn btn-default btn-large">
+              <span class="glyphicon glyphicon-list"></span>
+              View History
+            </a>
+          </c:otherwise>
+        </c:choose>
       </p>
 
       <!-- Only show the HelpAlarm button if the property is defined. -->

@@ -64,10 +64,10 @@ public class LaserAlarmDefinitionsController {
         if (configName != null) {
             if(textSearch != null) {
                 alarmDefinitions = laserAlarmDefinitionService.findAllAlarmDefinitionsByConfigIdAndPriorityAndTextSearch(
-                        laserUserConfig.get().getConfigId(), priority, textSearch, PAGE_SIZE, pageNumber);
+                        laserUserConfig.get().getConfigId(), priority, textSearch, PAGE_SIZE, pageNumber - 1);
             }else{
                 alarmDefinitions = laserAlarmDefinitionService.findAllAlarmDefinitionsByConfigIdAndPriority(
-                        laserUserConfig.get().getConfigId(), priority, PAGE_SIZE, pageNumber);
+                        laserUserConfig.get().getConfigId(), priority, PAGE_SIZE, pageNumber - 1);
             }
         }
 

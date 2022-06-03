@@ -28,6 +28,7 @@
 <c:url var="alarmdefinitions" value="/laseralarmdefinitions/form" />
 <c:url var="alarmevents" value="/laseralarmevents/form" />
 <c:url var="alarmstate" value="/laseralarmstate/form" />
+<c:url var="alarmslog" value="/alarmlog/form" />
 <spring:eval expression="@environment.getActiveProfiles()" var="activeProfiles"></spring:eval>
 
 
@@ -220,6 +221,12 @@
                   <a href="${alarmstate}">
                     <i class="fa fa-tasks fa-fw"></i>
                     Alarm State
+                  </a>
+                </li>
+                <li>
+                  <a href="${alarmslog}">
+                    <i class="fa fa-tasks fa-fw"></i>
+                    Alarm Log
                   </a>
                 </li>
             </c:if>

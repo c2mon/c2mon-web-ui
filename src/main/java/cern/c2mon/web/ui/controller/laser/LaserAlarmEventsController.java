@@ -75,10 +75,10 @@ public class LaserAlarmEventsController {
         if (configName != null && startTime != null && endTime != null) {
             if(textSearch != null) {
                 alarmEvents = laserAlarmEventService.findAllAlarmsByConfigIdAndPriorityAndTextBetweenDates(
-                        laserUserConfig.get().getConfigId(), startTime, endTime, priority, textSearch, PAGE_SIZE, pageNumber);
+                        laserUserConfig.get().getConfigId(), startTime, endTime, priority, textSearch, PAGE_SIZE, pageNumber - 1);
             }else{
                 alarmEvents = laserAlarmEventService.findAllAlarmsByConfigIdAndPriorityBetweenDates(
-                        laserUserConfig.get().getConfigId(), startTime, endTime, priority, PAGE_SIZE, pageNumber);
+                        laserUserConfig.get().getConfigId(), startTime, endTime, priority, PAGE_SIZE, pageNumber - 1);
             }
         }
         String description = " (From " + startTime + " to " + endTime + ")";

@@ -72,10 +72,10 @@ public class LaserAlarmStateController {
         if (configName != null && time != null) {
             if(textSearch != null) {
                 activeAlarms = laserAlarmEventService.findActiveAlarmsByConfigIdAndPriorityAndTextAtGivenTime(
-                        laserUserConfig.get().getConfigId(), time, priority, textSearch, PAGE_SIZE, pageNumber);
+                        laserUserConfig.get().getConfigId(), time, priority, textSearch, PAGE_SIZE, pageNumber - 1);
             }else{
                 activeAlarms = laserAlarmEventService.findActiveAlarmsByConfigIdAndPriorityAtGivenTime(
-                        laserUserConfig.get().getConfigId(), time, priority, PAGE_SIZE, pageNumber);
+                        laserUserConfig.get().getConfigId(), time, priority, PAGE_SIZE, pageNumber - 1);
             }
         }
 
