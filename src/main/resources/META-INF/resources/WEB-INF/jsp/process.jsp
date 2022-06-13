@@ -97,12 +97,7 @@ th {
                   <th>Process ID</th>
                   <td>${process.processID}</td>
                 </tr>
-                <tr>
-                  <th>Status Tag ID</th>
-                  <td>
-                    <a href="${tagviewer}/${process.stateTagID}">${process.stateTagID}</a>
-                  </td>
-                </tr>
+
                 <tr>
                   <th>Alive Tag ID</th>
                   <td>
@@ -209,12 +204,7 @@ th {
                                   <th>CommFault Tag Value</th>
                                   <td>${equipment.commFaultTagValue}</td>
                                 </tr>
-                                <tr>
-                                  <th>State Tag ID</th>
-                                  <td>
-                                    <a href="${tagviewer}/${equipment.stateTagId}">${equipment.stateTagId}</a>
-                                  </td>
-                                </tr>
+
                                 <tr>
                                   <th>Alive Tag ID</th>
                                   <td>

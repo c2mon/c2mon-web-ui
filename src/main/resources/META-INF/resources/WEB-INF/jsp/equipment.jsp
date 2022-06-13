@@ -121,12 +121,7 @@ th {
                   <th>CommFault Tag Value</th>
                   <td>${equipment.commFaultTagValue}</td>
                 </tr>
-                <tr>
-                  <th>Status Tag ID</th>
-                  <td>
-                    <a href="${tagviewer}/${equipment.stateTagId}">${equipment.stateTagId}</a>
-                  </td>
-                </tr>
+
                 <tr>
                   <th>Alive Tag ID</th>
                   <td>
