@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -34,17 +35,28 @@ public class ShorttermlogService {
   @Autowired
   private ShorttermlogHistoryService alarmHistoryService;
 
+  public final Page<Shorttermlog> requestAlarmHistory(final Long alarmId, final LocalDateTime localStartTime, final LocalDateTime localEndTime, Integer pageSize, Integer pageNumber) {
+    return alarmHistoryService.findAllDistinctByIdAndTagServerTimeBetweenOrderByTagServerTimeDesc(alarmId, localStartTime, localEndTime, PageRequest.of(pageNumber, pageSize));
+  }
+
+  public final Page<Shorttermlog> requestAlarmHistoryForLastDays(final Long alarmId, final int numberOfDays, Integer pageSize, Integer pageNumber) {
+    LocalDateTime now = LocalDateTime.now();
+    return alarmHistoryService.findAllDistinctByIdAndTagServerTimeBetweenOrderByTagServerTimeDesc(alarmId, now.minusDays(numberOfDays), now, PageRequest.of(pageNumber, pageSize));
+  }
+
+  public final Page<Shorttermlog> requestAlarmHistory(final Long alarmId, final int numRecords, Integer pageSize, Integer pageNumber) {
+    return alarmHistoryService.findAllDistinctByIdOrderByTagServerTimeDesc(alarmId, PageRequest.of(pageNumber, pageSize));
+  }
+
   public final List<Shorttermlog> requestAlarmHistory(final Long alarmId, final LocalDateTime localStartTime, final LocalDateTime localEndTime) {
     return alarmHistoryService.findAllDistinctByIdAndTagServerTimeBetweenOrderByTagServerTimeDesc(alarmId, localStartTime, localEndTime);
   }
-
-  public final List<Shorttermlog> requestAlarmHistoryForLastDays(final Long alarmId, final int numberOfDays) {
-    LocalDateTime now = LocalDateTime.now();
-    return alarmHistoryService.findAllDistinctByIdAndTagServerTimeBetweenOrderByTagServerTimeDesc(alarmId, now.minusDays(numberOfDays), now);
-  }
+    public final List<Shorttermlog> requestAlarmHistoryForLastDays(final Long alarmId, final int numberOfDays) {
+      LocalDateTime now = LocalDateTime.now();
+      return alarmHistoryService.findAllDistinctByIdAndTagServerTimeBetweenOrderByTagServerTimeDesc(alarmId, now.minusDays(numberOfDays), now);
+    }
 
   public final List<Shorttermlog> requestAlarmHistory(final Long alarmId, final int numRecords) {
     return alarmHistoryService.findAllDistinctByIdOrderByTagServerTimeDesc(alarmId, PageRequest.of(0, numRecords)).getContent();
   }
-
 }

@@ -5,7 +5,7 @@
 
 <!-- JSP variables -->
 <c:url var="home" value="../" />
-<c:url var="historyviewer" value="../alarmhistoryviewer/form" />
+<c:url var="historyviewer" value="../alarmlog/form" />
 <c:url var="csvviewer" value="./csv/${alarm.id}" />
 <c:url var="tagviewer" value="../tagviewer/id/${alarm.tagId}" />
 <c:url var="taghistory" value="../historyviewer/${alarm.tagId}" />
@@ -22,6 +22,24 @@
       color: #000000;
       background: #D9EDF7 !important;
     }
+
+    .pagination {
+      display: inline-block;
+    }
+
+    .pagination a {
+      color: black;
+      float: left;
+      padding: 8px 16px;
+      text-decoration: none;
+    }
+
+    .pagination a.active {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .pagination a:hover:not(.active) {background-color: #ddd;}
   </style>
 
   <div class="row">
@@ -81,7 +99,7 @@
         <thead>
         <tr>
           <th class="col-md-2">Timestamp</th>
-          <th class="col-md-1">Active</th>
+          <th class="col-md-1">Status</th>
           <th class="col-md-2">Alarm Prefix</th>
           <th class="col-md-2">Alarm Suffix</th>
           <th class="col-md-2">Alarm Timestamp</th>
@@ -99,18 +117,36 @@
               </script>
             </td>
             <td>
-              <c:choose>
-                <c:when test="${item.tagValue.equals('true')}">
-                  <span class="label label-danger">
-                  <i class="fa fa-bell"></i> ACTIVE
-                  </span>
-                </c:when>
-                <c:otherwise>
-                  <span class="label label-success">
-                  <i class="fa fa-bell"></i> TERMINATED
-                  </span>
-                </c:otherwise>
-              </c:choose>
+             <c:choose>
+               <c:when test="${item.tagValue == '\"DOWN\"'}">
+                 <span class="label label-danger">
+                 <i class="fa fa-bell"></i> ${item.tagValue}
+                 </span>
+               </c:when>
+               <c:when test="${item.tagValue == 'true'}">
+                 <span class="label label-danger">
+                 <i class="fa fa-bell"></i> ACTIVE
+                 </span>
+               </c:when>
+               <c:when test="${item.tagValue == '\"STARTUP\"'}">
+                 <span class="label label-warning">
+                 <i class="fa fa-bell"></i> ${item.tagValue}
+                 </span>
+               </c:when>
+               <c:when test="${item.tagValue == '\"RUNNING\"'}">
+                 <span class="label label-success">
+                 <i class="fa fa-bell"></i> ${item.tagValue}
+                 </span>
+               </c:when>
+               <c:when test="${item.tagValue == 'false'}">
+                 <span class="label label-success">
+                 <i class="fa fa-bell"></i> TERMINATED
+                 </span>
+               </c:when>
+               <c:otherwise>
+                 ${item.tagValue}
+               </c:otherwise>
+             </c:choose>
             </td>
             <td>${item.alarmPrefix}</td>
             <td>${item.alarmSuffix}</td>
@@ -118,9 +154,15 @@
             <td>${item.alarmUser}</td>
           </tr>
         </c:forEach>
-
         </tbody>
       </table>
+      <div class="pagination">
+        <a id="pageback" href="#" onclick="replacePageNo(${pageNumber - 1})">&laquo;</a>
+             <c:forEach var = "i" begin = "${pageNumber}" end = "${pageNumber + 10 <= totalPages ? pageNumber + 10 : pageNumber + (totalPages - pageNumber)}">
+                <a id = "page${i}" href="#" onclick="replacePageNo(${i})">${i}</a>
+             </c:forEach>
+        <a id="pageforward" href="#" onclick="replacePageNo(${pageNumber + 1})">&raquo;</a>
+      </div>
     </div>
   </div>
 
@@ -129,6 +171,44 @@
     function viewTagHistory() {
       var url = '${taghistory}' + '?' + window.location.href.split('?')[1];
       window.location.href = url;
+    }
+
+    <!-- Hide/Show next/previous page controls -->
+
+    if(${pageNumber <= 1}){
+        var pageBack = document.getElementById('pageback');
+        pageBack.style.display = "none";
+    }
+
+    if(${pageNumber} >= ${totalPages}){
+        var pageForward = document.getElementById('pageforward');
+        pageForward.style.display = "none";
+    }
+
+    <!-- Add focus to current page number -->
+    var currPage = document.getElementById('page' + ${pageNumber});
+
+    if(currPage != null){
+        currPage.focus();
+    }
+
+    <!-- Change page on click -->
+    function replacePageNo(paramValue){
+       var url = window.location.href;
+       var paramName = "PAGENO";
+
+       if (paramValue == null) {
+           paramValue = '';
+       }
+
+       var pattern = new RegExp('\\b('+paramName+'=).*?(&|#|$)');
+       if (url.search(pattern)>=0) {
+           url = url.replace(pattern,'$1' + paramValue + '$2');
+       }else{
+           url = url.replace(/[?#]$/,'');
+           url = url + (url.indexOf('?')>0 ? '&' : '?') + paramName + '=' + paramValue;
+       }
+       location.href = url;
     }
 
   </script>

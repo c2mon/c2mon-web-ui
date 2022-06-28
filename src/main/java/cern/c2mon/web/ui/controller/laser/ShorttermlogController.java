@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -83,6 +84,10 @@ public class ShorttermlogController {
     /** How many records in history to ask for. 100 looks ok! */
     private static final int HISTORY_RECORDS_TO_ASK_FOR = 100;
 
+    public static final String PAGE_NUMBER_PARAMETER = "PAGENO";
+
+    private static final Integer PAGE_SIZE = 20;
+
     /**
      * A history service
      */
@@ -112,6 +117,7 @@ public class ShorttermlogController {
             @RequestParam(value = LAST_DAYS_PARAMETER, required = false) final String lastDays,
             @RequestParam(value = START_DATE_PARAMETER, required = false) final String startTime,
             @RequestParam(value = END_DATE_PARAMETER, required = false) final String endTime,
+            @RequestParam(value = PAGE_NUMBER_PARAMETER, required = false) final Integer pageNo,
             final HttpServletResponse response, final Model model) throws IOException {
         log.info("/alarmhistoryviewer/{id} " + id);
 
@@ -123,20 +129,22 @@ public class ShorttermlogController {
 
         long effectiveTagId = alarm.get().getTagId();
 
-        List<Shorttermlog> history = new ArrayList<>();
+        int pageNumber = pageNo == null ? 1 : pageNo;
+
+        Page<Shorttermlog> history = null;
         String description = null;
 
         try {
             if (startTime != null && endTime != null) {
                 history = historyService.requestAlarmHistory(effectiveTagId,
-                        HistoryService.stringToLocalDateTime(startTime), HistoryService.stringToLocalDateTime(endTime));
+                        HistoryService.stringToLocalDateTime(startTime), HistoryService.stringToLocalDateTime(endTime), PAGE_SIZE, pageNumber - 1);
                 description = " (From " + startTime + " to " + endTime + ")";
             } else if (lastDays != null) {
-                history = historyService.requestAlarmHistoryForLastDays(effectiveTagId, Integer.parseInt(lastDays));
+                history = historyService.requestAlarmHistoryForLastDays(effectiveTagId, Integer.parseInt(lastDays), PAGE_SIZE, pageNumber - 1);
                 description = "(Last " + lastDays + " days)";
             } else if (id != null) {
                 int numRecords = maxRecords != null ? Integer.parseInt(maxRecords) : HISTORY_RECORDS_TO_ASK_FOR;
-                history = historyService.requestAlarmHistory(effectiveTagId, numRecords);
+                history = historyService.requestAlarmHistory(effectiveTagId, numRecords, PAGE_SIZE, pageNumber - 1);
                 description = "(Last " + numRecords + " records)";
             }
         } catch (Exception e) {
@@ -146,11 +154,12 @@ public class ShorttermlogController {
 
         List<AlarmLogParsed> historyReverse = history.stream().map(a -> new AlarmLogParsed(a))
                 .collect(Collectors.toList());
-        Collections.reverse(historyReverse);
 
         model.addAttribute("alarm", alarm.get());
         model.addAttribute("description", description);
         model.addAttribute("history", historyReverse);
+        model.addAttribute("totalPages", history.getTotalPages());
+        model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("title", HISTORY_FORM_TITLE);
         return "laser/alarmlog";
     }
