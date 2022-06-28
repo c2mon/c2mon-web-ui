@@ -30,6 +30,8 @@
             <dep groupId="org.projectlombok" product="lombok" />
             <dep groupId="org.hsqldb" product="hsqldb" version="2.3.4"/>
 
+			<dep groupId="com.oracle" product="ojdbc8" scope="provided" />
+
             <!-- Test dependencies -->
             <dep groupId="junit" product="junit" scope="test"/>
             <dep groupId="org.springframework.boot" product="spring-boot-starter-test" version="2.1.1.RELEASE" scope="test"/>
