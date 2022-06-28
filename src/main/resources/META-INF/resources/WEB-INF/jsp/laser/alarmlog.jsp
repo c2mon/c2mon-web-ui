@@ -101,6 +101,7 @@
           <th class="col-md-2">Timestamp</th>
           <th class="col-md-1">Status</th>
           <th class="col-md-2">Alarm Prefix</th>
+          <th class="col-md-2">Problem Description</th>
           <th class="col-md-2">Alarm Suffix</th>
           <th class="col-md-2">Alarm Timestamp</th>
           <th class="col-md-4">Alarm User</th>
@@ -149,6 +150,7 @@
              </c:choose>
             </td>
             <td>${item.alarmPrefix}</td>
+            <td>${item.problemDescription}</td>
             <td>${item.alarmSuffix}</td>
             <td>${item.alarmTimestamp}</td>
             <td>${item.alarmUser}</td>

@@ -26,6 +26,9 @@ public class AlarmLogParsed {
   private String alarmSuffix;
   private String alarmTimestamp;
   private String alarmUser;
+  
+  private String alarmMetaData;
+  private String problemDescription;
 
   public AlarmLogParsed(Shorttermlog shorttermlog) {
     this.tagservertime = shorttermlog.getTagServerTime();
@@ -36,11 +39,26 @@ public class AlarmLogParsed {
     this.tagDatatype = shorttermlog.getTagDatatype();
     this.tagTime = shorttermlog.getTagTime();
     this.tagDaqTime = shorttermlog.getTagDaqTime();
-
+    this.alarmMetaData = shorttermlog.getAlarmMetaData();
+    
     if(this.tagValueDesc != null) {
       extractValuesFromValueDescription();
     }
+    if(this.alarmMetaData != null) {
+        extractValuesFromAlarmMetaData();
+      }
+
   }
+
+  private void extractValuesFromAlarmMetaData(){
+      try {
+        JSONObject obj = new JSONObject(this.alarmMetaData);
+        this.problemDescription = obj.has("problemDescription") ? obj.getString("problemDescription") : null;
+
+      } catch (JSONException e) {
+        //ignore
+      }
+    }
 
   private void extractValuesFromValueDescription(){
     try {
