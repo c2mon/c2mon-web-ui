@@ -24,11 +24,6 @@ import cern.c2mon.shared.common.process.ProcessConfiguration;
 import cern.c2mon.web.ui.service.EquipmentService;
 import cern.c2mon.web.ui.service.ProcessService;
 import cern.c2mon.web.ui.util.FormUtility;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,6 +32,16 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * This class acts as a controller to handle requests to view specific
@@ -241,6 +246,10 @@ public class EquipmentController {
       throw new Exception("No equipment with id " + id + " was found.");
     }
 
+    //Used to retrieve the status tag id
+    //To do it cleanly we would have to change the configuration xml in c2mon but this would cause breaking changes between versions
+    EquipmentRecord equipmentRecord = equipmentService.getEquipmentById(id);
+
     // Epic hack to make sure the list of tags is sorted by ID
     Map<Long, SourceDataTag> sortedTags = new TreeMap<>(equipment.getDataTags());
     Field field = EquipmentConfiguration.class.getDeclaredField("sourceDataTags");
@@ -250,6 +259,7 @@ public class EquipmentController {
     model.addAttribute("title", "Equipment Viewer");
     model.addAttribute("process", process);
     model.addAttribute("equipment", equipment);
+    model.addAttribute("stateTagId", equipmentRecord.getStateTagId());
     return "equipment";
   }
 

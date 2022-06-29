@@ -133,6 +133,12 @@ th {
                   <td>${equipment.aliveTagInterval}</td>
                 </tr>
                 <tr>
+                  <th>State Tag ID</th>
+                  <td>
+                    <a href="${tagviewer}/${stateTagId}">${stateTagId}</a>
+                  </td>
+                </tr>
+                <tr>
                   <th>Handler Class Name</th>
                   <td>${equipment.handlerClassName}</td>
                 </tr>
