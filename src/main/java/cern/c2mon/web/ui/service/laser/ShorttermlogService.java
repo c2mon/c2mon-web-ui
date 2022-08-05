@@ -16,8 +16,8 @@
  *****************************************************************************/
 package cern.c2mon.web.ui.service.laser;
 
-import cern.c2mon.client.ext.history.laser.Shorttermlog;
-import cern.c2mon.client.ext.history.laser.repo.ShorttermlogHistoryService;
+import cern.c2mon.client.ext.history.laser.AlarmShorttermlog;
+import cern.c2mon.client.ext.history.laser.repo.AlarmShorttermlogHistoryService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,30 +33,30 @@ import org.springframework.stereotype.Service;
 public class ShorttermlogService {
 
   @Autowired
-  private ShorttermlogHistoryService alarmHistoryService;
+  private AlarmShorttermlogHistoryService alarmHistoryService;
 
-  public final Page<Shorttermlog> requestAlarmHistory(final Long alarmId, final LocalDateTime localStartTime, final LocalDateTime localEndTime, Integer pageSize, Integer pageNumber) {
+  public final Page<AlarmShorttermlog> requestAlarmHistory(final Long alarmId, final LocalDateTime localStartTime, final LocalDateTime localEndTime, Integer pageSize, Integer pageNumber) {
     return alarmHistoryService.findAllDistinctByIdAndTagServerTimeBetweenOrderByTagServerTimeDesc(alarmId, localStartTime, localEndTime, PageRequest.of(pageNumber, pageSize));
   }
 
-  public final Page<Shorttermlog> requestAlarmHistoryForLastDays(final Long alarmId, final int numberOfDays, Integer pageSize, Integer pageNumber) {
+  public final Page<AlarmShorttermlog> requestAlarmHistoryForLastDays(final Long alarmId, final int numberOfDays, Integer pageSize, Integer pageNumber) {
     LocalDateTime now = LocalDateTime.now();
     return alarmHistoryService.findAllDistinctByIdAndTagServerTimeBetweenOrderByTagServerTimeDesc(alarmId, now.minusDays(numberOfDays), now, PageRequest.of(pageNumber, pageSize));
   }
 
-  public final Page<Shorttermlog> requestAlarmHistory(final Long alarmId, final int numRecords, Integer pageSize, Integer pageNumber) {
+  public final Page<AlarmShorttermlog> requestAlarmHistory(final Long alarmId, final int numRecords, Integer pageSize, Integer pageNumber) {
     return alarmHistoryService.findAllDistinctByIdOrderByTagServerTimeDesc(alarmId, PageRequest.of(pageNumber, pageSize));
   }
 
-  public final List<Shorttermlog> requestAlarmHistory(final Long alarmId, final LocalDateTime localStartTime, final LocalDateTime localEndTime) {
+  public final List<AlarmShorttermlog> requestAlarmHistory(final Long alarmId, final LocalDateTime localStartTime, final LocalDateTime localEndTime) {
     return alarmHistoryService.findAllDistinctByIdAndTagServerTimeBetweenOrderByTagServerTimeDesc(alarmId, localStartTime, localEndTime);
   }
-    public final List<Shorttermlog> requestAlarmHistoryForLastDays(final Long alarmId, final int numberOfDays) {
+    public final List<AlarmShorttermlog> requestAlarmHistoryForLastDays(final Long alarmId, final int numberOfDays) {
       LocalDateTime now = LocalDateTime.now();
       return alarmHistoryService.findAllDistinctByIdAndTagServerTimeBetweenOrderByTagServerTimeDesc(alarmId, now.minusDays(numberOfDays), now);
     }
 
-  public final List<Shorttermlog> requestAlarmHistory(final Long alarmId, final int numRecords) {
+  public final List<AlarmShorttermlog> requestAlarmHistory(final Long alarmId, final int numRecords) {
     return alarmHistoryService.findAllDistinctByIdOrderByTagServerTimeDesc(alarmId, PageRequest.of(0, numRecords)).getContent();
   }
 }

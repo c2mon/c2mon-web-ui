@@ -7,14 +7,14 @@ import cern.c2mon.web.ui.service.laser.LaserUserConfigService;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -68,14 +68,14 @@ public class LaserAlarmStateController {
 
         int pageNumber = pageNo == null ? 1 : pageNo;
 
-        Page<LaserAlarmLogUserConfig> activeAlarms = null;
+        Set<LaserAlarmLogUserConfig> activeAlarms = null;
         if (configName != null && time != null) {
             if(textSearch != null) {
                 activeAlarms = laserAlarmEventService.findActiveAlarmsByConfigIdAndPriorityAndTextAtGivenTime(
-                        laserUserConfig.get().getConfigId(), time, priority, textSearch, PAGE_SIZE, pageNumber - 1);
+                        laserUserConfig.get().getConfigId(), time, priority, textSearch);
             }else{
                 activeAlarms = laserAlarmEventService.findActiveAlarmsByConfigIdAndPriorityAtGivenTime(
-                        laserUserConfig.get().getConfigId(), time, priority, PAGE_SIZE, pageNumber - 1);
+                        laserUserConfig.get().getConfigId(), time, priority);
             }
         }
 
@@ -85,9 +85,7 @@ public class LaserAlarmStateController {
         model.addAttribute("configName", configName);
         model.addAttribute("csvviewer", csvViewerUrl(configName, time, textSearch, priority));
         model.addAttribute("description", description);
-        model.addAttribute("activeAlarms", activeAlarms == null ? new ArrayList<>() : activeAlarms.getContent());
-        model.addAttribute("totalPages", activeAlarms.getTotalPages());
-        model.addAttribute("pageNumber", pageNumber);
+        model.addAttribute("activeAlarms", activeAlarms);
         return "laser/alarmstate";
     }
 
@@ -117,7 +115,7 @@ public class LaserAlarmStateController {
             return ("redirect:" + LASER_ALARM_STATE_FORM_URL + "?error=" + configName);
         }
 
-        List<LaserAlarmLogUserConfig> activeAlarms = new ArrayList<>();
+        Set<LaserAlarmLogUserConfig> activeAlarms = new HashSet<>();
         if (configName != null && time != null) {
             if(textSearch != null) {
                 activeAlarms = laserAlarmEventService.findActiveAlarmsByConfigIdAndPriorityAndTextAtGivenTime(

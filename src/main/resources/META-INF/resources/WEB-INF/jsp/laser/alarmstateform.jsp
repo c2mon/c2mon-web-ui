@@ -32,7 +32,7 @@
 
         <div>
           <form class="well form-inline" action="" method="post" >
-             <div class="input-group col-xs-2">
+             <div class="input-group" style="padding: 6px">
                 <div class="input-group-addon">User Configurations</div>
                 <select id="id" name="id" class="form-control">
                   <c:forEach items="${laseruserconfigs}" var="userConfig">
@@ -44,11 +44,11 @@
             <div class="input-group">
               <span class="input-group-addon">At</span>
               <span class="input-daterange" id="datepickerFrom" style="display: inline;">
-                <input type="text" class="form-control" name="date" value="${defaultAtDate}" />
+                <input type="date" class="form-control" name="date" value="${defaultAtDate}" />
               </span>
             </div>
             <div class="input-group col-lg-1">
-              <input type="text" class="form-control" name="time" value="${defaultAtTime}" />
+              <input type="time" class="form-control" name="time" value="${defaultAtTime}" min="00:00" max="23:59"/>
             </div>
 
              </br>

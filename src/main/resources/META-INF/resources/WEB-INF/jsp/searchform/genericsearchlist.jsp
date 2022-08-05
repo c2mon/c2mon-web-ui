@@ -4,7 +4,7 @@
 
 <!-- JSP variables -->
 <c:url var="home" value="../" />
-<c:url var="genericForm" value="../../form" />
+<c:url var="genericForm" value="../form" />
 
 <c2mon:template title="${title}">
 
