@@ -22,7 +22,7 @@ public class LaserUserConfigService {
     }
 
     public final List<LaserUserConfig> findAllUserConfigurations() {
-        return laserUserConfigRepoService.findAll();
+        return laserUserConfigRepoService.findAllByOrderByConfigName();
     }
 
     public final Optional<LaserUserConfig> findUserConfiguration(String configName) {
