@@ -4,6 +4,7 @@ import cern.c2mon.client.ext.history.laser.LaserAlarmLogUserConfig;
 import cern.c2mon.client.ext.history.laser.repo.LaserAlarmEventRepoService;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -30,13 +31,13 @@ public class LaserAlarmEventService {
                 configId, startTime, endTime, priorities);
     }
 
-    public final List<LaserAlarmLogUserConfig> findActiveAlarmsByConfigIdAndPriorityAndTextAtGivenTime(
+    public final Set<LaserAlarmLogUserConfig> findActiveAlarmsByConfigIdAndPriorityAndTextAtGivenTime(
             Long configId, String time, List<Integer> priorities, String textSearch) {
         return laserAlarmEventRepoService.findAllActiveAlarmsByConfigIdAndPriorityAndTextAtGivenTime(
                 configId, time, textSearch, priorities);
     }
 
-    public final List<LaserAlarmLogUserConfig> findActiveAlarmsByConfigIdAndPriorityAtGivenTime(
+    public final Set<LaserAlarmLogUserConfig> findActiveAlarmsByConfigIdAndPriorityAtGivenTime(
             Long configId, String time, List<Integer> priorities) {
         return laserAlarmEventRepoService.findAllActiveAlarmsByConfigIdAndPriorityAtGivenTime(
                 configId, time, priorities);
@@ -52,17 +53,5 @@ public class LaserAlarmEventService {
             Long configId, String startTime, String endTime, List<Integer> priorities, Integer pageSize, Integer pageNumber) {
         return laserAlarmEventRepoService.findAllAlarmsByConfigIdAndPriorityBetweenDates(
                 configId, startTime, endTime, priorities, PageRequest.of(pageNumber, pageSize));
-    }
-
-    public final Page<LaserAlarmLogUserConfig> findActiveAlarmsByConfigIdAndPriorityAndTextAtGivenTime(
-            Long configId, String time, List<Integer> priorities, String textSearch, Integer pageSize, Integer pageNumber) {
-        return laserAlarmEventRepoService.findAllActiveAlarmsByConfigIdAndPriorityAndTextAtGivenTime(
-                configId, time, textSearch, priorities, PageRequest.of(pageNumber, pageSize));
-    }
-
-    public final Page<LaserAlarmLogUserConfig> findActiveAlarmsByConfigIdAndPriorityAtGivenTime(
-            Long configId, String time, List<Integer> priorities, Integer pageSize, Integer pageNumber) {
-        return laserAlarmEventRepoService.findAllActiveAlarmsByConfigIdAndPriorityAtGivenTime(
-                configId, time, priorities, PageRequest.of(pageNumber, pageSize));
     }
 }

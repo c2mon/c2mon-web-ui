@@ -10,7 +10,7 @@
 package cern.c2mon.web.ui.controller.laser;
 
 import cern.c2mon.client.ext.history.alarm.AlarmRecord;
-import cern.c2mon.client.ext.history.laser.Shorttermlog;
+import cern.c2mon.client.ext.history.laser.AlarmShorttermlog;
 import cern.c2mon.web.ui.model.AlarmLogParsed;
 import cern.c2mon.web.ui.service.AlarmSearchService;
 import cern.c2mon.web.ui.service.HistoryService;
@@ -131,7 +131,7 @@ public class ShorttermlogController {
 
         int pageNumber = pageNo == null ? 1 : pageNo;
 
-        Page<Shorttermlog> history = null;
+        Page<AlarmShorttermlog> history = null;
         String description = null;
 
         try {
@@ -173,7 +173,7 @@ public class ShorttermlogController {
             final HttpServletResponse response, final Model model) throws IOException {
         log.info(HISTORY_CSV_URL + id);
 
-        List<Shorttermlog> history = new ArrayList<>();
+        List<AlarmShorttermlog> history = new ArrayList<>();
 
         try {
             if (startTime != null && endTime != null) {

@@ -229,6 +229,12 @@
                     Alarm Log
                   </a>
                 </li>
+                <li>
+                  <a id="legacy_web_ui" href="#">
+                    <i class="fa fa-history fa-fw"></i>
+                    Legacy Web-UI
+                  </a>
+                </li>
             </c:if>
 
           </ul>
@@ -278,6 +284,12 @@
 
   <!-- Custom Theme JavaScript -->
   <script src="<c:url value="/js/sb-admin-2.js"/>"></script>
+
+  <script type="text/javascript">
+
+      console.log(location.hostname);
+      document.getElementById("legacy_web_ui").href= "http://" + location.hostname + ":14014/index";
+    </script>
 
   <div id="pagefooter">
     <jsp:invoke fragment="footer" />

@@ -97,7 +97,12 @@ th {
                   <th>Process ID</th>
                   <td>${process.processID}</td>
                 </tr>
-
+                <tr>
+                   <th>State Tag ID</th>
+                   <td>
+                     <a href="${tagviewer}/${stateTagId}">${stateTagId}</a>
+                   </td>
+                 </tr>
                 <tr>
                   <th>Alive Tag ID</th>
                   <td>

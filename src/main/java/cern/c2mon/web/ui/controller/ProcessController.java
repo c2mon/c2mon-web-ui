@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import cern.c2mon.client.ext.history.process.Process;
 import cern.c2mon.shared.common.process.EquipmentConfiguration;
 import cern.c2mon.shared.common.process.ProcessConfiguration;
 import cern.c2mon.web.ui.service.ProcessService;
@@ -91,6 +92,10 @@ public class ProcessController {
     ProcessConfiguration process = service.getProcessConfiguration(processName);
     process.setProcessName(processName);
 
+    //Used to retrieve the status tag id
+    //To do it cleanly we would have to change the configuration xml in c2mon but this would cause breaking changes between versions
+    Process processRecord = service.getProcessById(process.getProcessID());
+
     //Sort equipments by id
     Map<Long, EquipmentConfiguration> equipmentConfigurations = new TreeMap<>(process.getEquipmentConfigurations());
     Field field = ProcessConfiguration.class.getDeclaredField("equipmentConfigurations");
@@ -99,6 +104,7 @@ public class ProcessController {
 
     model.addAttribute("title", PROCESS_FORM_TITLE);
     model.addAttribute("process", process);
+    model.addAttribute("stateTagId", processRecord.getStateTagId());
     return "process";
   }
 

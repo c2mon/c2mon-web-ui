@@ -1,6 +1,6 @@
 package cern.c2mon.web.ui.model;
 
-import cern.c2mon.client.ext.history.laser.Shorttermlog;
+import cern.c2mon.client.ext.history.laser.AlarmShorttermlog;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -30,7 +30,7 @@ public class AlarmLogParsed {
   private String alarmMetaData;
   private String problemDescription;
 
-  public AlarmLogParsed(Shorttermlog shorttermlog) {
+  public AlarmLogParsed(AlarmShorttermlog shorttermlog) {
     this.tagservertime = shorttermlog.getTagServerTime();
     this.id = shorttermlog.getId();
     this.tagName = shorttermlog.getTagName();
