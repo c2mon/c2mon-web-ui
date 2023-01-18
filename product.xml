@@ -1,5 +1,5 @@
 <products>
-    <product name="c2mon-web-ui" groupId="cern.c2mon.web" version="0.9.1">
+    <product name="c2mon-web-ui" groupId="cern.c2mon.web" version="0.9.2">
         <dependencies>
             <dep groupId="cern.c2mon.client" product="c2mon-client-core" version="CTX"/>
 
@@ -10,8 +10,10 @@
             <dep groupId="org.apache.tomcat.embed" product="tomcat-embed-jasper" version="9.0.13"/>
 			version numbers to be found -->            
             <dep groupId="jfree" product="jfreechart" version="1.0.13"/>
-<!--             <dep groupId="org.springframework.security" product="spring-security-taglibs" version="5.3.13"/>  -->
 
+			<dep groupId="org.springframework.security" product="spring-security-taglibs" version="5.1.2.RELEASE"/>
+            <dep groupId="org.apache.tomcat.embed" product="tomcat-embed-jasper" version="9.0.65"/>
+            
             <dep groupId="org.springframework.boot" product="spring-boot-starter-logging" version="PRO"/>
             <dep groupId="org.springframework.boot" product="spring-boot-starter-security" version="PRO"/>
             <dep groupId="org.springframework.boot" product="spring-boot-starter-web" version="PRO" />
