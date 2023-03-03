@@ -5,8 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
 For more details on a given release, please check also the [Milestone planning](https://gitlab.cern.ch/c2mon/c2mon-web-ui/milestones?state=all).
 
-## [Unreleased]
+## 0.9.3 - 2023-03-03
 ### Added
+- dependency update within LSR-2831
 
 ### Changed
 

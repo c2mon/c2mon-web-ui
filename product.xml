@@ -1,10 +1,10 @@
 <products>
-    <product name="c2mon-web-ui" groupId="cern.c2mon.web" version="0.9.2">
+    <product name="c2mon-web-ui" groupId="cern.c2mon.web" version="0.9.3">
         <dependencies>
-            <dep groupId="cern.c2mon.client" product="c2mon-client-core" version="CTX"/>
+            <dep groupId="cern.c2mon.client" product="c2mon-client-core" version="PRO"/>
 
 		<!--  PROBLEM 1. : this was not yet released as CBNG, can not be found as CTX -->
-            <dep groupId="cern.c2mon.client" product="c2mon-client-ext-history" version="CTX"/>
+            <dep groupId="cern.c2mon.client" product="c2mon-client-ext-history" version="2.1.7-SNAPSHOT"/>
 
 		<!--  PROBLEM 2.: these deps are probably not part of the usual BE-CSS stuff, and therefore require explicit
             <dep groupId="org.apache.tomcat.embed" product="tomcat-embed-jasper" version="9.0.13"/>
