@@ -1,42 +1,41 @@
 <products>
-    <product name="c2mon-web-ui" groupId="cern.c2mon.web" version="0.9.3">
-        <dependencies>
-            <dep groupId="cern.c2mon.client" product="c2mon-client-core" version="PRO"/>
+	<product name="c2mon-web-ui" groupId="cern.c2mon.web" version="0.9.3">
+		<dependencies>
 
-		<!--  PROBLEM 1. : this was not yet released as CBNG, can not be found as CTX -->
-            <dep groupId="cern.c2mon.client" product="c2mon-client-ext-history" version="2.1.7-SNAPSHOT"/>
+			<!-- PROBLEM 1. : this was not yet released as CBNG, can not be found as CTX -->
+			<dep groupId="cern.c2mon.client" product="c2mon-client-ext-history" version="2.1.7-SNAPSHOT" />
 
-		<!--  PROBLEM 2.: these deps are probably not part of the usual BE-CSS stuff, and therefore require explicit
-            <dep groupId="org.apache.tomcat.embed" product="tomcat-embed-jasper" version="9.0.13"/>
-			version numbers to be found -->            
-            <dep groupId="jfree" product="jfreechart" version="1.0.13"/>
+			<!-- 3rd party dependencies -->
+			<dep groupId="org.springframework.boot" product="spring-boot-starter-parent" version="2.1.1.RELEASE" scope="provided" />
+			<dep groupId="org.springframework.boot" product="spring-boot-starter-security" version="2.1.1.RELEASE" scope="provided" />
+			<dep groupId="org.springframework.security" product="spring-security-taglibs" version="5.1.2.RELEASE" scope="provided" />
+			<dep groupId="org.springframework.boot" product="spring-boot-configuration-processor" version="2.1.0.RELEASE" />
+			<dep groupId="org.springframework.boot" product="spring-boot-starter-web" version="2.1.1.RELEASE" scope="provided" />
+			<dep groupId="org.springframework.boot" product="spring-boot-starter-tomcat" version="2.1.1.RELEASE" scope="provided" />
+			<dep groupId="org.springframework.boot" product="spring-boot-starter-logging" version="2.1.1.RELEASE" scope="provided" />
+			<dep groupId="org.springframework.boot" product="spring-boot-starter-data-jpa" version="2.1.1.RELEASE" scope="provided" />
+			<dep groupId="org.apache.tomcat.embed" product="tomcat-embed-jasper" version="9.0.13" scope="provided" />
+			<dep groupId="javax.servlet" product="jstl" version="1.2" scope="provided" />
+			<dep groupId="com.fasterxml.jackson.core" product="jackson-annotations" version="2.9.0" scope="provided" />
+			<dep groupId="com.fasterxml.jackson.core" product="jackson-core" version="2.9.7" scope="provided" />
+			<dep groupId="com.fasterxml.jackson.core" product="jackson-databind" version="2.9.7" scope="provided" />
+			<dep groupId="commons-io" product="commons-io" version="2.7" scope="provided" />
+			<dep groupId="jfree" product="jfreechart" version="1.0.13" scope="provided" />
+			<dep groupId="org.apache.tomcat.embed" product="tomcat-embed-jasper" version="9.0.65" scope="provided" />
 
-			<dep groupId="org.springframework.security" product="spring-security-taglibs" version="5.1.2.RELEASE"/>
-            <dep groupId="org.apache.tomcat.embed" product="tomcat-embed-jasper" version="9.0.65"/>
-            
-            <dep groupId="org.springframework.boot" product="spring-boot-starter-logging" version="PRO"/>
-            <dep groupId="org.springframework.boot" product="spring-boot-starter-security" version="PRO"/>
-            <dep groupId="org.springframework.boot" product="spring-boot-starter-web" version="PRO" />
-            <dep groupId="org.springframework.boot" product="spring-boot-starter-tomcat" version="PRO"/>
+			<dep groupId="xml-apis" product="xml-apis" version="1.4.01" scope="provided" />
+			<dep groupId="org.projectlombok" product="lombok" version="1.18.4" scope="provided" />
 
-            <dep groupId="org.springframework.boot" product="spring-boot-starter" version="PRO"/>
+			<dep groupId="com.oracle.database.jdbc" product="ojdbc8" version="19.8.0.0" scope="provided" />
+			<dep groupId="com.oracle.database.nls" product="orai18n" version="19.8.0.0" scope="provided" />
 
-            <dep groupId="com.fasterxml.jackson.core" product="jackson-annotations" />
-            <dep groupId="com.fasterxml.jackson.core" product="jackson-core" />
-            <dep groupId="com.fasterxml.jackson.core" product="jackson-databind" />
+			<!-- Test dependencies -->
+			<dep groupId="org.hsqldb" product="hsqldb" version="2.3.4" scope="test" />
 
-            <dep groupId="javax.servlet" product="jstl" version="1.2" />
-            <dep groupId="commons-io" product="commons-io" />
-            <dep groupId="xml-apis" product="xml-apis" />
-            <dep groupId="org.projectlombok" product="lombok" />
-            <dep groupId="org.hsqldb" product="hsqldb"/>
+			<!-- Test dependencies -->
+			<dep groupId="junit" product="junit" version="4.12" scope="test" />
+			<dep groupId="org.springframework.boot" product="spring-boot-starter-test" version="2.1.1.RELEASE" scope="test" />
 
-			<dep groupId="com.oracle.database.jdbc" product="ojdbc8" scope="provided" />
-
-            <!-- Test dependencies -->
-            <dep groupId="junit" product="junit" scope="test"/>
-            <dep groupId="org.springframework.boot" product="spring-boot-starter-test" version="PRO" scope="test"/>
-
-        </dependencies>
-    </product>
+		</dependencies>
+	</product>
 </products>
