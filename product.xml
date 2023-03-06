@@ -1,5 +1,5 @@
 <products>
-	<product name="c2mon-web-ui" groupId="cern.c2mon.web" version="0.9.3">
+	<product name="c2mon-web-ui" groupId="cern.c2mon.web" version="1.0.0">
 		<dependencies>
 
 			<!-- PROBLEM 1. : this was not yet released as CBNG, can not be found as CTX -->
