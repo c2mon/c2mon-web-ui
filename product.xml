@@ -15,13 +15,15 @@
 			<dep groupId="org.springframework.boot" product="spring-boot-starter-logging" version="2.1.1.RELEASE" scope="provided" />
 			<dep groupId="org.springframework.boot" product="spring-boot-starter-data-jpa" version="2.1.1.RELEASE" scope="provided" />
 			<dep groupId="org.apache.tomcat.embed" product="tomcat-embed-jasper" version="9.0.13" scope="provided" />
-			<dep groupId="javax.servlet" product="jstl" version="1.2" scope="provided" />
 			<dep groupId="com.fasterxml.jackson.core" product="jackson-annotations" version="2.9.0" scope="provided" />
 			<dep groupId="com.fasterxml.jackson.core" product="jackson-core" version="2.9.7" scope="provided" />
 			<dep groupId="com.fasterxml.jackson.core" product="jackson-databind" version="2.9.7" scope="provided" />
 			<dep groupId="commons-io" product="commons-io" version="2.7" scope="provided" />
+
 			<dep groupId="jfree" product="jfreechart" version="1.0.13" scope="provided" />
 			<dep groupId="org.apache.tomcat.embed" product="tomcat-embed-jasper" version="9.0.65" scope="provided" />
+			<dep groupId="org.springframework.security" product="spring-security-taglibs" version="5.1.2.RELEASE" scope="provided" />
+			<dep groupId="javax.servlet" product="jstl" version="1.2" scope="provided" />
 
 			<dep groupId="xml-apis" product="xml-apis" version="1.4.01" scope="provided" />
 			<dep groupId="org.projectlombok" product="lombok" version="1.18.4" scope="provided" />

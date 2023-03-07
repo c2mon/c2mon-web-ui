@@ -126,7 +126,7 @@ public class AlarmController {
    * @param response we write the html result to that HttpServletResponse response
    * @return Displays alarm information for a given alarm id.
    */
-  @RequestMapping(value = ALARM_URL + "/id/{id}", method = {RequestMethod.GET})
+  @RequestMapping(value = ALARM_URL + "id/{id}", method = {RequestMethod.GET})
   public String viewAlarm(@PathVariable(value = "id") final String id, final HttpServletResponse response, final Model model, final HttpServletRequest request)
           throws IOException {
 
@@ -143,7 +143,7 @@ public class AlarmController {
     return "alarm";
   }
 
-  @RequestMapping(value = "/" + ALARM_URL + "/faultFamily/{faultFamily}", method = RequestMethod.GET)
+  @RequestMapping(value = ALARM_URL + "faultFamily/{faultFamily}", method = RequestMethod.GET)
   public String searchAlarmByFaultFamily(@PathVariable(value = "faultFamily") final String faultFamily,
                                          final HttpServletResponse response, final Model model, final HttpServletRequest request) throws IOException {
 
@@ -156,7 +156,7 @@ public class AlarmController {
     return showAlarmSearchResult(alarms, model);
   }
 
-  @RequestMapping(value = "/" + ALARM_URL + "/faultMember/{faultMember}", method = RequestMethod.GET)
+  @RequestMapping(value = ALARM_URL + "faultMember/{faultMember}", method = RequestMethod.GET)
   public String searchAlarmByFaultMember(@PathVariable(value = "faultMember") final String faultMember,
                                          final HttpServletResponse response, final Model model, final HttpServletRequest request) throws IOException {
 
@@ -169,7 +169,7 @@ public class AlarmController {
     return showAlarmSearchResult(alarms, model);
   }
 
-  @RequestMapping(value = "/" + ALARM_URL + "/faultCode/{faultCode}", method = RequestMethod.GET)
+  @RequestMapping(value = ALARM_URL + "faultCode/{faultCode}", method = RequestMethod.GET)
   public String searchAlarmByFaultCode(@PathVariable(value = "faultCode") final String faultCode,
                                        final HttpServletResponse response, final Model model, final HttpServletRequest request) throws IOException {
 
@@ -182,7 +182,7 @@ public class AlarmController {
     return showAlarmSearchResult(alarms, model);
   }
 
-  @RequestMapping(value = "/" + ALARM_URL + "/faultFamily/{faultFamily}/faultMember/{faultMember}", method = RequestMethod.GET)
+  @RequestMapping(value = ALARM_URL + "faultFamily/{faultFamily}/faultMember/{faultMember}", method = RequestMethod.GET)
   public String searchAlarmByFaultFamilyAndFaultMember(@PathVariable(value = "faultFamily") final String faultFamily,
                                                        @PathVariable(value = "faultMember") final String faultMember,
                                                        final HttpServletResponse response, final Model model, final HttpServletRequest request) throws IOException {
@@ -196,7 +196,7 @@ public class AlarmController {
     return showAlarmSearchResult(alarms, model);
   }
 
-  @RequestMapping(value = "/" + ALARM_URL + "/faultFamily/{faultFamily}/faultCode/{faultCode}", method = RequestMethod.GET)
+  @RequestMapping(value = ALARM_URL + "faultFamily/{faultFamily}/faultCode/{faultCode}", method = RequestMethod.GET)
   public String searchAlarmByFaultFamilyAndFaultCode(@PathVariable(value = "faultFamily") final String faultFamily,
                                                      @PathVariable(value = "faultCode") final String faultCode,
                                                      final HttpServletResponse response, final Model model, final HttpServletRequest request) throws IOException {
@@ -210,7 +210,7 @@ public class AlarmController {
     return showAlarmSearchResult(alarms, model);
   }
 
-  @RequestMapping(value = "/" + ALARM_URL + "/faultMember/{faultMember}/faultCode/{faultCode}", method = RequestMethod.GET)
+  @RequestMapping(value = ALARM_URL + "faultMember/{faultMember}/faultCode/{faultCode}", method = RequestMethod.GET)
   public String searchAlarmByFaultMemberAndFaultCode(@PathVariable(value = "faultMember") final String faultMember,
                                                      @PathVariable(value = "faultCode") final String faultCode,
                                                      final HttpServletResponse response, final Model model, final HttpServletRequest request) throws IOException {
@@ -224,7 +224,7 @@ public class AlarmController {
     return showAlarmSearchResult(alarms, model);
   }
 
-  @RequestMapping(value = "/" + ALARM_URL + "/faultFamily/{faultFamily}/faultMember/{faultMember}/faultCode/{faultCode}", method = RequestMethod.GET)
+  @RequestMapping(value = ALARM_URL + "faultFamily/{faultFamily}/faultMember/{faultMember}/faultCode/{faultCode}", method = RequestMethod.GET)
   public String searchAlarmByFaultFamilyAndFaultMemberAndFaultCode(@PathVariable(value = "faultFamily") final String faultFamily,
                                                                    @PathVariable(value = "faultMember") final String faultMember,
                                                                    @PathVariable(value = "faultCode") final String faultCode,

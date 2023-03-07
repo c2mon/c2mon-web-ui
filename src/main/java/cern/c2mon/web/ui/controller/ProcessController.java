@@ -84,7 +84,7 @@ public class ProcessController {
    *          response
    * @throws Exception
    */
-  @RequestMapping(value = PROCESS_URL + "/{processName}", method = { RequestMethod.GET })
+  @RequestMapping(value = PROCESS_URL + "{processName}", method = { RequestMethod.GET })
   public String viewProcess(@PathVariable(value = "processName") final String processName, final HttpServletResponse response, final Model model)
       throws Exception {
     logger.info(PROCESS_URL + processName);
