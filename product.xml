@@ -3,7 +3,7 @@
 		<dependencies>
 
 			<!-- PROBLEM 1. : this was not yet released as CBNG, can not be found as CTX -->
-			<dep groupId="cern.c2mon.client" product="c2mon-client-ext-history" version="2.1.7-SNAPSHOT" />
+			<dep groupId="cern.c2mon.client" product="c2mon-client-ext-history" version="PRO" />
 
 			<!-- 3rd party dependencies -->
 			<dep groupId="org.springframework.boot" product="spring-boot-starter-parent" version="2.1.1.RELEASE" scope="provided" />
